@@ -22,4 +22,18 @@ router.post('/new_source', async (req, res, next) => {
   }
 });
 
+// Think about how we can delete replication slot in db, give user a choice?
+router.delete('/delete_source', async (req, res, next) => {
+  const connectorName = req.query.connectorName;
+  // console.log(req.query.connectorName)
+  try {
+    const destination = `http://localhost:8083/connectors/${connectorName}`;
+    await axios.delete(destination);
+    res.status(201).send('Connector deleted!');
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 export default router;
