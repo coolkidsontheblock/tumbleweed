@@ -21,10 +21,10 @@ export interface DebeziumConnector {
     'database.server.name': string;
     'table.include.list': string;
     'slot.name': string;
+    'tombstone.on.delete': string;
     'topic.prefix': string;
     'transforms': string;
     'transforms.outbox.type': string;
-    'transforms.outbox.route.topic.replacement': string;
     'transforms.outbox.table.fields.additional.placement': string;
     'transforms.outbox.table.expand.json.payload': string;
     'value.converter': string;
