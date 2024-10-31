@@ -24,7 +24,7 @@ export const getConfigData = (sourceDetails: PostgresSourceDetails): DebeziumCon
         "transforms.outbox.table.fields.additional.placement": "type:envelope:type",
         "transforms.outbox.table.expand.json.payload": "true",
         "value.converter": "org.apache.kafka.connect.storage.StringConverter",
-        "heartbeat.action.query": "INSERT INTO heartbeat (timestamp, hostname) VALUES (now(), 'I AM THE HOST')",
+        "heartbeat.action.query": `INSERT INTO heartbeat (timestamp, hostname) VALUES (now(), dbname: ${sourceDetails.dbname}, user: ${sourceDetails.user})`,
         "heartbeat.interval.ms": 300000,
         "publication.name": "dbz_publication"
     }
