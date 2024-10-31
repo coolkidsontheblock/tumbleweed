@@ -1,8 +1,22 @@
 import axios from 'axios';
 import express from 'express';
-import { getConfigData } from '../helpers/sourceConnectorHelper';
+import { getConfigData, postConfigDataToDB } from '../helpers/sourceConnectorHelper';
 
 const router = express.Router();
+
+// Get Sources Route => String Array of Sources
+router.get('/', async (req, res, next) => {
+  try {
+    const destination = 'http://localhost:8083/connectors';
+
+    const { data } = await axios.get(destination);
+    console.log(data);
+    res.status(200).send(data);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
 router.post('/new_source', async (req, res, next) => {
   try {
@@ -14,7 +28,12 @@ router.post('/new_source', async (req, res, next) => {
         'Content-Type': 'application/json'
       }
     });
-    console.log(getConfigData(sourceDetails));
+
+    const configData = getConfigData(sourceDetails);
+    console.log(configData);
+
+    postConfigDataToDB(configData);
+    
     res.status(201).send('Connector created');
   } catch (error) {
     console.error(error);
