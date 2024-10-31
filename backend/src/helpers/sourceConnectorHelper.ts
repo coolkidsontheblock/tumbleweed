@@ -1,5 +1,6 @@
 import { PostgresSourceDetails, DebeziumConnector } from "../types/connectorTypes"
 import shortUuid from 'short-uuid';
+import { query } from '../database/pg'
 
 const VALID_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789_';
 
@@ -29,4 +30,9 @@ export const getConfigData = (sourceDetails: PostgresSourceDetails): DebeziumCon
         "publication.name": "dbz_publication"
     }
   }
+};
+
+export const postConfigDataToDB = async (config: DebeziumConnector) => {
+  await query(`INSERT INTO connectors ()
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10 $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)`)
 };
