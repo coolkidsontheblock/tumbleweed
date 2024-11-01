@@ -1,7 +1,6 @@
 import pkg from 'pg';
 import dotenv from 'dotenv';
 const { Pool } = pkg;
-dotenv.config();
 
 const pool = new Pool({
   user: process.env.POSTGRES_USER,
@@ -20,4 +19,3 @@ const query = (text: string, params?: any[]): Promise<any> => {
 };
 
 export { pool, query };
-
