@@ -9,13 +9,13 @@ function App() {
 
   return (
     <>
-      <div className='App'>
         <Sidebar />
+        <div className="main">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sources" element={<Sources />} />
         </Routes>
-      </div>
+        </div>
     </>
   )
 }
