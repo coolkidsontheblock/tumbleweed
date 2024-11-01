@@ -1,174 +1,34 @@
-html {
+* {
+  margin: 0;
+  padding: 0;
   font-family: 'Fredoka', sans-serif;
 }
 
-body {
-  margin: 0;
-  padding: 0;
+.main {
+  margin-left: 20%;
+}
+
+.nav-menu {
+  background-color: #db7b3bc6;
+  width: 20%;
   height: 100%;
-  width: 100%;
-}
-
-.root {
-  height: 100%;
-}
-
-.App {
   display: flex;
-  justify-content: left;
-  height: auto;
-  /* margin-left: 10px; */
+  justify-content: center;
+  position: fixed;
 }
 
-.home, .source-page {
+.nav-text {
+  color: #ffffff;
+  font-size: 150%;
+  height: 10%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 100%;
 }
-
-/* .button {
-  background-color: white;
-  font-size: 16px;
-  text-decoration: none;
-  text-align: center;
-  border-radius: 6px;
-  padding: 15px 15px;
-  margin-left: 25px;
-  cursor: pointer;
-} */
 
 a {
   text-decoration: none;
   color: inherit;
 }
-
-/* .cardContainer {
-  border-radius: 10px;
-  border: 2px solid black;
-  width: 350px;
-  height: 575px;
-  text-align: left;
-  margin: 25px;
-} */
-
-/* .tags {
-  display: inline-block;
-  border: 1px solid #606060;
-  border-radius: 20px;
-  padding: 5px 10px;
-  margin-right: 10px;
-}
-
-.noTags {
-  height: 60px;
-}
-
-.homeInfoContainer {
-  padding: 25px;
-} */
-
-/* .description { */
-  /* white-space: pre-wrap; */
-/* } */
-
-/* .cardImageContainer {
-  position: relative;
-}
-
-.cardImageContainer img {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  width: 100%;
-  height: 200px;
-  border-bottom: 2px solid black;
-} */
-
-/* #homeDetails {
-  color: #606060;
-}
-
-.tagsContainer {
-  color: #606060;
-}
-
-#cityState {
-  color: #606060;
-}
-
-#acreage {
-  color: #606060;
-} */
-
-/* .lotsList .cardContainer {
-  height: 500px;
-}
-
-.lotInfoContainer {
-  padding: 0px 25px;
-}
-.favoriteButton {
-  position: absolute;
-  display: block;
-  top: 1%;
-  right: 1%;
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-  border: 1px solid black;
-  background-color: white;
-  cursor: pointer;
-} */
-
-/* .favoriteButton:hover {
-  background-color: red;
-}
-
-.favoriteButton.highlighted:hover {
-  background-color: white;
-}
-
-.favoriteButton img {
-  width: 20px;
-  height: 20px;
-  margin-top: 4px;
-  text-decoration: none !important;
-  border: 0px !important;
-  outline: none;
-  border-width: 0px;
-  outline-width: 0px;
-  border-bottom: none;
-} */
-
-/* .favoriteButton.highlighted {
-  background-color: red;
-} */
-
-/* .homesListContainer {
-  margin: 25px;
-} */
-
-/* .homesList {
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-top: 15px;
-} */
-
-/* .lotsContainer {
-  margin: 25px;
-} */
-
-/* .lotsList {
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-top: 15px;
-} */
-/* .selectedCardContainer {
-  display: flex;
-  flex-direction: row;
-} */
 
 #modal-container {
   position: absolute;
@@ -181,114 +41,6 @@ a {
 #modal-container:empty {
   display: none;
 }
-
-/* .screen,
-.image-screen {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 0 10px;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 2;
-  overflow: auto;
-}
-.image-screen {
-  z-index: 5;
-}
-.image-screen img {
-  margin-top: 18px;
-  margin-left: 50%;
-  transform: translateX(-50%);
-  border-radius: 3px;
-}
-.image-screen footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 150px;
-  text-align: center;
-}
-.image-screen footer div {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 0;
-  display: inline-block;
-  color: #fff;
-  line-height: 28px;
-  padding-bottom: 9px;
-}
-.image-screen footer div h2 {
-  font-weight: bold;
-  font-size: 18px;
-}
-.image-screen footer div p {
-  font-size: 14px;
-}
-.image-screen footer div .horiz-list li {
-  font-size: 14px;
-  color: #fff;
-}
-.image-screen footer div .horiz-list li:before {
-  color: #fff;
-}
-.image-screen header > i,
-.image-screen footer > i {
-  position: absolute;
-  color: #999;
-}
-.image-screen header > i:before,
-.image-screen footer > i:before {
-  font-size: 20px;
-}
-.image-screen header .x-icon {
-  right: 0px;
-  width: 28px;
-  text-align: center;
-}
-.image-screen header .x-icon,
-.image-screen .back-icon,
-.image-screen .forward-icon {
-  line-height: 32px;
-  cursor: pointer;
-}
-.image-screen header .x-icon:hover,
-.image-screen .back-icon:hover,
-.image-screen .forward-icon:hover {
-  color: #fff;
-  transition: all 0.08s;
-  font-size: 24px;
-}
-.image-screen header .x-icon:hover:before,
-.image-screen .back-icon:hover:before,
-.image-screen .forward-icon:hover:before {
-  font-size: 24px;
-  transition: all 0.08s;
-}
-.image-screen .back-icon,
-.image-screen .forward-icon {
-  width: 60px;
-  line-height: 150px;
-}
-.image-screen .back-icon {
-  bottom: 0;
-  left: 0;
-  float: left;
-  text-align: right;
-}
-.image-screen .forward-icon {
-  bottom: 0;
-  right: 0;
-  float: right;
-  text-align: left;
-}
-
-.active {
-  background-color: lightgray;
-} */
 
 #modal {
   padding: 30px;
@@ -339,58 +91,4 @@ a {
 
 .modalInformationContainer .favoriteButton:hover {
   background-color: red;
-}
-
-/* .compatibleOptionsContainer {
-  display: flex;
-  flex-direction: column;
-} */
-
-/* .compatibleOptionsList {
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 10px;
-  margin: 25px;
-}
-
-#compatibleOptionsTitle p {
-  text-align: center;
-  color: #606060;
-  font-size: 32px;
-  padding: 0px;
-}
-
-.modalInformationContainer .favoriteButton.highlighted {
-  background-color: red;
-} */
-
-.sidebar {
-  background-color: #ffffff;
-  height: 80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.nav-menu {
-  background-color: #45ced5ab;
-  width: 250px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-}
-
-.nav-text {
-  text-decoration: none;
-  color: #fff;
-  font-size: 18px;
-  width: 95%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  border-radius: 4px;
 }
