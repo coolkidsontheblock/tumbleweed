@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS public.connectors
 (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    source_id TEXT,
     name TEXT NOT NULL,
     plugin_name TEXT,
     database_hostname TEXT,
@@ -21,7 +22,8 @@ CREATE TABLE IF NOT EXISTS public.connectors
     topic_prefix TEXT,
     heartbeat_action_query TEXT,
     heartbeat_interval_ms INT,
-    publication_name TEXT
+    publication_name TEXT,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 TABLESPACE pg_default;
