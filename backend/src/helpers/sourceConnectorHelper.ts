@@ -37,6 +37,8 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
 export const postConfigDataToDB = async (source: DebeziumConnector) => {
   try {
     const hashedPassword = await hashPassword(source.config["database.password"]);
+    console.log(`Config PW: ${source.config["database.password"]}`);
+    console.log(hashedPassword, typeof hashedPassword);
     const sourceID = source.config["slot.name"].slice(11);
     const newConnector: { rows: PGDetailsNoPW[] } = await query(`INSERT INTO connectors (
       source_id,
