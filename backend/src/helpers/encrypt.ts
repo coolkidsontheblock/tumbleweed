@@ -14,6 +14,7 @@ const verifyPassword = async (password: string, hash: string): Promise<boolean> 
 };
 
 export const hashPassword = async (password: string) => {
-  return await hash(password);
+  const hashedPassword = await hash(password);
+  return String(hashedPassword);
 };
 
