@@ -1,13 +1,16 @@
-export interface Source {
-  'database.hostname': string;
-  'database.port': number;
-  'database.user': string;
-  'database.password': string;
-  'database.dbname': string;
-  'database.server.name': string;
+import React from "react";
+
+export interface SourceInput {
+  name: string;
+  database_hostname: string;
+  database_port: number;
+  database_user: string;
+  database_password: string;
+  database_dbname: string;
+  database_server_name: string;
 }
 
 export interface ButtonProps {
   btnName: string;
-  clickHandler: () => void;
+  clickHandler: (e: React.FormEvent) => void;
 }

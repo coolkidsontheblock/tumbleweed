@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { z } from 'zod';
-import { Source } from '../types/types';
+import { SourceInput } from '../types/types';
 
 const sourceSchema = z.object({
-  id: z.number(),
-  'database.hostname': z.string(),
-  'database.port': z.number(),
-  'database.user': z.string(),
-  'database.dbname': z.string(),
-  'database.server.name': z.string(),
+  'id': z.number(),
+  'hostname': z.string(),
+  'port': z.number(),
+  'user': z.string(),
+  'dbname': z.string(),
+  'server.name': z.string(),
 });
 
 const sourceSchemaArray = z.array(sourceSchema);
@@ -21,7 +21,8 @@ const getSources = async () => {
   return sourceSchemaArray.parse(res.data);
 };
 
-const createSource = async (sourceInfo: Source) => {
+const createSource = async (sourceInfo: SourceInput) => {
+  console.log(sourceInfo);
   const res = await axios.post(baseUrl + '/new_source', sourceInfo);
   return res.data;
 }

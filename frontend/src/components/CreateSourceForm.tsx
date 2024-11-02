@@ -1,25 +1,29 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { createSource } from "../services/sourcesService";
 import { Button } from "./Button";
+import { SourceInput } from "../types/types";
 import { z } from "zod";
 
 export const CreateSourceForm = () => {
-  const [dbhostname, setdbhostname] = useState<string>('');
-  const [dbport, setdbport] = useState<number>(0);
-  const [dbname, setdbname] = useState<string>('');
-  const [dbservername, setdbservername] = useState<string>('');
-  const [dbusername, setdbusername] = useState<string>('');
-  const [dbpassword, setdbpassword] = useState<string>('');
+  const [dbhostname, setDBHostname] = useState<string>('');
+  const [dbport, setDBPort] = useState<number>(0);
+  const [dbname, setDBName] = useState<string>('');
+  const [dbservername, setDBServerName] = useState<string>('');
+  const [dbusername, setDBUsername] = useState<string>('');
+  const [dbpassword, setDBPassword] = useState<string>('');
+  const [connectorName, setConnectorName] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
 
-  const handleNewSource = async () => {
-    const sourceData = {
-      'database.hostname': dbhostname,
-      'database.port': dbport,
-      'database.dbname': dbname,
-      'database.server.name': dbservername,
-      'database.user': dbusername,
-      'database.password': dbpassword
+  const handleNewSource = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const sourceData: SourceInput = {
+      name: connectorName,
+      database_hostname: dbhostname,
+      database_port: dbport,
+      database_user: dbusername,
+      database_password: dbpassword,
+      database_dbname: dbname,
+      database_server_name: dbservername,
     }
     try {
       const response = await createSource(sourceData);
@@ -51,7 +55,7 @@ export const CreateSourceForm = () => {
         name="dbhostname"
         type="text"
         placeholder="Database Hostname"
-        onChange={(e) => setdbhostname(e.target.value)}
+        onChange={(e) => setDBHostname(e.target.value)}
       />
       <label htmlFor="dbport">Database Port</label>
       <input
@@ -59,7 +63,7 @@ export const CreateSourceForm = () => {
         name="dbport"
         type="number"
         placeholder="Database Port"
-        onChange={(e) => setdbport(Number(e.target.value))}
+        onChange={(e) => setDBPort(Number(e.target.value))}
       />
       <label htmlFor="dbhostname">Database Name</label>
       <input
@@ -67,7 +71,7 @@ export const CreateSourceForm = () => {
         name="dbname"
         type="text"
         placeholder="Database Name"
-        onChange={(e) => setdbname(e.target.value)}
+        onChange={(e) => setDBName(e.target.value)}
       />
       <label htmlFor="dbport">Database Server Name</label>
       <input
@@ -75,7 +79,7 @@ export const CreateSourceForm = () => {
         name="dbservername"
         type="text"
         placeholder="Database Server Name"
-        onChange={(e) => setdbservername(e.target.value)}
+        onChange={(e) => setDBServerName(e.target.value)}
       />
       <label htmlFor="dbhostname">Database Username</label>
       <input
@@ -83,7 +87,7 @@ export const CreateSourceForm = () => {
         name="dbusername"
         type="text"
         placeholder="Database Username"
-        onChange={(e) => setdbusername(e.target.value)}
+        onChange={(e) => setDBUsername(e.target.value)}
       />
       <label htmlFor="dbport">Database Password</label>
       <input
@@ -91,9 +95,18 @@ export const CreateSourceForm = () => {
         name="dbpassword"
         type="password"
         placeholder="Database Password"
-        onChange={(e) => setdbpassword(e.target.value)}
+        onChange={(e) => setDBPassword(e.target.value)}
       />
-      <Button btnName="Submit" clickHandler={handleNewSource} />
+      <label htmlFor="connector-name">Connector Name</label>
+      <input
+        id="connector-name"
+        name="connector-name"
+        type="text"
+        placeholder="Connector Name"
+        onChange={(e) => setConnectorName(e.target.value)}
+      />
+      <button onSubmit={handleNewSource}>Submit</button>
+      {/* <Button btnName="Submit" clickHandler={handleNewSource} /> */}
     </form>
   )
 };
