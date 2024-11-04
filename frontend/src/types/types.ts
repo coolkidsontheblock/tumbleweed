@@ -10,7 +10,6 @@ export interface SourceInput {
   database_server_name: string;
 }
 
-export interface ButtonProps {
-  btnName: string;
-  clickHandler: (e: React.FormEvent) => void;
+export interface ErrorBannerProps {
+  message: string;
 }
