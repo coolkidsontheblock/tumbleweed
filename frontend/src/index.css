@@ -7,11 +7,20 @@
 }
 
 .main {
-  display: flex;
+  display: block;
   justify-content: center;
   align-items: center;
   height: 100%;
   background-color: #f5f5f5;
+  margin-left: 240px;
+}
+
+#sources {
+  padding: 20px;
+}
+
+#sourcelist {
+  list-style: none;
 }
 
 /* .nav-menu {
