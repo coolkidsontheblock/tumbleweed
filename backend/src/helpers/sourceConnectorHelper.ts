@@ -6,7 +6,6 @@ import { hashPassword } from "./encrypt";
 const VALID_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789_';
 
 export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector => {
-  const sourceID = shortUuid(VALID_CHARS).generate();
   return {
     "name": sourceDetails.name,
     "config": {
@@ -20,7 +19,7 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
       "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
       "table.include.list": "public.outbox",
       "tombstone.on.delete": "false",
-      "slot.name": `tumbleweed_${sourceID}`,
+      "slot.name": `tumbleweed_${shortUuid(VALID_CHARS).generate()}`,
       "transforms": "outbox",
       "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
       "transforms.outbox.table.fields.additional.placement": "type:envelope:type",
@@ -37,9 +36,7 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
 export const postConfigDataToDB = async (source: DebeziumConnector) => {
   try {
     const hashedPassword = await hashPassword(source.config["database.password"]);
-    const sourceID = source.config["slot.name"].slice(11);
     const newConnector: { rows: PGDetailsNoPW[] } = await query(`INSERT INTO connectors (
-      source_id,
       name, 
       plugin_name,
       database_hostname,
@@ -61,9 +58,8 @@ export const postConfigDataToDB = async (source: DebeziumConnector) => {
       heartbeat_action_query,
       heartbeat_interval_ms,
       publication_name)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)
-      RETURNING source_id,
-      name, 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)
+      RETURNING name, 
       plugin_name,
       database_hostname,
       database_port,
@@ -71,7 +67,6 @@ export const postConfigDataToDB = async (source: DebeziumConnector) => {
       database_dbname,
       database_server_name`,
       [
-        sourceID,
         source.name,
         source.config["plugin.name"],
         source.config["database.hostname"],
@@ -97,21 +92,21 @@ export const postConfigDataToDB = async (source: DebeziumConnector) => {
     return newConnector.rows[0];
   } catch (error) {
     console.error(`There was an error adding a new connector to the database: ${error}`);
+    // Add some rollback validation in debezium fails?
   }
 };
 
-export const getConnectorBySourceID = async (id: string) => {
+export const getConnectorByName = async (name: string) => {
   try {
-    const sourceDetails: { rows: PGDetailsNoPW[] } = await query(`SELECT source_id, 
-      name, 
+    const sourceDetails: { rows: PGDetailsNoPW[] } = await query(`SELECT name, 
       plugin_name, 
       database_hostname, 
       database_port, 
       database_user,
       database_dbname, 
       database_server_name 
-      FROM connectors WHERE source_id = $1`,
-      [id]);
+      FROM connectors WHERE name = $1`,
+      [name]);
 
     return sourceDetails.rows[0];
   } catch (error) {
@@ -119,10 +114,10 @@ export const getConnectorBySourceID = async (id: string) => {
   }
 };
 
-export const deleteConnectorBySourceID = async (id: string) => {
+export const deleteConnectorByName = async (name: string) => {
   try {
-    await query(`DELETE FROM connectors WHERE source_id = $1`,
-      [id]);
+    await query(`DELETE FROM connectors WHERE name = $1`,
+      [name]);
   } catch (error) {
     console.error(`There was an error deleting connector from the database: ${error}`);
   }
