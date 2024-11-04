@@ -26,6 +26,7 @@ export const CreateSourceForm = () => {
       database_server_name: dbservername,
     }
     try {
+      console.log(sourceData)
       const response = await createSource(sourceData);
       console.log(response);
     } catch (error) {
@@ -105,7 +106,7 @@ export const CreateSourceForm = () => {
         placeholder="Connector Name"
         onChange={(e) => setConnectorName(e.target.value)}
       />
-      <button onSubmit={handleNewSource}>Submit</button>
+      <button type="submit" onClick={handleNewSource}>Submit</button>
       {/* <Button btnName="Submit" clickHandler={handleNewSource} /> */}
     </form>
   )
