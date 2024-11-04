@@ -1,5 +1,4 @@
 export interface PGSourceDetails {
-  source_id: string,
   name: string,
   plugin_name: string,
   database_hostname: string,

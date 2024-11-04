@@ -1,6 +1,6 @@
 import axios from 'axios';
 import express from 'express';
-import { getConfigData, postConfigDataToDB, getConnectorBySourceID, deleteConnectorBySourceID } from '../helpers/sourceConnectorHelper';
+import { getConfigData, postConfigDataToDB, getConnectorByName, deleteConnectorByName } from '../helpers/sourceConnectorHelper';
 import { PGDetailsNoPW } from '../types/connectorTypes';
 
 const router = express.Router();
@@ -11,22 +11,22 @@ router.get('/', async (req, res, next) => {
     const destination = 'http://localhost:8083/connectors';
 
     const { data } = await axios.get(destination);
-    // console.log(data);
     res.status(200).send(data);
   } catch (error) {
+    res.status(404).send(`${error}`)
     console.error(error);
     next(error);
   }
 });
 
 // Get Info for Single Sources Route => PGDetailsNoPW Object
-router.get('/:source_id', async (req, res, next) => {
+router.get('/:source_name', async (req, res, next) => {
   try {
-    const id = req.params.source_id;
-    const connector = await getConnectorBySourceID(id);
+    const sourceName = req.params.source_name;
+    const connector = await getConnectorByName(sourceName);
 
     if (!connector) {
-      throw new Error("No Connector by that ID exists");
+      throw new Error("No Connector by that name exists");
     } else {
       console.log("connector: ", connector)
 
@@ -34,7 +34,6 @@ router.get('/:source_id', async (req, res, next) => {
       const destination = `http://localhost:8083/connectors/${connector.name}`;
       const { data } = await axios.get(destination);
       const basicConnectorInfo: PGDetailsNoPW = {
-        source_id: id,
         name: data.name,
         plugin_name: data.config["plugin.name"],
         database_hostname: data.config["database.hostname"],
@@ -49,22 +48,28 @@ router.get('/:source_id', async (req, res, next) => {
       });
     }
   } catch (error) {
+    res.status(404).send(`${error}`)
     console.error(`There was an error finding the connector: ${error}`);
     next(error);
   }
 });
 
 // POST a new source route => PGDetailsNoPW Object
+// Add Validation!!! -> no empty strings allowed, strip whitespace, etc
 router.post('/new_source', async (req, res, next) => {
   try {
     const sourceDetails = req.body;
     const destination = 'http://localhost:8083/connectors';
 
-    await axios.post(destination, getConfigData(sourceDetails), {
+    const axiosResponse = await axios.post(destination, getConfigData(sourceDetails), {
       headers: {
         'Content-Type': 'application/json'
       }
     });
+
+    if (axiosResponse.status !== 201) {
+      throw new Error('Failed to create new connector');
+    }
 
     const configData = getConfigData(sourceDetails);
     const newConnector = await postConfigDataToDB(configData);
@@ -74,7 +79,15 @@ router.post('/new_source', async (req, res, next) => {
       data: newConnector,
     });
   } catch (error) {
+    res.status(400).send(`${error}`)
     console.error(`There was an error adding a new connector: ${error}`);
+
+    // Optionally: handle a rollback here if needed, e.g., delete any created connector in Debezium
+    // Example:
+    // if (axiosResponse && axiosResponse.data.name) {
+    //   await axios.delete(`${destination}/${axiosResponse.data.name}`);
+    // }
+
     next(error);
   }
 });
@@ -82,21 +95,21 @@ router.post('/new_source', async (req, res, next) => {
 // Think about how we can delete replication slot in db, give user a choice?
 
 // DELETE a source route => VOID
-router.delete('/:source_id/delete', async (req, res, next) => {
+router.delete('/:source_name', async (req, res, next) => {
   try {
-    const id = req.params.source_id;
-    const connector = await getConnectorBySourceID(id);
+    const sourceName = req.params.source_name;
+    const connector = await getConnectorByName(sourceName);
 
     if (!connector) {
-      throw new Error("No Connector by that ID exists");
+      throw new Error("No Connector by that name exists");
     } else {
-      console.log("connector: ", connector)
       const destination = `http://localhost:8083/connectors/${connector.name}`;
       await axios.delete(destination);
-      await deleteConnectorBySourceID(id);
+      await deleteConnectorByName(sourceName);
       res.status(201).send(`Connector '${connector.name}' deleted!`);
     }
   } catch (error) {
+    res.status(404).send(`${error}`)
     console.error(`There was an error deleting the connector: ${error}`);
     next(error);
   }
@@ -104,5 +117,3 @@ router.delete('/:source_id/delete', async (req, res, next) => {
 
 export default router;
 
-
-// MAke some of these things transactions!
