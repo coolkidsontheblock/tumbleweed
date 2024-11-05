@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     const consumers = await getAllConsumers();
- 
+
     res.status(200).send({
       message: `${consumers.length} Consumers Found.`,
       data: consumers,
@@ -28,11 +28,11 @@ router.get('/:consumer_name', async (req, res, next) => {
   try {
     const consumerName = req.params.consumer_name;
     const consumer = await getConsumerByName(consumerName);
-    
+
     if (!consumer) {
       throw new Error("No Consumer by that name exists");
     } else {
-      
+
       const consumerInfo: ConsumerDetails = {
         name: consumer.name,
         description: consumer.description,
@@ -81,5 +81,7 @@ router.post('/new_consumer', async (req, res, next) => {
     next(error);
   }
 });
+
+
 
 export default router;
