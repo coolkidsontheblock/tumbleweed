@@ -1,19 +1,20 @@
 import axios from 'axios';
 import express from 'express';
-import { getAllConsumers, postConsumerToDB } from '../helpers/consumerConnectorHelper';
-import { PGDetailsNoPW } from '../types/connectorTypes';
+import { getAllConsumers, postConsumerToDB, getConsumerByName } from '../helpers/consumerHelper';
+import { ConsumerDetails } from '../types/consumerTypes';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   try {
-
-    const data = await getAllConsumers();
-    console.log(data)
-    // const destination = 'http://localhost:8083/connectors';
-
-    // const { data } = await axios.get(destination);
-    res.status(200).send(data);
+    const consumers = await getAllConsumers();
+ 
+    res.status(200).send({
+      message: `${consumers.length} Consumers Found.`,
+      data: consumers,
+    });
   } catch (error) {
     res.status(404).send(`${error}`)
     console.error(error);
@@ -21,56 +22,47 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// Get Info for Single Sources Route => PGDetailsNoPW Object
-// router.get('/:consumer_id', async (req, res, next) => {
-//   try {
-//     const sourceName = req.params.source_name;
-//     const connector = await getConnectorByName(sourceName);
+// Get Info for Single Consumer Route =>
+// URL Encode Spaces with %20 when making request -> ex. consumers/newest%20Great%20Service
+router.get('/:consumer_name', async (req, res, next) => {
+  try {
+    const consumerName = req.params.consumer_name;
+    const consumer = await getConsumerByName(consumerName);
+    
+    if (!consumer) {
+      throw new Error("No Consumer by that name exists");
+    } else {
+      
+      const consumerInfo: ConsumerDetails = {
+        name: consumer.name,
+        description: consumer.description,
+        endpoint_URL: consumer.endpoint_URL,
+        kafka_client_id: consumer.kafka_client_id,
+        kafka_broker_endpoints: consumer.kafka_broker_endpoints,
+        kafka_group_id: consumer.kafka_group_id,
+        subscribed_topics: consumer.subscribed_topics,
+        received_message_count: consumer.received_message_count,
+        date_created: consumer.date_created
+      }
+      res.status(200).send({
+        message: `Consumer '${consumer.name}' Found.`,
+        data: consumerInfo,
+      });
+    }
+  } catch (error) {
+    res.status(404).send(`${error}`)
+    console.error(`There was an error finding the consumer: ${error}`);
+    next(error);
+  }
+});
 
-//     if (!connector) {
-//       throw new Error("No Connector by that name exists");
-//     } else {
-//       console.log("connector: ", connector)
-
-//       // the destination where we are getting the info is from kafka and not our database with the encrypted pw
-//       const destination = `http://localhost:8083/connectors/${connector.name}`;
-//       const { data } = await axios.get(destination);
-//       const basicConnectorInfo: PGDetailsNoPW = {
-//         name: data.name,
-//         plugin_name: data.config["plugin.name"],
-//         database_hostname: data.config["database.hostname"],
-//         database_port: data.config["database.port"],
-//         database_user: data.config["database.user"],
-//         database_dbname: data.config["database.dbname"],
-//         database_server_name: data.config["database.server.name"]
-//       }
-//       res.status(200).send({
-//         message: `Connector '${data.name}' Found.`,
-//         data: basicConnectorInfo,
-//       });
-//     }
-//   } catch (error) {
-//     res.status(404).send(`${error}`)
-//     console.error(`There was an error finding the connector: ${error}`);
-//     next(error);
-//   }
-// });
-
-// POST a new source route => PGDetailsNoPW Object
+// POST a new consumer route => PGDetailsNoPW Object
 // Add Validation!!! -> no empty strings allowed, strip whitespace, etc
 router.post('/new_consumer', async (req, res, next) => {
   try {
     const consumerData = req.body;
-    // const destination = 'http://localhost:8083/connectors';
-
-    // const axiosResponse = await axios.post(destination, getConfigData(sourceDetails), {
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // });
-    console.log(consumerData)
-    // const configData = getConfigData(sourceDetails);
-    const newConsumer = await postConsumerToDB(consumerData);
+    const KafkaBrokerEndpoints = JSON.parse(process.env.KAFKA_BROKER_ENDPOINTS as string); // using type assertion here.  double check if there is a better way
+    const newConsumer = await postConsumerToDB(consumerData, KafkaBrokerEndpoints);
 
     res.status(201).send({
       message: 'Consumer created',

@@ -10,4 +10,4 @@ export interface ConsumerDetails {
   date_created: string
 }
 
-
+export type ConsumerName = Pick<ConsumerDetails, "name">;
