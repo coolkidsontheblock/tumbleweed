@@ -1,7 +1,7 @@
 import axios from 'axios';
 import express from 'express';
-import { getConfigData, postConfigDataToDB, getConnectorByName, deleteConnectorByName } from '../helpers/sourceConnectorHelper';
-import { PGDetailsNoPW } from '../types/connectorTypes';
+import { getConfigData, postConfigDataToDB, getConnectorByName, deleteConnectorByName } from '../helpers/sourceHelper';
+import { PGDetailsNoPW } from '../types/sourceTypes';
 
 const router = express.Router();
 

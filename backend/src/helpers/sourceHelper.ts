@@ -1,4 +1,4 @@
-import { PGSourceDetails, DebeziumConnector, PGDetailsNoPW } from "../types/connectorTypes"
+import { PGSourceDetails, DebeziumConnector, PGDetailsNoPW } from "../types/sourceTypes"
 import shortUuid from 'short-uuid';
 import { query } from '../database/pg';
 import { hashPassword } from "./encrypt";
