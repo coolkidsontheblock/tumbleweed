@@ -16,4 +16,6 @@ export type SourceData = Omit<SourceInput, 'database_password'> & {
 
 export interface ErrorBannerProps {
   message: string;
+  handleClose: () => void;
+  openStatus: boolean;
 }

@@ -4,6 +4,8 @@
   margin: 0;
   padding: 0;
   font-family: 'Fredoka', sans-serif;
+  font-size: 105%;
+  color: #331E14;
 }
 
 .main {
@@ -11,15 +13,32 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: #f5f5f5;
+  background-color: #cef0f6;
   margin-left: 240px;
 }
 
+body {
+  background-color: #cef0f6;
+}
+
 #sources {
+  /* display: flex; */
+  /* justify-content: space-between; */
   padding: 20px;
 }
 
-#sourcelist {
+.sourceButton {
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.sourceButton:hover {
+  background-color: #db7b3bc6;
+}
+
+.sourceinfo, #source-ul {
   list-style: none;
 }
 

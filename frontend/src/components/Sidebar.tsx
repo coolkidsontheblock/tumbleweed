@@ -4,54 +4,72 @@ import {
   Drawer,
   List,
   ListItemText,
-  ListItem
+  ListItem,
+  Box
 } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from '../styles/Theme';
 
 export const Sidebar = () => {
   return (
-    <Drawer
-      variant="permanent"
-      anchor="left"
-      sx={{
-        width: 240,
-        flexShring: 0,
-        '& .MuiDrawer-paper': {
-          width: 240,
-          boxSizing: 'border-box',
-          backgroundColor: '#db7b3bc6',
-          color: 'white',
-        },
-        '& .MuiListItem-root': {
-          paddingTop: 2,
-          paddingBottom: 2,
-        },
-      }}
-    >
-      <List
+    <ThemeProvider theme={theme}>
+      <Drawer
+        variant="permanent"
+        anchor="left"
         sx={{
-          paddingY: 2,
+          width: 240,
+          flexShring: 0,
+          '& .MuiDrawer-paper': {
+            width: 240,
+            boxSizing: 'border-box',
+            backgroundColor: '#fce197',
+            color: 'white',
+          },
+          '& .MuiListItem-root': {
+            paddingTop: 2,
+            paddingBottom: 2,
+          },
         }}
       >
-      {sidebarData.map((item) => (
-          <ListItem
-            key={item.id}
-            component={Link}
-            to={item.path}
-            className={item.className}
-            sx={{
-              color: 'inherit',
-              textDecoration: 'none',
-              paddingY: 1.5,
-            }}
-          >
-            <ListItemText
-              primary={item.title}
+        <Box
+          component="img"
+          src="/Transparent Logo.svg"
+          alt="Project Logo"
+          sx={{
+            width: '100%',
+            height: 'auto',
+            padding: 2,
+            boxSizing: 'border-box',
+          }}
+        />
+        <List
+          sx={{
+            paddingY: 1,
+          }}
+        >
+        {sidebarData.map((item) => (
+            <ListItem
+              key={item.id}
+              component={Link}
+              to={item.path}
+              className={item.className}
               sx={{
+                color: 'inherit',
+                textDecoration: 'none',
+                paddingY: 1.5,
+                marginTop: '20px',
+                marginLeft: '20%',
               }}
-            />
-          </ListItem>
-        ))}
-      </List>
-    </Drawer>
+            >
+              <ListItemText
+                primary={item.title}
+                sx={{
+                }}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    </ThemeProvider>
   )
 };

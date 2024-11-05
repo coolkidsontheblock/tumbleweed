@@ -4,7 +4,11 @@ import { SourceInput } from "../types/types";
 import { z } from "zod";
 import { ErrorBanner } from "./ErrorBanner";
 
-export const CreateSourceForm = () => {
+interface CreateSourceFormProps {
+  setSources: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export const CreateSourceForm = ({ setSources }: CreateSourceFormProps) => {
   const [dbhostname, setDBHostname] = useState<string>('');
   const [dbport, setDBPort] = useState<number>(0);
   const [dbname, setDBName] = useState<string>('');
@@ -27,9 +31,8 @@ export const CreateSourceForm = () => {
       database_server_name: dbservername,
     }
     try {
-      console.log(sourceData)
-      const response = await createSource(sourceData);
-      console.log(response);
+      const res = await createSource(sourceData);
+      setSources(prevSources => prevSources.concat(res.data.name));
     } catch (error) {
       setError(true);
       if (error instanceof Error) {
@@ -37,15 +40,23 @@ export const CreateSourceForm = () => {
       } else {
         setErrorMsg("An unknown error occurred");
       }
-      setTimeout(() => {
-        setError(false);
-      }, 6000);
     }
+  }
+
+  const handleClose = () => {
+    setError(false);
+    setErrorMsg('');
   }
 
   return (
     <>
-      {error ? <ErrorBanner message={errorMsg} /> : null}
+      {error && (
+        <ErrorBanner
+          message={errorMsg}
+          handleClose={handleClose}
+          openStatus={error}
+        />
+      )}
       <form id="sourceform">
         <div className="form-header">
           <h2>Create New Source</h2>

@@ -9,20 +9,23 @@ interface ErrorStateProps {
   vertical: 'top' | 'bottom';
   horizontal: 'center' | 'left' | 'right';
   Transition: typeof Fade;
+  handleClose: () => void;
 }
 
-export const ErrorBanner = ({ message }: ErrorBannerProps) => {
+export const ErrorBanner = ({ message, handleClose, openStatus }: ErrorBannerProps) => {
   const [state, setState] = useState<ErrorStateProps>({
-    open: false,
+    open: openStatus,
     vertical: 'top',
     horizontal: 'center',
     Transition: Fade,
+    handleClose: handleClose,
   });
 
-  const handleClose = (e?: React.SyntheticEvent | Event, reason?: string) => {
+  const closeSnackbar = (e?: React.SyntheticEvent | Event, reason?: string) => {
     e?.preventDefault();
     if (reason === 'escapeKeyDown' || reason === 'clickaway' || reason === 'iconClick') {
       setState({ ...state, open: false });
+      handleClose();
     }
   };
 
@@ -47,7 +50,7 @@ export const ErrorBanner = ({ message }: ErrorBannerProps) => {
               aria-label="close"
               color="inherit"
               size="small"
-              onClick={() => handleClose(undefined, 'iconClick')}
+              onClick={() => closeSnackbar(undefined, 'iconClick')}
             >
               <CloseIcon fontSize="small" />
             </IconButton>
