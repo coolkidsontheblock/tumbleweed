@@ -13,7 +13,7 @@ import { SourceInput } from '../types/types';
 
 const sourceSchemaArray = z.array(z.string());
 
-const baseUrl = "http://localhost:3002/sources"
+const baseUrl = "http://localhost:3001/sources"
 
 const getSources = async () => {
   const res = await axios.get(baseUrl);
