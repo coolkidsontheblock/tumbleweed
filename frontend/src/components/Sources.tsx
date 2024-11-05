@@ -40,9 +40,6 @@ export const Sources = () => {
       } else {
         setErrorMsg("An unknown error occurred");
       }
-      setTimeout(() => {
-        setError(false);
-      }, 6000);
     }
   }
 
@@ -58,6 +55,11 @@ export const Sources = () => {
       console.error(error);
     }
   }
+
+  const handleClose = () => {
+    setError(false);
+    setErrorMsg('');
+  }
   // const handleLinkClick = (event: React.SyntheticEvent | Event, source) => {
   //   event.preventDefault()
   //   handleSelectedSource(source);
@@ -68,26 +70,34 @@ export const Sources = () => {
   return (
     <>
       <div id="sources">
-        {error ? <ErrorBanner message={errorMsg} /> : null}
-        <button onClick={() => setDisplayForm(true)}>Create New Source</button>
-        {selectedSource ? <button onClick={handleDeleteSource}>Delete Selected Source</button> : null}
-        
-        <ul id="sourcelist">
-        {sources.map(sourceName => (
-          <li key={sourceName}>
-          <Link onClick={() => handleSelectedSource(sourceName)} to={''}>
-            {sourceName}
-            {/* <Link to={`/sources/${source}`} onClick={() => handleSelectedSource(source)}>
-              {source}
-            </Link> */}
-          </Link>
-          </li>
-        ))}
-        </ul>
+        {error && (
+          <ErrorBanner
+            message={errorMsg}
+            handleClose={handleClose}
+            openStatus={error}
+          />
+        )}
+        {/* <button className="sourceButton" onClick={() => setDisplayForm(true)}>Create New Source</button> */}
+        <div id="sourcelist">
+          <h2>Source List</h2>
+          <ul id="source-ul">
+          {sources.map(sourceName => (
+            <li key={sourceName}>
+            <Link onClick={() => handleSelectedSource(sourceName)} to={''}>
+              {sourceName}
+            </Link>
+            </li>
+          ))}
+          </ul>
+        </div>
+        <button className="sourceButton" onClick={() => setDisplayForm(true)}>Create New Source</button>
+        { selectedSource ? 
+        <>
+          <Source sourceData={selectedSource} />
+          <button className="sourceButton" onClick={handleDeleteSource}>Delete Source</button>
+        </> : null }
 
-        { selectedSource ? <Source sourceData={selectedSource} /> : null }
-
-        { displayForm ? <CreateSourceForm /> : null }
+        { displayForm ? <CreateSourceForm setSources={setSources} /> : null }
       </div>
     </>
     )

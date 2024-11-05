@@ -8,7 +8,8 @@ export const Source = ( { sourceData }: SourceProps) => {
   if (sourceData) {
     return (
       <div>
-        <ul>
+        <h2>Source Information</h2>
+        <ul className="sourceinfo">
           <li>Connector Name: {sourceData.name}</li>
           <li>Database Hostname: {sourceData.database_hostname}</li>
           <li>Database Port: {sourceData.database_port}</li>
