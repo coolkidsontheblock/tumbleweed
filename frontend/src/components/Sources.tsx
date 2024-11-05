@@ -58,7 +58,6 @@ export const Sources = () => {
       console.error(error);
     }
   }
-
   // const handleLinkClick = (event: React.SyntheticEvent | Event, source) => {
   //   event.preventDefault()
   //   handleSelectedSource(source);
