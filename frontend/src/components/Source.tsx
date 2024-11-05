@@ -9,7 +9,7 @@ export const Source = ( { sourceData }: SourceProps) => {
     return (
       <div>
         <h2>Source Information</h2>
-        <ul className="sourceinfo">
+        <ul className="connectiondetails">
           <li>Connector Name: {sourceData.name}</li>
           <li>Database Hostname: {sourceData.database_hostname}</li>
           <li>Database Port: {sourceData.database_port}</li>

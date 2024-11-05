@@ -9,23 +9,23 @@ interface ErrorStateProps {
   vertical: 'top' | 'bottom';
   horizontal: 'center' | 'left' | 'right';
   Transition: typeof Fade;
-  handleClose: () => void;
+  handleCloseSnackbar: () => void;
 }
 
-export const ErrorBanner = ({ message, handleClose, openStatus }: ErrorBannerProps) => {
+export const ErrorSnack = ({ message, handleCloseSnackbar, openStatus }: ErrorBannerProps) => {
   const [state, setState] = useState<ErrorStateProps>({
     open: openStatus,
     vertical: 'top',
     horizontal: 'center',
     Transition: Fade,
-    handleClose: handleClose,
+    handleCloseSnackbar: handleCloseSnackbar,
   });
 
   const closeSnackbar = (e?: React.SyntheticEvent | Event, reason?: string) => {
     e?.preventDefault();
     if (reason === 'escapeKeyDown' || reason === 'clickaway' || reason === 'iconClick') {
       setState({ ...state, open: false });
-      handleClose();
+      handleCloseSnackbar();
     }
   };
 
@@ -35,7 +35,7 @@ export const ErrorBanner = ({ message, handleClose, openStatus }: ErrorBannerPro
         anchorOrigin={{ vertical: state.vertical, horizontal: state.horizontal }}
         open={state.open}
         TransitionComponent={state.Transition}
-        onClose={handleClose}
+        onClose={handleCloseSnackbar}
         key={state.vertical + state.horizontal}
       >
         <SnackbarContent
