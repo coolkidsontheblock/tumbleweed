@@ -21,17 +21,23 @@ const getSources = async () => {
 };
 
 const getSource = async (source: string) => {
-  return `${source} placeholder`;
+  const res = await axios.get(`${baseUrl}/${source}`);
+  return res.data;
 }
 
 const createSource = async (sourceInfo: SourceInput) => {
-  console.log(sourceInfo);
   const res = await axios.post(baseUrl + '/new_source', sourceInfo);
+  return res.data;
+}
+
+const deleteSource = async (source: string) => {
+  const res = await axios.delete(`${baseUrl}/${source}`);
   return res.data;
 }
 
 export {
   getSources,
   createSource,
-  getSource
+  getSource,
+  deleteSource
 };

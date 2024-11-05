@@ -10,6 +10,10 @@ export interface SourceInput {
   database_server_name: string;
 }
 
+export type SourceData = Omit<SourceInput, 'database_password'> & {
+  plugin_name: string
+}
+
 export interface ErrorBannerProps {
   message: string;
 }

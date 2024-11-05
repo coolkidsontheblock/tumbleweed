@@ -1,20 +1,22 @@
-import { Link, useNavigate } from "react-router-dom"
+import { SourceData } from "../types/types"
 
 interface SourceProps {
-  source: string
-  setSelectedSource: (source: string) => void
+  sourceData: SourceData | null
 }
 
-export const Source = ( { source, setSelectedSource }: SourceProps) => {
-  // const navigate = useNavigate();
-  
-  return (
-    <li onClick={() => setSelectedSource(source)}>
-      <Link to={`/sources/${source}`}>
-        {source}
-      </Link>
-    </li>
-    // <>
-    // </>
-  )
+export const Source = ( { sourceData }: SourceProps) => {
+  if (sourceData) {
+    return (
+      <div>
+        <ul>
+          <li>Connector Name: {sourceData.name}</li>
+          <li>Database Hostname: {sourceData.database_hostname}</li>
+          <li>Database Port: {sourceData.database_port}</li>
+          <li>Database Name: {sourceData.database_dbname}</li>
+          <li>Database Server Name: {sourceData.database_server_name}</li>
+          <li>Database Username: {sourceData.database_user}</li>
+        </ul>
+      </div>
+    )
+  }
 }
