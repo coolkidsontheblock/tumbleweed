@@ -53,6 +53,14 @@ export const CreateSourceForm = () => {
             Please enter your database connection details below.
           </p>
         </div>
+        <label htmlFor="connector-name">Connector Name</label>
+        <input
+          id="connector-name"
+          name="connector-name"
+          type="text"
+          placeholder="Connector Name"
+          onChange={(e) => setConnectorName(e.target.value)}
+        />
         <label htmlFor="dbhostname">Database Hostname</label>
         <input
           id="dbhostname"
@@ -100,14 +108,6 @@ export const CreateSourceForm = () => {
           type="password"
           placeholder="Database Password"
           onChange={(e) => setDBPassword(e.target.value)}
-        />
-        <label htmlFor="connector-name">Connector Name</label>
-        <input
-          id="connector-name"
-          name="connector-name"
-          type="text"
-          placeholder="Connector Name"
-          onChange={(e) => setConnectorName(e.target.value)}
         />
         <button type="submit" onClick={handleNewSource}>Submit</button>
       </form>
