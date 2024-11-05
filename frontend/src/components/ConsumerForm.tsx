@@ -1,17 +1,16 @@
-import React, { useState } from "react";
-import { createSource } from "../services/sourcesService";
-import { SourceInput } from "../types/types";
+import React, { useEffect, useState } from "react";
+import { createConsumer } from "../services/consumerService";
+import { ConsumerDetails } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
 import { validateInput, validatePort } from "../utils/validation";
 
-interface CreateSourceFormProps {
-  setSources: React.Dispatch<React.SetStateAction<string[]>>;
+interface ConsumerFormProps {
+  setConsumers: React.Dispatch<React.SetStateAction<string[]>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
-  setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-  setSuccessMsg: React.Dispatch<React.SetStateAction<string>>;
+  topics: string[];
 }
 
 const style = {
@@ -28,53 +27,41 @@ const style = {
   borderRadius: '15px',
 };
 
-export const CreateSourceForm = ({
-  setSources,
+export const ConsumerForm = ({
+  setConsumers,
   setOpen,
   open,
   setError,
   setErrorMsg,
-  setSuccess,
-  setSuccessMsg
-}: CreateSourceFormProps) => {
-  const [dbhostname, setDBHostname] = useState<string>('');
-  const [dbport, setDBPort] = useState<number>(0);
-  const [dbname, setDBName] = useState<string>('');
-  const [dbservername, setDBServerName] = useState<string>('');
-  const [dbusername, setDBUsername] = useState<string>('');
-  const [dbpassword, setDBPassword] = useState<string>('');
-  const [connectorName, setConnectorName] = useState<string>('');
+  topics,
+}: ConsumerFormProps) => {
+  const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<number>(0);
+  // const [dbname, setDBName] = useState<string>('');
+  // const [dbservername, setDBServerName] = useState<string>('');
+  // const [dbusername, setDBUsername] = useState<string>('');
+  // const [dbpassword, setDBPassword] = useState<string>('');
+  // const [connectorName, setConnectorName] = useState<string>('');
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
-  const handleNewSource = async (e: React.FormEvent) => {
+  const handleNewConsumer = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { [key: string]: boolean } = {};
 
     try {
-      const sourceData: SourceInput = {
-        name: validateInput(connectorName),
-        database_hostname: validateInput(dbhostname),
-        database_port: validatePort(dbport),
-        database_user: validateInput(dbusername),
-        database_password: validateInput(dbpassword),
-        database_dbname: validateInput(dbname),
-        database_server_name: validateInput(dbservername),
+      const consumerData: ConsumerDetails = {
+        // name: validateInput(connectorName),
+        // database_hostname: validateInput(dbhostname),
+        // database_port: validatePort(dbport),
+        // database_user: validateInput(dbusername),
+        // database_password: validateInput(dbpassword),
+        // database_dbname: validateInput(dbname),
+        // database_server_name: validateInput(dbservername),
       };
       
       setErrors({});
-      const res = await createSource(sourceData);
-      setSources((prevSources) => prevSources.concat(res.data.name));
-
-      setSuccess(true);
-      setSuccessMsg("Source created successfully!");
-      setOpen(false);
-      setDBHostname('');
-      setDBPort(0);
-      setDBName('');
-      setDBServerName('');
-      setDBUsername('');
-      setDBPassword('');
-      setConnectorName('');
+      const res = await createConsumer(consumerData);
+      setConsumers((prevConsumers) => prevConsumers.concat(res.data.name));
     } catch (error) {
       setError(true);
       if (error instanceof Error) {
@@ -83,13 +70,13 @@ export const CreateSourceForm = ({
         setErrorMsg("An unknown error occurred");
       }
 
-      if (!connectorName) newErrors.connectorName = true;
-      if (!dbhostname) newErrors.dbhostname = true;
-      if (!dbport) newErrors.dbport = true;
-      if (!dbname) newErrors.dbname = true;
-      if (!dbservername) newErrors.dbservername = true;
-      if (!dbusername) newErrors.dbusername = true;
-      if (!dbpassword) newErrors.dbpassword = true;
+      // if (!connectorName) newErrors.connectorName = true;
+      // if (!dbhostname) newErrors.dbhostname = true;
+      // if (!dbport) newErrors.dbport = true;
+      // if (!dbname) newErrors.dbname = true;
+      // if (!dbservername) newErrors.dbservername = true;
+      // if (!dbusername) newErrors.dbusername = true;
+      // if (!dbpassword) newErrors.dbpassword = true;
 
       setErrors(newErrors);
     }
@@ -103,8 +90,8 @@ export const CreateSourceForm = ({
   return (
     <Modal open={open} onClose={handleCloseModal}>
       <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }} component="form">
-        <h2 style={{ textAlign: 'center'}}>Connect a new source DB to Tumbleweed</h2>
-        <p style={{ textAlign: 'center'}}>Please enter your database connection details below:</p>
+        <h2 style={{ textAlign: 'center'}}>Connect a new consumer</h2>
+        <p style={{ textAlign: 'center'}}>Please enter consumer details:</p>
         
         <TextField
           required
@@ -113,7 +100,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.connectorName}
           helperText={errors.connectorName && "Connector Name is required"}
-          onChange={(e) => setConnectorName(e.target.value)}
+          // onChange={(e) => setConnectorName(e.target.value)}
         />
         
         <TextField
@@ -124,7 +111,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbhostname}
           helperText={errors.dbhostname && "Database Hostname is required"}
-          onChange={(e) => setDBHostname(e.target.value)}
+          // onChange={(e) => setDBHostname(e.target.value)}
         />
         
         <TextField
@@ -135,7 +122,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbport}
           helperText={errors.dbport && "Database Port is required"}
-          onChange={(e) => setDBPort(Number(e.target.value))}
+          // onChange={(e) => setDBPort(Number(e.target.value))}
         />
         
         <TextField
@@ -146,7 +133,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbname}
           helperText={errors.dbname && "Database Name is required"}
-          onChange={(e) => setDBName(e.target.value)}
+          // onChange={(e) => setDBName(e.target.value)}
         />
         
         <TextField
@@ -157,7 +144,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbservername}
           helperText={errors.dbservername && "Database Server Name is required"}
-          onChange={(e) => setDBServerName(e.target.value)}
+          // onChange={(e) => setDBServerName(e.target.value)}
         />
         
         <TextField
@@ -168,7 +155,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbusername}
           helperText={errors.dbusername && "Database Username is required"}
-          onChange={(e) => setDBUsername(e.target.value)}
+          // onChange={(e) => setDBUsername(e.target.value)}
         />
         
         <TextField
@@ -180,11 +167,14 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbpassword}
           helperText={errors.dbpassword && "Database Password is required"}
-          onChange={(e) => setDBPassword(e.target.value)}
+          // onChange={(e) => setDBPassword(e.target.value)}
         />
-        
+        <ul className="topic-ul">
+          {topics.map(topic => <li>{topic}</li>)}
+
+        </ul>
         <Box>
-          <Button variant="contained" onClick={handleNewSource} sx={{marginRight: '10px'}}>
+          <Button variant="contained" onClick={handleNewConsumer} sx={{marginRight: '10px'}}>
             Connect
           </Button>
           <Button variant="contained" onClick={handleCloseModal}>
