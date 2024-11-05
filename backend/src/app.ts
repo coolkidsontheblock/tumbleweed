@@ -11,5 +11,4 @@ app.use('/sources', sourceRouter);
 app.use('/consumers', consumerRouter);
 app.use('/topics', topicRouter);
 
-
 export default app;

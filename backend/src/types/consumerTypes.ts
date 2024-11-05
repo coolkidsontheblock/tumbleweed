@@ -11,3 +11,4 @@ export interface ConsumerDetails {
 }
 
 export type ConsumerName = Pick<ConsumerDetails, "name">;
+

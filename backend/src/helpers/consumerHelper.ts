@@ -57,7 +57,7 @@ export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBroke
         consumerData.kafka_group_id,
         subscribedTopicsArray,
       ]);
-      return newConsumer.rows[0];
+    return newConsumer.rows[0];
   } catch (error) {
     console.error(`There was an error adding a new consumer to the database: ${error}`);
   }
