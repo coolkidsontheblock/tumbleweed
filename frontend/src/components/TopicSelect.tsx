@@ -14,13 +14,13 @@ export const TopicSelect = ({ topics, setTopics }: TopicSelectProps) => {
       [name]: checked
     }));
   }
-  
+
   return (
-    <fieldset>
+    <fieldset id="topic-fieldset">
       <legend>Select topics to subscribe to:</legend>
       {Object.keys(topics).map(topic => {
         return (
-          <label key={topic}>
+          <label className="topic-label" key={topic}>
           <input onChange={handleCheckboxChange} type="checkbox" name={topic} checked={topics[topic]}/>{topic}
           </label>
         )

@@ -9,21 +9,26 @@ export interface SourceInput {
 }
 
 export type SourceData = Omit<SourceInput, 'database_password'> & {
-  plugin_name: string
+  plugin_name: string;
 }
 
-export interface ConsumerInputDetails {
-  name: string,
-  description: string,
-  endpoint_URL: string,
-  kafka_client_id: string,
-  kafka_broker_endpoints: string,
-  kafka_group_id: string,
-  subscribed_topics: string,
+export interface ConsumerDetails {
+  name: string;
+  description: string;
+  endpoint_URL: string;
+  kafka_client_id: string;
+  kafka_broker_endpoints: string;
+  kafka_group_id: string;
+  subscribed_topics: string;
+  received_message_count: number;
+  date_created: string;
+
 }
+
+export type ConsumerInputDetails = Omit<ConsumerDetails, 'received_message_count' | 'date_created'>;
 
 export interface BooleanObject {
-  [key: string]: boolean
+  [key: string]: boolean;
 }
 
 export interface ErrorBannerProps {

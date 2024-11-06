@@ -4,7 +4,7 @@ import { SourceInput } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
 import { validateInput, validatePort } from "../utils/validation";
 
-interface CreateSourceFormProps {
+interface SourceFormProps {
   setSources: React.Dispatch<React.SetStateAction<string[]>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
@@ -28,7 +28,7 @@ const style = {
   borderRadius: '15px',
 };
 
-export const CreateSourceForm = ({
+export const SourceForm = ({
   setSources,
   setOpen,
   open,
@@ -36,7 +36,7 @@ export const CreateSourceForm = ({
   setErrorMsg,
   setSuccess,
   setSuccessMsg
-}: CreateSourceFormProps) => {
+}: SourceFormProps) => {
   const [dbhostname, setDBHostname] = useState<string>('');
   const [dbport, setDBPort] = useState<number>(0);
   const [dbname, setDBName] = useState<string>('');
@@ -113,7 +113,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.connectorName}
           helperText={errors.connectorName && "Connector Name is required"}
-          onChange={(e) => setConnectorName(e.target.value)}
+          onChange={(event) => setConnectorName(event.target.value)}
         />
         
         <TextField
@@ -124,7 +124,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbhostname}
           helperText={errors.dbhostname && "Database Hostname is required"}
-          onChange={(e) => setDBHostname(e.target.value)}
+          onChange={(event) => setDBHostname(event.target.value)}
         />
         
         <TextField
@@ -135,7 +135,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbport}
           helperText={errors.dbport && "Database Port is required"}
-          onChange={(e) => setDBPort(Number(e.target.value))}
+          onChange={(event) => setDBPort(Number(event.target.value))}
         />
         
         <TextField
@@ -146,7 +146,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbname}
           helperText={errors.dbname && "Database Name is required"}
-          onChange={(e) => setDBName(e.target.value)}
+          onChange={(event) => setDBName(event.target.value)}
         />
         
         <TextField
@@ -157,7 +157,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbservername}
           helperText={errors.dbservername && "Database Server Name is required"}
-          onChange={(e) => setDBServerName(e.target.value)}
+          onChange={(event) => setDBServerName(event.target.value)}
         />
         
         <TextField
@@ -168,7 +168,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbusername}
           helperText={errors.dbusername && "Database Username is required"}
-          onChange={(e) => setDBUsername(e.target.value)}
+          onChange={(event) => setDBUsername(event.target.value)}
         />
         
         <TextField
@@ -180,7 +180,7 @@ export const CreateSourceForm = ({
           variant="outlined"
           error={errors.dbpassword}
           helperText={errors.dbpassword && "Database Password is required"}
-          onChange={(e) => setDBPassword(e.target.value)}
+          onChange={(event) => setDBPassword(event.target.value)}
         />
         
         <Box>
