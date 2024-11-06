@@ -4,6 +4,7 @@ import { BooleanObject, ConsumerInputDetails } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
 import { validateInput, validatePort } from "../utils/validation";
 import { getTopics } from "../services/topicService";
+import { TopicSelect } from "./TopicSelect";
 
 interface ConsumerFormProps {
   setConsumers: React.Dispatch<React.SetStateAction<string[]>>;
@@ -11,8 +12,6 @@ interface ConsumerFormProps {
   open: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
-  topics: BooleanObject;
-  setTopics: React.Dispatch<React.SetStateAction<BooleanObject>>;
 }
 
 const style = {
@@ -34,9 +33,7 @@ export const ConsumerForm = ({
   setOpen,
   open,
   setError,
-  setErrorMsg,
-  topics,
-  setTopics,
+  setErrorMsg
 }: ConsumerFormProps) => {
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -45,6 +42,23 @@ export const ConsumerForm = ({
   const [kafkaBrokerEndpoints, setKafkaBrokerEndpoints] = useState<string>('');
   const [kafkaGroupId, setKafkaGroupId] = useState<string>('');
   const [errors, setErrors] = useState<BooleanObject>({});
+  const [topics, setTopics] = useState<BooleanObject>({});
+  
+  useEffect(() => {
+    console.log('FETCHING')
+    async function fetchTopics() {
+      try {
+        const request = await getTopics()
+        const topicObject: { [key: string]: boolean } = {}
+        request.forEach(topic => topicObject[topic] = false)
+        setTopics(topicObject);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchTopics();
+  }, []);
 
   const handleNewConsumer = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,14 +104,14 @@ export const ConsumerForm = ({
     setErrors({});
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
+  // const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, checked } = e.target;
 
-    setTopics(prevTopics => ({
-      ...prevTopics,
-      [name]: checked
-    }));
-  }
+  //   setTopics(prevTopics => ({
+  //     ...prevTopics,
+  //     [name]: checked
+  //   }));
+  // }
 
   return (
     <Modal open={open} onClose={handleCloseModal}>
@@ -181,8 +195,8 @@ export const ConsumerForm = ({
           helperText={errors.dbpassword && "Database Password is required"}
           // onChange={(e) => setDBPassword(e.target.value)}
         />
-
-        <fieldset>
+        <TopicSelect topics={topics} setTopics={setTopics}/>
+        {/* <fieldset>
         <legend>Select topics to subscribe to:</legend>
         {Object.keys(topics).map(topic => {
           return (
@@ -191,7 +205,7 @@ export const ConsumerForm = ({
             </label>
           )
         })}
-        </fieldset>
+        </fieldset> */}
 
         <Box>
           <Button variant="contained" onClick={handleNewConsumer} sx={{marginRight: '10px'}}>

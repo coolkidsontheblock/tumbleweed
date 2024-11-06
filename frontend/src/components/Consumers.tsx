@@ -7,11 +7,9 @@ import { ConsumerForm } from "./ConsumerForm";
 // import { getTopics } from "../services/topicService"
 import { ErrorSnack } from "./ErrorSnack";
 import { a } from "vitest/dist/suite-IbNSsUWN.js";
-import { getTopics } from "../services/topicService";
 
 export const Consumers = () => {
   const [consumers, setConsumers] = useState<string[] | []>([]);
-  const [topics, setTopics] = useState<BooleanObject>({});
   const [selectedConsumer, setSelectedConsumer] = useState<ConsumerInputDetails | null>(null)
   const [error, setError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -30,20 +28,20 @@ export const Consumers = () => {
     fetchConsumers();
   }, []);
 
-  useEffect(() => {
-    async function fetchTopics() {
-      try {
-        const request = await getTopics()
-        const topicObject: { [key: string]: boolean } = {}
-        request.forEach(topic => topicObject[topic] = false)
-        setTopics(topicObject);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchTopics() {
+  //     try {
+  //       const request = await getTopics()
+  //       const topicObject: { [key: string]: boolean } = {}
+  //       request.forEach(topic => topicObject[topic] = false)
+  //       setTopics(topicObject);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
 
-    fetchTopics();
-  }, []);
+  //   fetchTopics();
+  // }, []);
 
   const handleSelectedConsumer = async (Consumer: string) => {
     try {
@@ -97,8 +95,6 @@ export const Consumers = () => {
           open={open}
           setError={setError}
           setErrorMsg={setErrorMsg}
-          topics={topics}
-          setTopics={setTopics}
         /> : null }
       </div>
     </>
