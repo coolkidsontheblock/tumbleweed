@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { z } from 'zod';
-import { ConsumerDetails } from '../types/types';
+import { ConsumerInputDetails } from '../types/types';
 
 const consumerSchemaArray = z.object({
   'message': z.string(),
@@ -19,8 +19,9 @@ const getConsumer = async (consumer: string) => {
   return res.data;
 }
 
-const createConsumer = async (consumerInfo: ConsumerDetails) => {
-  const res = await axios.post(baseUrl + '/new_consumer', consumerInfo);
+const createConsumer = async (consumerDetails: ConsumerInputDetails) => {
+  console.log(consumerDetails)
+  const res = await axios.post(baseUrl + '/new_consumer', consumerDetails);
   return res.data;
 }
 

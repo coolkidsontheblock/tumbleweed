@@ -12,7 +12,7 @@ export type SourceData = Omit<SourceInput, 'database_password'> & {
   plugin_name: string
 }
 
-export interface ConsumerDetails {
+export interface ConsumerInputDetails {
   name: string,
   description: string,
   endpoint_URL: string,
@@ -20,8 +20,10 @@ export interface ConsumerDetails {
   kafka_broker_endpoints: string,
   kafka_group_id: string,
   subscribed_topics: string,
-  received_message_count: number,
-  date_created: string
+}
+
+export interface BooleanObject {
+  [key: string]: boolean
 }
 
 export interface ErrorBannerProps {

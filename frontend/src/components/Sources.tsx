@@ -109,6 +109,7 @@ export const Sources = () => {
           <Source sourceData={selectedSource} />
           <button className="connectionButton" onClick={handleDeleteSource}>Delete Source</button>
         </> : null }
+        { open ?
         <CreateSourceForm
           setSources={setSources}
           setOpen={setOpen}
@@ -117,7 +118,7 @@ export const Sources = () => {
           setErrorMsg={setErrorMsg}
           setSuccess={setSuccess}
           setSuccessMsg={setSuccessMsg}
-        />
+        /> : null }
       </div>
     </>
     )

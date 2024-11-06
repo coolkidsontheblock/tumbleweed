@@ -7,7 +7,7 @@ import { query } from '../database/pg';
 
 export const getAllTopics = async () => {
   try {
-    const allTopics = await query(`SELECT name FROM topcs`);
+    const allTopics = await query(`SELECT name FROM topics`);
     const topicNames = allTopics.rows.map((topic: TopicName) => topic.name);
     return topicNames;
   } catch (error) {
