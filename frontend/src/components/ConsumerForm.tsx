@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { createConsumer } from "../services/consumerService";
-import { ConsumerDetails } from "../types/types";
+import { BooleanObject, ConsumerInputDetails } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
 import { validateInput, validatePort } from "../utils/validation";
+import { getTopics } from "../services/topicService";
 
 interface ConsumerFormProps {
   setConsumers: React.Dispatch<React.SetStateAction<string[]>>;
@@ -10,7 +11,8 @@ interface ConsumerFormProps {
   open: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
-  topics: string[];
+  topics: BooleanObject;
+  setTopics: React.Dispatch<React.SetStateAction<BooleanObject>>;
 }
 
 const style = {
@@ -34,29 +36,30 @@ export const ConsumerForm = ({
   setError,
   setErrorMsg,
   topics,
+  setTopics,
 }: ConsumerFormProps) => {
   const [name, setName] = useState<string>('');
-  const [description, setDescription] = useState<number>(0);
-  // const [dbname, setDBName] = useState<string>('');
-  // const [dbservername, setDBServerName] = useState<string>('');
-  // const [dbusername, setDBUsername] = useState<string>('');
-  // const [dbpassword, setDBPassword] = useState<string>('');
-  // const [connectorName, setConnectorName] = useState<string>('');
-  const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
+  const [description, setDescription] = useState<string>('');
+  const [endpointUrl, setEndpointUrl] = useState<string>('');
+  const [kafkaClientId, setKafkaClientId] = useState<string>('');
+  const [kafkaBrokerEndpoints, setKafkaBrokerEndpoints] = useState<string>('');
+  const [kafkaGroupId, setKafkaGroupId] = useState<string>('');
+  const [errors, setErrors] = useState<BooleanObject>({});
 
   const handleNewConsumer = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { [key: string]: boolean } = {};
 
     try {
-      const consumerData: ConsumerDetails = {
-        // name: validateInput(connectorName),
-        // database_hostname: validateInput(dbhostname),
-        // database_port: validatePort(dbport),
-        // database_user: validateInput(dbusername),
-        // database_password: validateInput(dbpassword),
-        // database_dbname: validateInput(dbname),
-        // database_server_name: validateInput(dbservername),
+      const subscribedTopics = Object.keys(topics).filter(topic => topics[topic]).join(',')
+      const consumerData: ConsumerInputDetails = {
+        name: validateInput(name),
+        description: validateInput(description),
+        endpoint_URL: validateInput(endpointUrl),
+        kafka_client_id: validateInput(kafkaClientId),
+        kafka_broker_endpoints: validateInput(kafkaBrokerEndpoints),
+        kafka_group_id: validateInput(kafkaGroupId),
+        subscribed_topics: subscribedTopics
       };
       
       setErrors({});
@@ -86,6 +89,15 @@ export const ConsumerForm = ({
     setOpen(false);
     setErrors({});
   };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+
+    setTopics(prevTopics => ({
+      ...prevTopics,
+      [name]: checked
+    }));
+  }
 
   return (
     <Modal open={open} onClose={handleCloseModal}>
@@ -169,10 +181,18 @@ export const ConsumerForm = ({
           helperText={errors.dbpassword && "Database Password is required"}
           // onChange={(e) => setDBPassword(e.target.value)}
         />
-        <ul className="topic-ul">
-          {topics.map(topic => <li>{topic}</li>)}
 
-        </ul>
+        <fieldset>
+        <legend>Select topics to subscribe to:</legend>
+        {Object.keys(topics).map(topic => {
+          return (
+            <label key={topic}>
+            <input onChange={handleCheckboxChange} type="checkbox" name={topic} checked={topics[topic]}/>{topic}
+            </label>
+          )
+        })}
+        </fieldset>
+
         <Box>
           <Button variant="contained" onClick={handleNewConsumer} sx={{marginRight: '10px'}}>
             Connect
