@@ -14,6 +14,18 @@
   margin-left: 240px;
 }
 
+#topic-fieldset, .topic-label {
+  padding: 10px;
+}
+
+.topic-input {
+  background-color: black;
+}
+
+/* .topic-label {
+  padding: 10px
+} */
+
 .connectionlist {
   /* display: flex; */
   /* justify-content: space-between; */

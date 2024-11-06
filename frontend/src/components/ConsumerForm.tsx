@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createConsumer } from "../services/consumerService";
 import { BooleanObject, ConsumerInputDetails } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
-import { validateInput, validatePort } from "../utils/validation";
+import { validateInput } from "../utils/validation";
 import { getTopics } from "../services/topicService";
 import { TopicSelect } from "./TopicSelect";
 
@@ -12,6 +12,8 @@ interface ConsumerFormProps {
   open: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
+  setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setSuccessMsg: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const style = {
@@ -33,7 +35,9 @@ export const ConsumerForm = ({
   setOpen,
   open,
   setError,
-  setErrorMsg
+  setErrorMsg,
+  setSuccess,
+  setSuccessMsg
 }: ConsumerFormProps) => {
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -45,40 +49,54 @@ export const ConsumerForm = ({
   const [topics, setTopics] = useState<BooleanObject>({});
   
   useEffect(() => {
-    console.log('FETCHING')
-    async function fetchTopics() {
+    const fetchTopics = async () => {
       try {
         const request = await getTopics()
-        const topicObject: { [key: string]: boolean } = {}
+        const topicObject: BooleanObject = {}
         request.forEach(topic => topicObject[topic] = false)
         setTopics(topicObject);
       } catch (error) {
         console.error(error);
+        setError(true);
+        if (error instanceof Error) {
+          setErrorMsg(error.message);
+        } else {
+          setErrorMsg("An unknown error occurred");
+        }
       }
     }
 
     fetchTopics();
   }, []);
 
-  const handleNewConsumer = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const newErrors: { [key: string]: boolean } = {};
+  const handleNewConsumer = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const newErrors: BooleanObject = {};
 
     try {
-      const subscribedTopics = Object.keys(topics).filter(topic => topics[topic]).join(',')
+      const subscribedTopics = Object.keys(topics).filter(topic => topics[topic]).join(',');
       const consumerData: ConsumerInputDetails = {
         name: validateInput(name),
-        description: validateInput(description),
+        description: description,
         endpoint_URL: validateInput(endpointUrl),
         kafka_client_id: validateInput(kafkaClientId),
         kafka_broker_endpoints: validateInput(kafkaBrokerEndpoints),
         kafka_group_id: validateInput(kafkaGroupId),
         subscribed_topics: subscribedTopics
       };
-      
+
       setErrors({});
       const res = await createConsumer(consumerData);
       setConsumers((prevConsumers) => prevConsumers.concat(res.data.name));
+
+      setSuccess(true);
+      setSuccessMsg("Consumer created successfully!");
+      setOpen(false);
+      setName('');
+      setDescription('');
+      setKafkaClientId('');
+      setKafkaBrokerEndpoints('');
+      setKafkaGroupId('');
     } catch (error) {
       setError(true);
       if (error instanceof Error) {
@@ -87,13 +105,11 @@ export const ConsumerForm = ({
         setErrorMsg("An unknown error occurred");
       }
 
-      // if (!connectorName) newErrors.connectorName = true;
-      // if (!dbhostname) newErrors.dbhostname = true;
-      // if (!dbport) newErrors.dbport = true;
-      // if (!dbname) newErrors.dbname = true;
-      // if (!dbservername) newErrors.dbservername = true;
-      // if (!dbusername) newErrors.dbusername = true;
-      // if (!dbpassword) newErrors.dbpassword = true;
+      if (!name) newErrors.name = true;
+      if (!endpointUrl) newErrors.endpoint_URL = true;
+      if (!kafkaClientId) newErrors.kafka_client_id = true;
+      if (!kafkaBrokerEndpoints) newErrors.kafka_broker_endpoints = true;
+      if (!kafkaGroupId) newErrors.kafka_group_id = true;
 
       setErrors(newErrors);
     }
@@ -104,15 +120,6 @@ export const ConsumerForm = ({
     setErrors({});
   };
 
-  // const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, checked } = e.target;
-
-  //   setTopics(prevTopics => ({
-  //     ...prevTopics,
-  //     [name]: checked
-  //   }));
-  // }
-
   return (
     <Modal open={open} onClose={handleCloseModal}>
       <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }} component="form">
@@ -121,92 +128,69 @@ export const ConsumerForm = ({
         
         <TextField
           required
-          id="connector-name"
-          label="Connector Name"
+          id="name"
+          label="Consumer Name"
           variant="outlined"
-          error={errors.connectorName}
-          helperText={errors.connectorName && "Connector Name is required"}
-          // onChange={(e) => setConnectorName(e.target.value)}
+          error={errors.name}
+          helperText={errors.name && "Consumer name is required"}
+          onChange={(event) => setName(event.target.value)}
         />
         
         <TextField
           fullWidth
           required
-          id="dbhostname"
-          label="Database Hostname"
+          id="description"
+          label="Description (optional)"
           variant="outlined"
-          error={errors.dbhostname}
-          helperText={errors.dbhostname && "Database Hostname is required"}
-          // onChange={(e) => setDBHostname(e.target.value)}
+          onChange={(event) => setDescription(event.target.value)}
         />
         
         <TextField
           fullWidth
           required
-          id="dbport"
-          label="Database Port"
+          id="endpointUrl"
+          label="Endpoint Url"
           variant="outlined"
-          error={errors.dbport}
-          helperText={errors.dbport && "Database Port is required"}
-          // onChange={(e) => setDBPort(Number(e.target.value))}
+          error={errors.endpoint_URL}
+          helperText={errors.endpoint_URL && "Database URL is required"}
+          onChange={(event) => setEndpointUrl(event.target.value)}
         />
         
         <TextField
           fullWidth
           required
-          id="dbname"
-          label="Database Name"
+          id="kafkaClientId"
+          label="Kafka Client Id"
           variant="outlined"
-          error={errors.dbname}
-          helperText={errors.dbname && "Database Name is required"}
-          // onChange={(e) => setDBName(e.target.value)}
+          error={errors.kafka_client_id}
+          helperText={errors.kafka_client_id && "Kafka client id is required"}
+          onChange={(event) => setKafkaClientId(event.target.value)}
         />
         
         <TextField
           fullWidth
           required
-          id="dbservername"
-          label="Database Server Name"
+          id="kafkaBrokerEndpoints"
+          label="Kafka Broker Endpoints"
           variant="outlined"
-          error={errors.dbservername}
-          helperText={errors.dbservername && "Database Server Name is required"}
-          // onChange={(e) => setDBServerName(e.target.value)}
+          error={errors.kafka_broker_endpoints}
+          helperText={errors.kafka_broker_endpoints && "Kafka broker endpoints is required"}
+          onChange={(event) => setKafkaBrokerEndpoints(event.target.value)}
         />
         
         <TextField
           fullWidth
           required
-          id="dbusername"
-          label="Database Username"
+          id="kafkaGroupId"
+          label="Kafka Group Id"
           variant="outlined"
-          error={errors.dbusername}
-          helperText={errors.dbusername && "Database Username is required"}
-          // onChange={(e) => setDBUsername(e.target.value)}
+          error={errors.kafka_group_id}
+          helperText={errors.kafka_group_id && "Kafka group id is required"}
+          onChange={(event) => setKafkaGroupId(event.target.value)}
         />
         
-        <TextField
-          fullWidth
-          required
-          id="dbpassword"
-          label="Database Password"
-          type="password"
-          variant="outlined"
-          error={errors.dbpassword}
-          helperText={errors.dbpassword && "Database Password is required"}
-          // onChange={(e) => setDBPassword(e.target.value)}
-        />
         <TopicSelect topics={topics} setTopics={setTopics}/>
-        {/* <fieldset>
-        <legend>Select topics to subscribe to:</legend>
-        {Object.keys(topics).map(topic => {
-          return (
-            <label key={topic}>
-            <input onChange={handleCheckboxChange} type="checkbox" name={topic} checked={topics[topic]}/>{topic}
-            </label>
-          )
-        })}
-        </fieldset> */}
-
+        
         <Box>
           <Button variant="contained" onClick={handleNewConsumer} sx={{marginRight: '10px'}}>
             Connect
