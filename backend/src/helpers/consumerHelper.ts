@@ -35,7 +35,6 @@ export const getConsumerByName = async (name: string) => {
 
 export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBrokerEndpoints: string[]) => {
   try {
-    const subscribedTopicsArray = consumerData.subscribed_topics.split(',').map(ele => ele.trim());
     const newConsumer = await query(`INSERT INTO consumers (
       name,
       description,
@@ -55,10 +54,10 @@ export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBroke
         consumerData.kafka_client_id,
         kafkaBrokerEndpoints,
         consumerData.kafka_group_id,
-        subscribedTopicsArray,
+        consumerData.subscribed_topics,
       ]);
     return newConsumer.rows[0];
   } catch (error) {
-    console.error(`There was an error adding a new consumer to the database: ${error}`);
+    throw error + ' when adding new consumer to DB';
   }
 };

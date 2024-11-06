@@ -1,6 +1,6 @@
 import express from 'express';
-import { getTopicByName, getAllTopics } from '../helpers/topicHelper';
-import { getTopics, getTopicOffset } from '../helpers/kafkaHelper';
+import { getTopicByName } from '../helpers/topicHelper';
+import { getTopics, getTopicOffset } from '../kafka/kafkaAdmin';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -9,8 +9,6 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const allTopics = await getTopics();
-    // const allTopics = await getAllTopics();
-
     res.status(200).send({
       message: `${allTopics.length} topics Found.`,
       data: allTopics,

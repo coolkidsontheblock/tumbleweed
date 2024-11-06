@@ -2,6 +2,7 @@ import axios from 'axios';
 import express from 'express';
 import { getAllConsumers, postConsumerToDB, getConsumerByName } from '../helpers/consumerHelper';
 import { ConsumerDetails } from '../types/consumerTypes';
+import { addTopicsAndConsumerToDB } from '../helpers/topicHelper';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -63,6 +64,7 @@ router.post('/new_consumer', async (req, res, next) => {
     const consumerData = req.body;
     const KafkaBrokerEndpoints = JSON.parse(process.env.KAFKA_BROKER_ENDPOINTS as string); // using type assertion here.  double check if there is a better way
     const newConsumer = await postConsumerToDB(consumerData, KafkaBrokerEndpoints);
+    addTopicsAndConsumerToDB(newConsumer);
 
     res.status(201).send({
       message: 'Consumer created',
