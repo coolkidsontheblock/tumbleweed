@@ -1,7 +1,6 @@
 export interface TopicDetails {
   name: string,
   subscribed_consumers: string[],
-  published_sources: string[],
   date_added: string
 };
 
