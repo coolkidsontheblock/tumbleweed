@@ -43,7 +43,6 @@ export const ConsumerForm = ({
   const [description, setDescription] = useState<string>('');
   const [endpointUrl, setEndpointUrl] = useState<string>('');
   const [kafkaClientId, setKafkaClientId] = useState<string>('');
-  const [kafkaBrokerEndpoints, setKafkaBrokerEndpoints] = useState<string>('');
   const [kafkaGroupId, setKafkaGroupId] = useState<string>('');
   const [errors, setErrors] = useState<BooleanObject>({});
   const [topics, setTopics] = useState<BooleanObject>({});
@@ -80,7 +79,6 @@ export const ConsumerForm = ({
         description: description,
         endpoint_URL: validateInput(endpointUrl),
         kafka_client_id: validateInput(kafkaClientId),
-        kafka_broker_endpoints: validateInput(kafkaBrokerEndpoints),
         kafka_group_id: validateInput(kafkaGroupId),
         subscribed_topics: subscribedTopics
       };
@@ -95,7 +93,6 @@ export const ConsumerForm = ({
       setName('');
       setDescription('');
       setKafkaClientId('');
-      setKafkaBrokerEndpoints('');
       setKafkaGroupId('');
     } catch (error) {
       setError(true);
@@ -108,7 +105,6 @@ export const ConsumerForm = ({
       if (!name) newErrors.name = true;
       if (!endpointUrl) newErrors.endpoint_URL = true;
       if (!kafkaClientId) newErrors.kafka_client_id = true;
-      if (!kafkaBrokerEndpoints) newErrors.kafka_broker_endpoints = true;
       if (!kafkaGroupId) newErrors.kafka_group_id = true;
 
       setErrors(newErrors);
@@ -165,17 +161,6 @@ export const ConsumerForm = ({
           error={errors.kafka_client_id}
           helperText={errors.kafka_client_id && "Kafka client id is required"}
           onChange={(event) => setKafkaClientId(event.target.value)}
-        />
-        
-        <TextField
-          fullWidth
-          required
-          id="kafkaBrokerEndpoints"
-          label="Kafka Broker Endpoints"
-          variant="outlined"
-          error={errors.kafka_broker_endpoints}
-          helperText={errors.kafka_broker_endpoints && "Kafka broker endpoints is required"}
-          onChange={(event) => setKafkaBrokerEndpoints(event.target.value)}
         />
         
         <TextField
