@@ -1,7 +1,7 @@
-import { ConsumerDetails } from "../types/types"
+import { ConsumerInputDetails } from "../types/types"
 
 interface ConsumerProps {
-  consumerDetails: ConsumerDetails | null
+  consumerDetails: ConsumerInputDetails | null
 }
 
 export const Consumer = ( { consumerDetails }: ConsumerProps) => {
@@ -17,8 +17,8 @@ export const Consumer = ( { consumerDetails }: ConsumerProps) => {
           <li>Kafka Broker Endpoints: {consumerDetails.kafka_broker_endpoints}</li>
           <li>Kafka Group Id: {consumerDetails.kafka_group_id}</li>
           <li>Subscribed Topics: {consumerDetails.subscribed_topics}</li>
-          <li>Received Message Count: {consumerDetails.received_message_count}</li>
-          <li>Date Created: {consumerDetails.date_created}</li>
+          {/* <li>Received Message Count: {consumerDetails.received_message_count}</li>
+          <li>Date Created: {consumerDetails.date_created}</li> */}
         </ul>
       </div>
     )
