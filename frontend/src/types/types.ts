@@ -25,7 +25,7 @@ export interface ConsumerDetails {
 
 }
 
-export type ConsumerInputDetails = Omit<ConsumerDetails, 'received_message_count' | 'date_created'>;
+export type ConsumerInputDetails = Omit<ConsumerDetails, 'received_message_count' | 'date_created' | 'kafka_broker_endpoints'>;
 
 export interface BooleanObject {
   [key: string]: boolean;
