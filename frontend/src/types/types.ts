@@ -22,7 +22,6 @@ export interface ConsumerDetails {
   subscribed_topics: string[];
   received_message_count: number;
   date_created: string;
-
 }
 
 export type ConsumerInputDetails = Omit<ConsumerDetails, 'received_message_count' | 'date_created' | 'kafka_broker_endpoints'>;
@@ -41,4 +40,17 @@ export interface SuccessSnackProps {
   message: string;
   handleCloseSnackbar: () => void;
   openStatus: boolean;
+}
+
+export interface TopicData {
+  name: string,
+  topic_message_count: number,
+  subscribed_consumers: string[],
+  subscriber_count: number,
+  date_added: string
+}
+
+export interface TopicResponse {
+  message: string,
+  data: TopicData
 }

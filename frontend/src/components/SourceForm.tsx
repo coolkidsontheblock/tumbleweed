@@ -6,8 +6,8 @@ import { validateInput, validatePort } from "../utils/validation";
 
 interface SourceFormProps {
   setSources: React.Dispatch<React.SetStateAction<string[]>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  open: boolean;
+  setOpenSourceForm: React.Dispatch<React.SetStateAction<boolean>>;
+  openSourceForm: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,8 +30,8 @@ const style = {
 
 export const SourceForm = ({
   setSources,
-  setOpen,
-  open,
+  setOpenSourceForm,
+  openSourceForm,
   setError,
   setErrorMsg,
   setSuccess,
@@ -60,14 +60,14 @@ export const SourceForm = ({
         database_dbname: validateInput(dbname),
         database_server_name: validateInput(dbservername),
       };
-      
+
       setErrors({});
       const res = await createSource(sourceData);
       setSources((prevSources) => prevSources.concat(res.data.name));
 
       setSuccess(true);
       setSuccessMsg("Source created successfully!");
-      setOpen(false);
+      setOpenSourceForm(false);
       setDBHostname('');
       setDBPort(0);
       setDBName('');
@@ -96,16 +96,16 @@ export const SourceForm = ({
   };
 
   const handleCloseModal = () => {
-    setOpen(false);
+    setOpenSourceForm(false);
     setErrors({});
   };
 
   return (
-    <Modal open={open} onClose={handleCloseModal}>
+    <Modal open={openSourceForm} onClose={handleCloseModal}>
       <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }} component="form">
-        <h2 style={{ textAlign: 'center'}}>Connect a new source DB to Tumbleweed</h2>
-        <p style={{ textAlign: 'center'}}>Please enter your database connection details below:</p>
-        
+        <h2 style={{ textAlign: 'center' }}>Connect a new source DB to Tumbleweed</h2>
+        <p style={{ textAlign: 'center' }}>Please enter your database connection details below:</p>
+
         <TextField
           required
           id="connector-name"
@@ -115,7 +115,7 @@ export const SourceForm = ({
           helperText={errors.connectorName && "Connector Name is required"}
           onChange={(event) => setConnectorName(event.target.value)}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -126,7 +126,7 @@ export const SourceForm = ({
           helperText={errors.dbhostname && "Database Hostname is required"}
           onChange={(event) => setDBHostname(event.target.value)}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -137,7 +137,7 @@ export const SourceForm = ({
           helperText={errors.dbport && "Database Port is required"}
           onChange={(event) => setDBPort(Number(event.target.value))}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -148,7 +148,7 @@ export const SourceForm = ({
           helperText={errors.dbname && "Database Name is required"}
           onChange={(event) => setDBName(event.target.value)}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -159,7 +159,7 @@ export const SourceForm = ({
           helperText={errors.dbservername && "Database Server Name is required"}
           onChange={(event) => setDBServerName(event.target.value)}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -170,7 +170,7 @@ export const SourceForm = ({
           helperText={errors.dbusername && "Database Username is required"}
           onChange={(event) => setDBUsername(event.target.value)}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -182,9 +182,9 @@ export const SourceForm = ({
           helperText={errors.dbpassword && "Database Password is required"}
           onChange={(event) => setDBPassword(event.target.value)}
         />
-        
+
         <Box>
-          <Button variant="contained" onClick={handleNewSource} sx={{marginRight: '10px'}}>
+          <Button variant="contained" onClick={handleNewSource} sx={{ marginRight: '10px' }}>
             Connect
           </Button>
           <Button variant="contained" onClick={handleCloseModal}>

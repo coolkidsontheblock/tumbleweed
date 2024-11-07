@@ -15,10 +15,8 @@ const kafka = new Kafka({
   brokers: KafkaBrokerEndpoints,
 });
 
-const admin = kafka.admin();
-
-// This function is throwing the error "KafkaJSConnectionError: Connection error: write after end only when called with getTopicOffset"
 export const getTopicsFromKafka = async () => {
+  const admin = kafka.admin();
   try {
     await admin.connect();
     const topics = await admin.listTopics();
@@ -36,11 +34,12 @@ export const getTopicsFromKafka = async () => {
   }
 };
 
-export const getTopicOffset = async (topic: string) => {
+export const getTopicMessageCount = async (topic: string) => {
+  const admin = kafka.admin();
   try {
     await admin.connect();
     const offsets = await admin.fetchTopicOffsets(topic);
-    return formatTopicOffset(offsets);
+    return formatTopicOffsetToMessageCount(offsets);
   } catch (error) {
     console.error('Error fetching topic offset:', error);
     throw error;
@@ -55,14 +54,7 @@ const formatTopics = (topics: string[]) => {
   return outboxTopics.map((topic: string) => topic.replace(topicPrefix, ''));
 };
 
-// const formatTopicOffset = (offsets: TopicOffsetByPartition[]) => {
-//   offsets.reduce((sum, offset: TopicOffsetByPartition) => {
-//     const num = Number(offset.offset) - 1;
-//     return sum + 
-//   });
-// };
-
-const formatTopicOffset = (offsets: TopicOffsetByPartition[]) => {
+const formatTopicOffsetToMessageCount = (offsets: TopicOffsetByPartition[]) => {
   return offsets.reduce((sum: number, { offset }) => {
     return sum + (Number(offset) - 1);
   }, 0);
