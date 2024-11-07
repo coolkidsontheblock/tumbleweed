@@ -25,31 +25,37 @@ export const getTopicByName = async (topicName: string) => {
   }
 };
 
-export const addTopicsAndConsumerToDB = async ({name: consumerName, subscribed_topics}: ConsumerTopicDetails) => {
-  const existingTopics = await getAllTopics();
+// If topic exists append consumer name to subscribed_consumers column in topics table
+const addConsumerToTopicsTableInDB = async (consumerName: string, topic: string) => {
   try {
-    await query(`INSERT INTO topics (
-      name,
-      subcribed_consumers)
-      VALUES ($1, $2)`,
-      [name, subscribed_topics]);
+      await query(`UPDATE topics SET subscribed_consumers = array_append(subscribed_consumers, $1) WHERE name = $2`,
+        [consumerName, topic]);
+  } catch (error) {
+    console.error(`There was an error adding a subscribed consumer to the topic table in the database: ${error}`);
+  }
+};
+
+// If topic does not exist in the database add topic and consumer to topics table 
+const addTopicsAndConsumersToDB = async (consumerName: string, topic: string) => {
+  try {
+      await query(`INSERT INTO topics (
+        name,
+        subscribed_consumers)
+        VALUES ($1, $2)`,
+        [topic, [consumerName]]);
   } catch (error) {
     console.error(`There was an error adding topics to the database: ${error}`);
   }
 };
 
-// {
-//       "name": "Wednesday Morning Service 6",
-//       "endpoint_url": "localhost:3001",
-//       "subscribed_topics": [
-//           "products",
-//           "orders"
-//       ]
-// }
+export const AddtoTopicsDB = async ({name: consumerName, subscribed_topics}: ConsumerTopicDetails) => {
+  const existingTopics = await getAllTopics();
 
-
-// 1. Insert Topics only if not already in table
-  // if new topic then no consumers so just insert directly
-// 2. Add consumer name to subsrbied array only if not in array already
-  // if old topic then append consumer and don't add topic
-// 3. 
+  for (const topic of subscribed_topics) {
+    if (existingTopics.includes(topic)) {
+      await addConsumerToTopicsTableInDB(consumerName, topic);
+    } else {
+      await addTopicsAndConsumersToDB(consumerName, topic);
+    }
+  }
+};
