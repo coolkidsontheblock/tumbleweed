@@ -5,7 +5,7 @@ import { ConsumerDetails } from "../types/types";
 import { Consumer } from "./Consumer";
 import { ConsumerForm } from "./ConsumerForm";
 import { ErrorSnack } from "./ErrorSnack";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Box } from '@mui/material';
 import { a } from "vitest/dist/suite-IbNSsUWN.js";
 import { SuccessSnack } from "./SuccessSnack";
 
@@ -18,6 +18,8 @@ export const Consumers = () => {
   const [successMsg, setSuccessMsg] = useState<string>('');
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openConsumer, setOpenConsumer] = useState<boolean>(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     const fetchConsumers = async (): Promise<void> => {
@@ -53,6 +55,17 @@ export const Consumers = () => {
     }
   }
 
+  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to the first page when rows per page is changed
+  };
+
+  const currentConsumers = consumers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
   const handleCloseSnackbar = () => {
     setError(false);
     setErrorMsg('');
@@ -76,7 +89,65 @@ export const Consumers = () => {
           openStatus={success}
         />
       )}
-      <TableContainer component={Paper}>
+      <div id="consumerlist">
+        <h2>Consumer List</h2>
+        <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto' }}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 'bold' }}>Consumer Name</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {currentConsumers.map(consumerName => (
+                <TableRow key={consumerName}>
+                  <TableCell sx={{ padding: '8px', fontSize: '0.875rem' }}>
+                    <Link
+                      className="link"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSelectedConsumer(consumerName);
+                        setOpenConsumer(true);
+                      }}
+                      to={''}
+                    >
+                      {consumerName}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{
+            mr: 9.5
+          }}
+        ></Box>
+        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mr: 9.5 }}>
+          <Box sx={{ mt: 2 }}>
+            <button className="connectionButton" onClick={() => setOpenForm(true)}>Create New Consumer</button>
+          </Box>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={consumers.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{
+              '& .MuiTablePagination-toolbar': { minHeight: '36px' },
+              '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
+                fontSize: '0.75rem',
+              },
+            }}
+          />
+        </Box>
+        {/* <TableContainer component={Paper}>
         <Table sx={{ minWidth: 50 }} aria-label="consumer list table">
           <TableHead>
             <TableRow>
@@ -103,9 +174,9 @@ export const Consumers = () => {
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
 
-      {/* <div id="consumerlist">
+        {/* <div id="consumerlist">
         <h2>Consumer List</h2>
         <ul className="connection-ul">
           {consumers.map(consumerName => (
@@ -120,7 +191,7 @@ export const Consumers = () => {
           ))}
         </ul>
       </div> */}
-      <button className="connectionButton" onClick={() => setOpenForm(true)}>Create New Consumer</button>
+      </div>
 
       {selectedConsumer && openConsumer &&
         <>

@@ -1,5 +1,5 @@
 export const Home = () => {
   return (
-    <h1>Welcome to Tumbleweed.</h1>
+    <h1 id="homePageTitle">Welcome to Tumbleweed.</h1>
   )
 }
