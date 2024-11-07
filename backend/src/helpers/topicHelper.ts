@@ -2,7 +2,7 @@ import { TopicDetails, TopicName } from "../types/topicTypes";
 import { ConsumerTopicDetails } from "../types/consumerTypes";
 import { query } from '../database/pg';
 
-const getAllTopics = async () => {
+const getAllTopicsFromDB = async () => {
   try {
     const allTopics = await query(`SELECT name FROM topics`);
     const topicNames = allTopics.rows.map((topic: TopicName) => topic.name);
@@ -48,8 +48,8 @@ const addTopicsAndConsumersToDB = async (consumerName: string, topic: string) =>
   }
 };
 
-export const AddtoTopicsDB = async ({name: consumerName, subscribed_topics}: ConsumerTopicDetails) => {
-  const existingTopics = await getAllTopics();
+export const addtoTopicsDB = async ({name: consumerName, subscribed_topics}: ConsumerTopicDetails) => {
+  const existingTopics = await getAllTopicsFromDB();
 
   for (const topic of subscribed_topics) {
     if (existingTopics.includes(topic)) {
@@ -57,5 +57,58 @@ export const AddtoTopicsDB = async ({name: consumerName, subscribed_topics}: Con
     } else {
       await addTopicsAndConsumersToDB(consumerName, topic);
     }
+  }
+};
+
+// deletes consumer from subscribed topics
+export const deleteConsumerFromSubscribedTopics = async (consumerName: string) => {
+  const existingTopics = await getSubscribedTopics(consumerName);
+
+  for (const topic of existingTopics) {
+      await deleteConsumerFromTopics(consumerName, topic);
+    };
+};
+
+const deleteConsumerFromTopics = async (consumerName: string, topic: string) => {
+  try {
+    await query(`UPDATE topics SET subscribed_consumers = array_remove(subscribed_consumers, $1) WHERE name = $2`,
+    [consumerName, topic]);
+  } catch (error) {
+    console.error('There was an error deleting consumer from topic ', error);
+  }
+};
+
+const getSubscribedTopics = async (consumerName: string) => {
+  try {
+    const topicNameAndConsumers = await query(`SELECT name, subscribed_consumers FROM topics`);
+    const subscribed = topicNameAndConsumers.rows.filter((row: { subscribed_consumers: string[]; }) => {
+      if (row.subscribed_consumers.includes(consumerName)) {
+        return row;
+      }
+    });
+    return subscribed.map((topic: TopicName) => topic.name);
+  } catch (error) {
+    console.error('There was an error getting filtered topics for subscribed consumers, ', error)
+  }
+};
+
+export const deleteSubscriberlessTopics = async () => {
+  try {
+    const subscriberlessTopics = await findSubscriberlessTopicsInDB();
+
+    for (const topic of subscriberlessTopics) {
+      await query(`DELETE FROM topics WHERE name = $1`, [topic]);
+    }
+  } catch (error) {
+    console.error(`There was an error getting that topic from the database: ${error}`);
+  }
+};
+
+const findSubscriberlessTopicsInDB = async () => {
+  try {
+    const subscriberless = await query(`SELECT name FROM topics WHERE subscribed_consumers = '{}'`);
+    return subscriberless.rows.map((topic: TopicName) => topic.name);
+  } catch (error) {
+    console.error('There was an error finding Subscriberless topics ', error);
   }
 };

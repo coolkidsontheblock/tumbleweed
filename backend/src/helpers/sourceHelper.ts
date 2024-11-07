@@ -23,8 +23,8 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
       "transforms": "outbox",
       "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
       "transforms.outbox.table.fields.additional.placement": "type:envelope:type",
-      "transforms.outbox.table.expand.json.payload": "true",
-      "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+      "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+      "value.converter.schemas.enable": "false",
       "topic.prefix": "app",
       "heartbeat.action.query": `INSERT INTO heartbeat (timestamp, hostname) VALUES (now(), dbname: ${sourceDetails.database_dbname}, user: ${sourceDetails.database_user})`,
       "heartbeat.interval.ms": 300000,
@@ -52,7 +52,7 @@ export const postConfigDataToDB = async (source: DebeziumConnector) => {
       transforms,
       transforms_outbox_type,
       transforms_outbox_table_fields_additional_placement,
-      transforms_outbox_table_expand_json_payload,
+      value_converter_schemas_enable,
       value_converter,
       topic_prefix,
       heartbeat_action_query,
@@ -82,7 +82,7 @@ export const postConfigDataToDB = async (source: DebeziumConnector) => {
         source.config["transforms"],
         source.config["transforms.outbox.type"],
         source.config["transforms.outbox.table.fields.additional.placement"],
-        source.config["transforms.outbox.table.expand.json.payload"],
+        source.config["value.converter.schemas.enable"],
         source.config["value.converter"],
         source.config["topic.prefix"],
         source.config["heartbeat.action.query"],
@@ -107,7 +107,6 @@ export const getConnectorByName = async (name: string) => {
       database_server_name 
       FROM connectors WHERE name = $1`,
       [name]);
-
     return sourceDetails.rows[0];
   } catch (error) {
     console.error(`There was an error retreiving connector from the database: ${error}`);

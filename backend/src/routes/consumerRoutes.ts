@@ -1,8 +1,8 @@
 import axios from 'axios';
 import express from 'express';
-import { getAllConsumers, postConsumerToDB, getConsumerByName } from '../helpers/consumerHelper';
+import { getAllConsumers, postConsumerToDB, getConsumerByName, deleteConsumerByName } from '../helpers/consumerHelper';
 import { ConsumerDetails } from '../types/consumerTypes';
-import { AddtoTopicsDB } from '../helpers/topicHelper';
+import { addtoTopicsDB, deleteConsumerFromSubscribedTopics, deleteSubscriberlessTopics } from '../helpers/topicHelper';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -64,7 +64,7 @@ router.post('/new_consumer', async (req, res, next) => {
     const consumerData = req.body;
     const KafkaBrokerEndpoints = JSON.parse(process.env.KAFKA_BROKER_ENDPOINTS as string); // using type assertion here.  double check if there is a better way
     const newConsumer = await postConsumerToDB(consumerData, KafkaBrokerEndpoints);
-    await AddtoTopicsDB(newConsumer);
+    await addtoTopicsDB(newConsumer);
 
     res.status(201).send({
       message: 'Consumer created',
@@ -84,6 +84,25 @@ router.post('/new_consumer', async (req, res, next) => {
   }
 });
 
+router.delete('/:consumer_name', async (req, res, next) => {
+  try {
+    const consumerName = req.params.consumer_name;
+    const consumer = await getConsumerByName(consumerName);
 
+    if (!consumer) {
+      throw new Error("No Consumer by that name exists");
+    } else {
+      
+      await deleteConsumerByName(consumerName);
+      await deleteConsumerFromSubscribedTopics(consumerName);
+      await deleteSubscriberlessTopics();
+      res.status(201).send(`Consumer '${consumer.name}' deleted!`);
+    }
+  } catch (error) {
+    res.status(404).send(`${error}`)
+    console.error(`There was an error deleting the consumer: ${error}`);
+    next(error);
+  }
+});
 
 export default router;

@@ -17,7 +17,7 @@ const kafka = new Kafka({
 
 const admin = kafka.admin();
 
-export const getTopics = async () => {
+export const getTopicsFromKafka = async () => {
   try {
     await admin.connect();
     const topics = await admin.listTopics();
@@ -42,6 +42,7 @@ export const getTopicOffset = async (topic: string) => {
     return formatTopicOffset(offsets);
   } catch (error) {
     console.error('Error fetching topic offset:', error);
+    throw error;
   } finally {
     await admin.disconnect();
   }

@@ -61,3 +61,13 @@ export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBroke
     throw error + ' when adding new consumer to DB';
   }
 };
+
+export const deleteConsumerByName = async (name: string) => {
+  try {
+    await query(`DELETE FROM consumers WHERE name = $1`,
+      [name]);
+  } catch (error) {
+    console.error(`There was an error deleting connector from the database: ${error}`);
+    throw error;
+  }
+}
