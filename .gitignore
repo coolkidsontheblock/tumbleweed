@@ -1,3 +1,7 @@
 node_modules
 .env
 .DS_Store
+Dockerfile
+.dockerignore
+README.Docker.md
+dist

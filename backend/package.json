@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r first ../backend",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts"
+    "dev": "NODE_ENV=development nodemon src/index.ts",
+    "start": "npm run build:ui && NODE_ENV=production ts-node src/index.ts",
+    "tsc": "tsc"
   },
   "keywords": [],
   "author": "",
