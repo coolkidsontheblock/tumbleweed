@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS public.connectors
     transforms TEXT NOT NULL,
     transforms_outbox_type TEXT NOT NULL,
     transforms_outbox_table_fields_additional_placement TEXT NOT NULL,
-    transforms_outbox_table_expand_json_payload TEXT NOT NULL,
+    value_converter_schemas_enable TEXT NOT NULL,
     value_converter TEXT NOT NULL,
     topic_prefix TEXT NOT NULL,
     heartbeat_action_query TEXT NOT NULL,

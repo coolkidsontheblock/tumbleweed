@@ -17,6 +17,7 @@ const kafka = new Kafka({
 
 const admin = kafka.admin();
 
+// This function is throwing the error "KafkaJSConnectionError: Connection error: write after end only when called with getTopicOffset"
 export const getTopicsFromKafka = async () => {
   try {
     await admin.connect();

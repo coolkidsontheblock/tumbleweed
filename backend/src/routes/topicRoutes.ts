@@ -25,8 +25,9 @@ router.get('/:topic_name', async (req, res) => {
   const topicPrefix = 'outbox.event.';
   try {
     const topicName = req.params.topic_name;
+    const topics = await getTopicsFromKafka();
 
-    if (await getTopicsFromKafka()) {
+    if (topics.includes(topicName)) {
       const fullTopicName = topicPrefix + req.params.topic_name;
       const topicMessageCount = await getTopicOffset(fullTopicName);
       // const topicInfo = await getTopicByName(topicName);
@@ -35,6 +36,8 @@ router.get('/:topic_name', async (req, res) => {
         // data: topicInfo,
         topic_message_count: topicMessageCount,
       });
+    } else {
+      throw new Error(`Topic '${topicName}' does not exist`);
     }
   } catch (error) {
     res.status(400).send(`${error}`)
