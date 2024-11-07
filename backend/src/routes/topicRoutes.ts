@@ -26,18 +26,16 @@ router.get('/:topic_name', async (req, res) => {
   try {
     const topicName = req.params.topic_name;
 
-    if (await getTopicsFromKafka())
-
-
-
-    const fullTopicName = topicPrefix + req.params.topic_name;
-    const topicMessageCount = await getTopicOffset(fullTopicName);
-    // const topicInfo = await getTopicByName(topicName);
-    res.status(200).send({
-      message: `Topic '${topicName}' Found.`,
-      // data: topicInfo,
-      topic_message_count: topicMessageCount,
-    });
+    if (await getTopicsFromKafka()) {
+      const fullTopicName = topicPrefix + req.params.topic_name;
+      const topicMessageCount = await getTopicOffset(fullTopicName);
+      // const topicInfo = await getTopicByName(topicName);
+      res.status(200).send({
+        message: `Topic '${topicName}' Found.`,
+        // data: topicInfo,
+        topic_message_count: topicMessageCount,
+      });
+    }
   } catch (error) {
     res.status(400).send(`${error}`)
     console.error(`There was an error getting the topic: ${error}`);
