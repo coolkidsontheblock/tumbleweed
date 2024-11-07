@@ -1,6 +1,6 @@
 import express from 'express';
 import { getTopicByName } from '../helpers/topicHelper';
-import { getTopics, getTopicOffset } from '../kafka/kafkaAdmin';
+import { getTopicsFromKafka, getTopicOffset } from '../kafka/kafkaAdmin';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const allTopics = await getTopics();
+    const allTopics = await getTopicsFromKafka();
     res.status(200).send({
       message: `${allTopics.length} topics Found.`,
       data: allTopics,
@@ -19,10 +19,17 @@ router.get('/', async (req, res) => {
   }
 })
 
+// Not quite finished!
+// fix bad route if not found
 router.get('/:topic_name', async (req, res) => {
   const topicPrefix = 'outbox.event.';
   try {
     const topicName = req.params.topic_name;
+
+    if (await getTopicsFromKafka())
+
+
+
     const fullTopicName = topicPrefix + req.params.topic_name;
     const topicMessageCount = await getTopicOffset(fullTopicName);
     // const topicInfo = await getTopicByName(topicName);
