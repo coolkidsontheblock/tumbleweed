@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS public.topics
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
     subscribed_consumers TEXT[],
-    publishing_sources TEXT[],
     date_added TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

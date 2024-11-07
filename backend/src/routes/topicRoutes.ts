@@ -1,6 +1,6 @@
 import express from 'express';
-import { getTopicByName } from '../helpers/topicHelper';
-import { getTopicsFromKafka, getTopicOffset } from '../kafka/kafkaAdmin';
+import { getSubscribedConsumersAndDate } from '../helpers/topicHelper';
+import { getTopicsFromKafka, getTopicMessageCount } from '../kafka/kafkaAdmin';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -19,8 +19,6 @@ router.get('/', async (req, res) => {
   }
 })
 
-// Not quite finished!
-// fix bad route if not found
 router.get('/:topic_name', async (req, res) => {
   const topicPrefix = 'outbox.event.';
   try {
@@ -29,12 +27,17 @@ router.get('/:topic_name', async (req, res) => {
 
     if (topics.includes(topicName)) {
       const fullTopicName = topicPrefix + req.params.topic_name;
-      const topicMessageCount = await getTopicOffset(fullTopicName);
-      // const topicInfo = await getTopicByName(topicName);
+      const topicMessageCount = await getTopicMessageCount(fullTopicName);
+      const topicInfo = await getSubscribedConsumersAndDate(topicName);
       res.status(200).send({
         message: `Topic '${topicName}' Found.`,
-        // data: topicInfo,
-        topic_message_count: topicMessageCount,
+        data: {
+          name: topicName,
+          topic_message_count: topicMessageCount,
+          subscribed_consumers: topicInfo.subscribed_consumers,
+          subscriber_count: topicInfo.subscribed_consumers.length,
+          date_added: topicInfo.date_added,
+        }
       });
     } else {
       throw new Error(`Topic '${topicName}' does not exist`);

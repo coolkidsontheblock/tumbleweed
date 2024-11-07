@@ -28,8 +28,8 @@ export const getTopicByName = async (topicName: string) => {
 // If topic exists append consumer name to subscribed_consumers column in topics table
 const addConsumerToTopicsTableInDB = async (consumerName: string, topic: string) => {
   try {
-      await query(`UPDATE topics SET subscribed_consumers = array_append(subscribed_consumers, $1) WHERE name = $2`,
-        [consumerName, topic]);
+    await query(`UPDATE topics SET subscribed_consumers = array_append(subscribed_consumers, $1) WHERE name = $2`,
+      [consumerName, topic]);
   } catch (error) {
     console.error(`There was an error adding a subscribed consumer to the topic table in the database: ${error}`);
   }
@@ -38,17 +38,17 @@ const addConsumerToTopicsTableInDB = async (consumerName: string, topic: string)
 // If topic does not exist in the database add topic and consumer to topics table 
 const addTopicsAndConsumersToDB = async (consumerName: string, topic: string) => {
   try {
-      await query(`INSERT INTO topics (
+    await query(`INSERT INTO topics (
         name,
         subscribed_consumers)
         VALUES ($1, $2)`,
-        [topic, [consumerName]]);
+      [topic, [consumerName]]);
   } catch (error) {
     console.error(`There was an error adding topics to the database: ${error}`);
   }
 };
 
-export const addtoTopicsDB = async ({name: consumerName, subscribed_topics}: ConsumerTopicDetails) => {
+export const addtoTopicsDB = async ({ name: consumerName, subscribed_topics }: ConsumerTopicDetails) => {
   const existingTopics = await getAllTopicsFromDB();
 
   for (const topic of subscribed_topics) {
@@ -65,14 +65,14 @@ export const deleteConsumerFromSubscribedTopics = async (consumerName: string) =
   const existingTopics = await getSubscribedTopics(consumerName);
 
   for (const topic of existingTopics) {
-      await deleteConsumerFromTopics(consumerName, topic);
-    };
+    await deleteConsumerFromTopics(consumerName, topic);
+  };
 };
 
 const deleteConsumerFromTopics = async (consumerName: string, topic: string) => {
   try {
     await query(`UPDATE topics SET subscribed_consumers = array_remove(subscribed_consumers, $1) WHERE name = $2`,
-    [consumerName, topic]);
+      [consumerName, topic]);
   } catch (error) {
     console.error('There was an error deleting consumer from topic ', error);
   }
@@ -91,6 +91,17 @@ const getSubscribedTopics = async (consumerName: string) => {
     console.error('There was an error getting filtered topics for subscribed consumers, ', error)
   }
 };
+
+export const getSubscribedConsumersAndDate = async (topic: string) => {
+  try {
+    const subscribedConsumers = await query(`SELECT subscribed_consumers, date_added FROM topics WHERE name = $1`,
+      [topic]);
+    return subscribedConsumers.rows[0];
+  } catch (error) {
+    console.error('There was an error getting the subscribed consumers ', error);
+    throw error;
+  }
+}
 
 export const deleteSubscriberlessTopics = async () => {
   try {

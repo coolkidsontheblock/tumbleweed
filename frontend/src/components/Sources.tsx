@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
 import { SuccessSnack } from "./SuccessSnack";
 import { Loading } from './Loading';
+import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+
 
 export const Sources = () => {
   const [sources, setSources] = useState<string[]>([]);
@@ -15,7 +17,8 @@ export const Sources = () => {
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
   const [successMsg, setSuccessMsg] = useState<string>('');
-  const [open, setOpen] = useState<boolean>(false);
+  const [openSourceForm, setOpenSourceForm] = useState<boolean>(false);
+  const [openSource, setOpenSource] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -34,7 +37,7 @@ export const Sources = () => {
         }
       }
     }
-    
+
     fetchSources();
   }, [])
 
@@ -81,51 +84,76 @@ export const Sources = () => {
 
   return (
     <>
-    {loading && <Loading />}
-    <div className="connectionlist">
-      {error && (
-        <ErrorSnack
-          message={errorMsg}
-          handleCloseSnackbar={handleCloseSnackbar}
-          openStatus={error}
-        />
-      )}
-      {success && (
-        <SuccessSnack
-          message={successMsg}
-          handleCloseSnackbar={handleCloseSnackbar}
-          openStatus={success}
-        />
-      )}
-      <div id="sourcelist">
-        <h2>Source List</h2>
-        <ul className="connection-ul">
-        {sources.map(sourceName => (
-          <li className="list" key={sourceName}>
-          <Link className="link" onClick={() => handleSelectedSource(sourceName)} to={''}>
-            {sourceName}
-          </Link>
-          </li>
-        ))}
-        </ul>
+      {loading && <Loading />}
+      <div className="connectionlist">
+        {error && (
+          <ErrorSnack
+            message={errorMsg}
+            handleCloseSnackbar={handleCloseSnackbar}
+            openStatus={error}
+          />
+        )}
+        {success && (
+          <SuccessSnack
+            message={successMsg}
+            handleCloseSnackbar={handleCloseSnackbar}
+            openStatus={success}
+          />
+        )}
+        <div id="sourcelist">
+          <h2>Source List</h2>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="source list table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Source Name</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sources.map(sourceName => (
+                  <TableRow key={sourceName}>
+                    <TableCell>{sourceName}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {/* <ul className="connection-ul">
+            {sources.map(sourceName => (
+              <li className="list" key={sourceName}>
+                <Link className="link" onClick={(e) => {
+                  e.preventDefault();
+                  handleSelectedSource(sourceName);
+                  setOpenSource(true);
+                }
+                } to={''}>
+                  {sourceName}
+                </Link>
+              </li>
+            ))}
+          </ul> */}
+        </div>
+        <button className="connectionButton" onClick={() => setOpenSourceForm(true)}>Create New Source</button>
+        {selectedSource && openSource &&
+          <>
+            <Source
+              setOpenSource={setOpenSource}
+              openSource={openSource}
+              sourceData={selectedSource}
+            />
+            <button className="connectionButton" onClick={handleDeleteSource}>Delete Source</button>
+          </>}
+        {openSourceForm &&
+          <SourceForm
+            setSources={setSources}
+            setOpenSourceForm={setOpenSourceForm}
+            openSourceForm={openSourceForm}
+            setError={setError}
+            setErrorMsg={setErrorMsg}
+            setSuccess={setSuccess}
+            setSuccessMsg={setSuccessMsg}
+          />}
       </div>
-      <button className="connectionButton" onClick={() => setOpen(true)}>Create New Source</button>
-      {selectedSource &&
-      <>
-        <Source sourceData={selectedSource} />
-        <button className="connectionButton" onClick={handleDeleteSource}>Delete Source</button>
-      </>}
-      {open &&
-      <SourceForm
-        setSources={setSources}
-        setOpen={setOpen}
-        open={open}
-        setError={setError}
-        setErrorMsg={setErrorMsg}
-        setSuccess={setSuccess}
-        setSuccessMsg={setSuccessMsg}
-      />}
-    </div>
-  </>
+    </>
   )
 };

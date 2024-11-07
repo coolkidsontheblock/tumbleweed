@@ -8,8 +8,8 @@ import { TopicSelect } from "./TopicSelect";
 
 interface ConsumerFormProps {
   setConsumers: React.Dispatch<React.SetStateAction<string[]>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  open: boolean;
+  setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
+  openForm: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,8 +32,8 @@ const style = {
 
 export const ConsumerForm = ({
   setConsumers,
-  setOpen,
-  open,
+  setOpenForm,
+  openForm,
   setError,
   setErrorMsg,
   setSuccess,
@@ -46,7 +46,7 @@ export const ConsumerForm = ({
   const [kafkaGroupId, setKafkaGroupId] = useState<string>('');
   const [errors, setErrors] = useState<BooleanObject>({});
   const [topics, setTopics] = useState<BooleanObject>({});
-  
+
   useEffect(() => {
     const fetchTopics = async () => {
       try {
@@ -89,7 +89,7 @@ export const ConsumerForm = ({
 
       setSuccess(true);
       setSuccessMsg("Consumer created successfully!");
-      setOpen(false);
+      setOpenForm(false);
       setName('');
       setDescription('');
       setKafkaClientId('');
@@ -112,16 +112,16 @@ export const ConsumerForm = ({
   };
 
   const handleCloseModal = () => {
-    setOpen(false);
+    setOpenForm(false);
     setErrors({});
   };
 
   return (
-    <Modal open={open} onClose={handleCloseModal}>
+    <Modal open={openForm} onClose={handleCloseModal}>
       <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }} component="form">
-        <h2 style={{ textAlign: 'center'}}>Connect a new consumer</h2>
-        <p style={{ textAlign: 'center'}}>Please enter consumer details:</p>
-        
+        <h2 style={{ textAlign: 'center' }}>Connect a new consumer</h2>
+        <p style={{ textAlign: 'center' }}>Please enter consumer details:</p>
+
         <TextField
           required
           id="name"
@@ -131,7 +131,7 @@ export const ConsumerForm = ({
           helperText={errors.name && "Consumer name is required"}
           onChange={(event) => setName(event.target.value)}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -140,7 +140,7 @@ export const ConsumerForm = ({
           variant="outlined"
           onChange={(event) => setDescription(event.target.value)}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -151,7 +151,7 @@ export const ConsumerForm = ({
           helperText={errors.endpoint_URL && "Database URL is required"}
           onChange={(event) => setEndpointUrl(event.target.value)}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -162,7 +162,7 @@ export const ConsumerForm = ({
           helperText={errors.kafka_client_id && "Kafka client id is required"}
           onChange={(event) => setKafkaClientId(event.target.value)}
         />
-        
+
         <TextField
           fullWidth
           required
@@ -173,11 +173,11 @@ export const ConsumerForm = ({
           helperText={errors.kafka_group_id && "Kafka group id is required"}
           onChange={(event) => setKafkaGroupId(event.target.value)}
         />
-        
-        <TopicSelect topics={topics} setTopics={setTopics}/>
-        
+
+        <TopicSelect topics={topics} setTopics={setTopics} />
+
         <Box>
-          <Button variant="contained" onClick={handleNewConsumer} sx={{marginRight: '10px'}}>
+          <Button variant="contained" onClick={handleNewConsumer} sx={{ marginRight: '10px' }}>
             Connect
           </Button>
           <Button variant="contained" onClick={handleCloseModal}>
