@@ -73,7 +73,7 @@ export const ConsumerForm = ({
     const newErrors: BooleanObject = {};
 
     try {
-      const subscribedTopics = Object.keys(topics).filter(topic => topics[topic]).join(',');
+      const subscribedTopics = Object.keys(topics).filter(topic => topics[topic]);
       const consumerData: ConsumerInputDetails = {
         name: validateInput(name),
         description: description,
