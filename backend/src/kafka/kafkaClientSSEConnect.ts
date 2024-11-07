@@ -16,7 +16,7 @@ const kafka = new Kafka({
 });
 
 export const createConsumer = async (group_id: string, topics: string[]) => {
-    const consumer = await kafka.consumer({ groupId: group_id })
+    const consumer = kafka.consumer({ groupId: group_id })
     try {
         await consumer.connect();
         await Promise.all(topics.map(topic => consumer.subscribe({ topic, fromBeginning: true})));
@@ -27,7 +27,7 @@ export const createConsumer = async (group_id: string, topics: string[]) => {
     }
 };
 
-export const consumeMessages = async (consumer: Consumer, endpoint: string, res: Response) => {
+export const consumeMessages = async (consumer: Consumer, res: Response) => {
     try {
       await consumer.run({
         eachMessage: async ({ topic, partition, message }: EachMessagePayload) => {
