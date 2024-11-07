@@ -12,6 +12,27 @@ export const getAllConsumers = async () => {
   }
 };
 
+export const getConsumerByGroupId = async (groupId: string) => {
+  try {
+    const consumerDetails: { rows: ConsumerDetails[] } = await query(`SELECT 
+      name,
+      description,
+      endpoint_URL,
+      kafka_client_id,
+      kafka_broker_endpoints,
+      kafka_group_id,
+      subscribed_topics,
+      received_message_count,
+      date_created 
+      FROM consumers WHERE kafka_group_id = $1`,
+      [groupId]);
+
+    return consumerDetails.rows[0];
+  } catch (error) {
+    console.error(`There was an error retreiving consumer from the database: ${error}`);
+  }
+};
+
 export const getConsumerByName = async (name: string) => {
   try {
     const consumerDetails: { rows: ConsumerDetails[] } = await query(`SELECT 
