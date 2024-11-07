@@ -1,18 +1,20 @@
 import { Request, Response } from 'express';
-import dotenv from 'dotenv';
 import { Kafka, Consumer, EachMessagePayload } from 'kafkajs';
-dotenv.config();
+import { getKafkaBrokerEndpoints } from '../kafka/kafkaAdmin';
+import { createUUID } from '../helpers/uuid';
 
-const KafkaBrokerEndpointsString = process.env.KAFKA_BROKER_ENDPOINTS;
+let kafka: Kafka;
 
-if (!KafkaBrokerEndpointsString) {
-  throw new Error("Kafka broker endpoints are not defined");
-}
-const KafkaBrokerEndpoints: string[] = JSON.parse(KafkaBrokerEndpointsString);
+const initializeKafka = async () => {
+  const brokers = await getKafkaBrokerEndpoints();
+  kafka = new Kafka({
+    clientId: createUUID(),
+    brokers,
+  });
+};
 
-const kafka = new Kafka({
-  clientId: 'sse-test-client',
-  brokers: KafkaBrokerEndpoints,
+initializeKafka().catch(error => {
+  console.error(`Failed to initialize Kafka: ${error}`);
 });
 
 export const createConsumer = async (group_id: string, topics: string[]) => {
