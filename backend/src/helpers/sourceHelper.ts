@@ -1,9 +1,7 @@
 import { PGSourceDetails, DebeziumConnector, PGDetailsNoPW } from "../types/sourceTypes"
-import shortUuid from 'short-uuid';
+import { createUUID } from './uuid';
 import { query } from '../database/pg';
 import { hashPassword } from "./encrypt";
-
-const VALID_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789_';
 
 export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector => {
   return {
@@ -19,7 +17,7 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
       "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
       "table.include.list": "public.outbox",
       "tombstone.on.delete": "false",
-      "slot.name": `tumbleweed_${shortUuid(VALID_CHARS).generate()}`,
+      "slot.name": `tumbleweed_${createUUID}`,
       "transforms": "outbox",
       "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
       "transforms.outbox.table.fields.additional.placement": "type:envelope:type",
