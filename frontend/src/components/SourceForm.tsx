@@ -183,10 +183,31 @@ export const SourceForm = ({
         />
 
         <Box>
-          <Button variant="contained" onClick={handleNewSource} sx={{ marginRight: '10px' }}>
+          <Button variant="contained" 
+            onClick={handleNewSource} 
+            sx={{ 
+              marginRight: '10px',
+              fontFamily: "Montserrat",
+              fontWeight: 400,
+              backgroundColor: '#70AF85',
+              '&:hover': {
+                  backgroundColor: '#F58B33', // Change color on hover
+              }, 
+              }}>
             Connect
           </Button>
-          <Button variant="contained" onClick={handleCloseModal}>
+          <Button variant="outlined" 
+            onClick={handleCloseModal}
+            sx={{ 
+              fontFamily: "Montserrat",
+                  fontWeight: 400,
+                  border: '1px solid #70AF85',
+                  color: '#70AF85',
+                  '&:hover': {
+                    border: '1px solid #F58B33',
+                    color: '#F58B33'
+                  }, 
+              }}>
             Cancel
           </Button>
         </Box>

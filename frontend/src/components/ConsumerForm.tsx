@@ -118,7 +118,7 @@ export const ConsumerForm = ({
   return (
     <Modal open={openForm} onClose={handleCloseModal}>
       <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }} component="form">
-        <h2 style={{ textAlign: 'center' }}>Connect a new consumer</h2>
+        <h1 style={{ textAlign: 'center' }}>Connect a new consumer</h1>
         <p style={{ textAlign: 'center' }}>Please enter consumer details:</p>
 
         <TextField
@@ -161,10 +161,32 @@ export const ConsumerForm = ({
         <TopicSelect topics={topics} setTopics={setTopics} />
 
         <Box>
-          <Button variant="contained" onClick={handleNewConsumer} sx={{ marginRight: '10px' }}>
+        <Button variant="contained" 
+            onClick={handleNewConsumer} 
+            sx={{ 
+              marginRight: '10px',
+              fontFamily: "Montserrat",
+                  fontWeight: 400,
+                  // border: '3px solid #331E14',
+                  backgroundColor: '#70AF85',
+                  '&:hover': {
+                    backgroundColor: '#F58B33', // Change color on hover
+                  }, 
+              }}>
             Connect
           </Button>
-          <Button variant="contained" onClick={handleCloseModal}>
+          <Button variant="outlined" 
+            onClick={handleCloseModal}
+            sx={{ 
+              fontFamily: "Montserrat",
+                  fontWeight: 400,
+                  border: '1px solid #70AF85',
+                  color: '#70AF85',
+                  '&:hover': {
+                    border: '1px solid #F58B33',
+                    color: '#F58B33'
+                  }, 
+              }}>
             Cancel
           </Button>
         </Box>

@@ -126,7 +126,7 @@ export const Sources = () => {
         )}
         <div id="sourcelist">
           <h1>Source List</h1>
-          <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
+          <TableContainer component={Paper} sx={{maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
             <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="source list table">
               {/* <TableHead>
                 <TableRow>
@@ -175,17 +175,14 @@ export const Sources = () => {
                 variant="contained"
                 className="connectionButton" 
                 onClick={() => setOpenSourceForm(true)}
-                style={{
-                  fontFamily: "Montserrat", 
-                  fontWeight: 400
-                //   padding: '4px 4px 4px 4px',
-                //   fontSize: '0.7rem',
-                //   width: 'auto',
-                //   maxWidth: '200px', 
-                //   border: '2px solid #331E14', 
-                //   color: '#331E14',
-                //   borderRadius: '10px',
-                //   marginLeft: 95,
+                sx={{
+                  fontFamily: "Montserrat",
+                  fontWeight: 400,
+                  // border: '3px solid #331E14',
+                  backgroundColor: '#70AF85',
+                  '&:hover': {
+                    backgroundColor: '#F58B33', // Change color on hover
+                  },
                 }}
                 >Create New Source</Button>
             </Box>
