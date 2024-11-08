@@ -104,7 +104,8 @@ export const getConnectorByName = async (name: string) => {
       database_port, 
       database_user,
       database_dbname, 
-      database_server_name 
+      database_server_name,
+      date_created 
       FROM connectors WHERE name = $1`,
       [name]);
     return sourceDetails.rows[0];

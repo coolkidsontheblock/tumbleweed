@@ -80,6 +80,10 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
                     <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Username</TableCell>
                     <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_user}</TableCell>
                   </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Created</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.date_created}</TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>

@@ -1,8 +1,8 @@
 import express from 'express';
 import { getSubscribedConsumersAndDate, sortArrayByLowerCase } from '../helpers/topicHelper';
 import { getTopicsFromKafka, getTopicMessageCount } from '../kafka/kafkaAdmin';
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 const router = express.Router();
 
