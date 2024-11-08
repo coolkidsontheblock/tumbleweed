@@ -36,7 +36,7 @@ export const Consumer = ({ setOpenConsumer, openConsumer, selectedConsumer }: Co
             <ul className="connection-details">
               <li>Consumer Name: {selectedConsumer.name}</li>
               <li>Description: {selectedConsumer.description}</li>
-              <li>Endpoint URL: {selectedConsumer.endpoint_URL}</li>
+              <li>Endpoint URL: {selectedConsumer.endpoint_url}</li>
               <li>Kafka Client Id: {selectedConsumer.kafka_client_id}</li>
               <li>Kafka Broker Endpoints: {selectedConsumer.kafka_broker_endpoints}</li>
               <li>Kafka Group Id: {selectedConsumer.kafka_group_id}</li>

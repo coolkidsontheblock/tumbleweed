@@ -46,28 +46,28 @@ export const Source = ({ setOpenSource, openSource, sourceData }: SourceProps) =
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Connector Name</TableCell>
-                    <TableCell>{sourceData.name}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Connector Name</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.name}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Database Hostname</TableCell>
-                    <TableCell>{sourceData.database_hostname}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Hostname</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_hostname}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Database Port</TableCell>
-                    <TableCell>{sourceData.database_port}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Port</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_port}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Database Name</TableCell>
-                    <TableCell>{sourceData.database_dbname}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Name</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_dbname}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Database Server Name</TableCell>
-                    <TableCell>{sourceData.database_server_name}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Server Name</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_server_name}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Database Username</TableCell>
-                    <TableCell>{sourceData.database_user}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Username</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_user}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

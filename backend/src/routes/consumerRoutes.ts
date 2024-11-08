@@ -1,6 +1,6 @@
 import axios from 'axios';
 import express from 'express';
-import { getAllConsumers, postConsumerToDB, getConsumerByName, deleteConsumerByName } from '../helpers/consumerHelper';
+import { getAllConsumers, postConsumerToDB, getConsumerByName, deleteConsumerByName, getConsumerConnectionURI } from '../helpers/consumerHelper';
 import { ConsumerDetails } from '../types/consumerTypes';
 import { addtoTopicsDB, deleteConsumerFromSubscribedTopics, deleteSubscriberlessTopics } from '../helpers/topicHelper';
 import dotenv from 'dotenv';
@@ -8,7 +8,7 @@ dotenv.config();
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, next) => {  
   try {
     const consumers = await getAllConsumers();
 
@@ -37,7 +37,7 @@ router.get('/:consumer_name', async (req, res, next) => {
       const consumerInfo: ConsumerDetails = {
         name: consumer.name,
         description: consumer.description,
-        endpoint_URL: consumer.endpoint_URL,
+        endpoint_url: consumer.endpoint_url,
         kafka_client_id: consumer.kafka_client_id,
         kafka_broker_endpoints: consumer.kafka_broker_endpoints,
         kafka_group_id: consumer.kafka_group_id,
@@ -63,7 +63,8 @@ router.post('/new_consumer', async (req, res, next) => {
   try {
     const consumerData = req.body;
     const KafkaBrokerEndpoints = JSON.parse(process.env.KAFKA_BROKER_ENDPOINTS as string); // using type assertion here.  double check if there is a better way
-    const newConsumer = await postConsumerToDB(consumerData, KafkaBrokerEndpoints);
+    const tumbleweedEndpoint = getConsumerConnectionURI(consumerData.kafka_group_id);
+    const newConsumer = await postConsumerToDB(consumerData, KafkaBrokerEndpoints, tumbleweedEndpoint);
     await addtoTopicsDB(newConsumer);
 
     res.status(201).send({
