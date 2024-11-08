@@ -17,7 +17,7 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
       "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
       "table.include.list": "public.outbox",
       "tombstone.on.delete": "false",
-      "slot.name": `tumbleweed_${createUUID}`,
+      "slot.name": `tumbleweed_${createUUID()}`,
       "transforms": "outbox",
       "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
       "transforms.outbox.table.fields.additional.placement": "type:envelope:type",

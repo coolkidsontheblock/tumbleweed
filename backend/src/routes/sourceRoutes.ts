@@ -60,8 +60,9 @@ router.post('/new_source', async (req, res, next) => {
   try {
     const sourceDetails = req.body;
     const destination = 'http://localhost:8083/connectors';
+    const configData = getConfigData(sourceDetails);
 
-    const axiosResponse = await axios.post(destination, getConfigData(sourceDetails), {
+    const axiosResponse = await axios.post(destination, configData, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -71,7 +72,6 @@ router.post('/new_source', async (req, res, next) => {
       throw new Error('Failed to create new connector');
     }
 
-    const configData = getConfigData(sourceDetails);
     const newConnector = await postConfigDataToDB(configData);
 
     res.status(201).send({
