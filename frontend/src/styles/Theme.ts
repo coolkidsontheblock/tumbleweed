@@ -2,10 +2,13 @@ import { createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
   typography: {
-    fontFamily: "'Fredoka', sans-serif",
+    fontFamily: "'Koulen', sans-serif",
     fontSize: 20,
     body1: {
-      textShadow: '1px 1px 2px rgba(0, 0, 0, 0.2)', // Example for body1
+      letterSpacing: '.1em',
+      fontStyle: 'normal',
+      fontWeight: 400,
+      color: 'black'
     },
   }
 })
