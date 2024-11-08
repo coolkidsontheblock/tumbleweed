@@ -84,18 +84,16 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
               </Table>
             </TableContainer>
           </div>
-          <Button variant="contained" className="connectionButton" 
+          <Button variant="contained" 
             onClick={handleDeleteSource}
-            style={{
-              fontFamily: "Montserrat", 
-              fontWeight: 400
-              // padding: '4px 4px 4px 4px',
-              // fontSize: '0.7rem',
-              // width: '100%',
-              // maxWidth: '685px', 
-              // border: '2px solid #331E14', 
-              // color: '#331E14',
-              // borderRadius: '10px',
+            sx={{
+              fontFamily: "Montserrat",
+              fontWeight: 400,
+              // border: '3px solid #331E14',
+              backgroundColor: '#70AF85',
+              '&:hover': {
+                backgroundColor: '#F58B33', // Change color on hover
+              },
             }}>Delete Source</Button>
         </Box>
       </Modal>

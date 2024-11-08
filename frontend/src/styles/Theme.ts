@@ -8,7 +8,8 @@ export const theme = createTheme({
       letterSpacing: '.1em',
       fontStyle: 'normal',
       fontWeight: 400,
-      color: 'black'
+      color: '#331E14',
+      '&:hover': { color: '#F58B33' },
     },
   }
 })
