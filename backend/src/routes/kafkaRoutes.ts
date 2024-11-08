@@ -3,11 +3,12 @@ import { createConsumer, consumeMessages } from '../kafka/kafkaClientSSEConnect'
 import dotenv from 'dotenv';
 import { Consumer } from 'kafkajs';
 import { getConsumerByGroupId, getConsumerByName } from '../helpers/consumerHelper';
+import { nextTick } from 'process';
 dotenv.config();
 
 const router = express.Router();
 
-router.get('/:groupId', async (req, res) => {
+router.get('/:groupId', async (req, res, next) => {
   try {
     const { groupId } = req.params;
 
@@ -30,8 +31,9 @@ router.get('/:groupId', async (req, res) => {
       await consumer?.disconnect();
     })
   } catch (error) {
-    res.status(400).send(`${error}`)
+    // res.status(400).send(`${error}`)
     console.error(`There was an error getting all topics: ${error}`);
+    next(error);
   }
 })
 

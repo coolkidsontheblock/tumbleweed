@@ -15,16 +15,16 @@ export type SourceData = Omit<SourceInput, 'database_password'> & {
 export interface ConsumerDetails {
   name: string;
   description: string;
-  endpoint_url: string;
+  tumbleweed_endpoint: string;
   kafka_client_id: string;
-  kafka_broker_endpoints: string;
+  kafka_broker_endpoints: string[];
   kafka_group_id: string;
   subscribed_topics: string[];
   received_message_count: number;
   date_created: string;
 }
 
-export type ConsumerInputDetails = Omit<ConsumerDetails, 'received_message_count' | 'date_created' | 'kafka_broker_endpoints'>;
+export type ConsumerInputDetails = Omit<ConsumerDetails, 'received_message_count' | 'date_created' | 'kafka_broker_endpoints' | 'tumbleweed_endpoint'>;
 
 export interface BooleanObject {
   [key: string]: boolean;

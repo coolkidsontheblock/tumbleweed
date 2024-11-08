@@ -1,7 +1,17 @@
 import { Dispatch, SetStateAction } from "react";
 import { SourceData } from "../types/types"
 // import { Box, Modal } from "@mui/material";
-import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import {
+  Modal,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  Button
+} from '@mui/material';
 
 
 interface SourceProps {
@@ -36,7 +46,7 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
       <Modal open={openSource} onClose={handleCloseModal}>
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
           <div>
-            <h3>Source Information</h3>
+            <h2>Source Information</h2>
             <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '4px 8px', fontSize: '0.875rem' } }}>
               <Table sx={{ minWidth: 650 }} aria-label="source information table">
                 {/* <TableHead>
@@ -74,7 +84,19 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
               </Table>
             </TableContainer>
           </div>
-          <button className="connectionButton" onClick={handleDeleteSource}>Delete Source</button>
+          <Button variant="contained" className="connectionButton" 
+            onClick={handleDeleteSource}
+            style={{
+              fontFamily: "Montserrat", 
+              fontWeight: 400
+              // padding: '4px 4px 4px 4px',
+              // fontSize: '0.7rem',
+              // width: '100%',
+              // maxWidth: '685px', 
+              // border: '2px solid #331E14', 
+              // color: '#331E14',
+              // borderRadius: '10px',
+            }}>Delete Source</Button>
         </Box>
       </Modal>
       // <Modal open={openSource} onClose={handleCloseModal}>

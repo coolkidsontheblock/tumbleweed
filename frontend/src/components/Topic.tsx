@@ -33,25 +33,25 @@ export const TopicInfo = ({ setOpen, open, topicData }: TopicProps) => {
       <Modal open={open} onClose={handleCloseModal}>
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
           <div>
-            <h3>Topic Information</h3>
+            <h2>Topic Information</h2>
             <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '4px 8px', fontSize: '0.875rem' } }}>
               <Table sx={{ minWidth: 650 }} aria-label="topic information table">
                 <TableBody>
                   <TableRow>
-                    <TableCell>Topic Name</TableCell>
-                    <TableCell>{topicData.name}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Topic Name</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{topicData.name}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Message Count</TableCell>
-                    <TableCell>{topicData.topic_message_count}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Message Count</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{topicData.topic_message_count}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Subscribed Consumers</TableCell>
-                    <TableCell>{topicData.subscribed_consumers}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribed Consumers</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{topicData.subscribed_consumers.join(', ')}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Subscriber Count</TableCell>
-                    <TableCell>{topicData.subscriber_count}</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscriber Count</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{topicData.subscriber_count}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

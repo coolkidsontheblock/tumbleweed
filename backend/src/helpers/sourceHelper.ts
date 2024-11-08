@@ -2,6 +2,7 @@ import { PGSourceDetails, DebeziumConnector, PGDetailsNoPW } from "../types/sour
 import { createUUID } from './uuid';
 import { query } from '../database/pg';
 import { hashPassword } from "./encrypt";
+import { DatabaseError } from "../utils/errors";
 
 export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector => {
   return {
@@ -90,6 +91,7 @@ export const postConfigDataToDB = async (source: DebeziumConnector) => {
     return newConnector.rows[0];
   } catch (error) {
     console.error(`There was an error adding a new connector to the database: ${error}`);
+    throw new DatabaseError(`There was an error adding a new connector to the database: ${error}`)
     // Add some rollback validation in debezium fails?
   }
 };

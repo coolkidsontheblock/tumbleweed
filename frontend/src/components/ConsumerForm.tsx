@@ -41,7 +41,7 @@ export const ConsumerForm = ({
 }: ConsumerFormProps) => {
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [endpointUrl, setEndpointUrl] = useState<string>('');
+  // const [tumbleweedEndpoint, setTumbleweedEndpoint] = useState<string>('');
   const [kafkaClientId, setKafkaClientId] = useState<string>('');
   const [kafkaGroupId, setKafkaGroupId] = useState<string>('');
   const [errors, setErrors] = useState<BooleanObject>({});
@@ -77,8 +77,7 @@ export const ConsumerForm = ({
       const consumerData: ConsumerInputDetails = {
         name: validateInput(name),
         description: description,
-        endpoint_URL: validateInput(endpointUrl),
-        kafka_client_id: validateInput(kafkaClientId),
+        kafka_client_id: kafkaClientId,
         kafka_group_id: validateInput(kafkaGroupId),
         subscribed_topics: subscribedTopics
       };
@@ -103,8 +102,8 @@ export const ConsumerForm = ({
       }
 
       if (!name) newErrors.name = true;
-      if (!endpointUrl) newErrors.endpoint_URL = true;
-      if (!kafkaClientId) newErrors.kafka_client_id = true;
+      // if (!tumbleweedEndpoint) newErrors.tumbleweed_endpoint = true;
+      // if (!kafkaClientId) newErrors.kafka_client_id = true;
       if (!kafkaGroupId) newErrors.kafka_group_id = true;
 
       setErrors(newErrors);
@@ -134,7 +133,6 @@ export const ConsumerForm = ({
 
         <TextField
           fullWidth
-          required
           id="description"
           label="Description (optional)"
           variant="outlined"
@@ -143,23 +141,9 @@ export const ConsumerForm = ({
 
         <TextField
           fullWidth
-          required
-          id="endpointUrl"
-          label="Endpoint Url"
-          variant="outlined"
-          error={errors.endpoint_URL}
-          helperText={errors.endpoint_URL && "Database URL is required"}
-          onChange={(event) => setEndpointUrl(event.target.value)}
-        />
-
-        <TextField
-          fullWidth
-          required
           id="kafkaClientId"
-          label="Kafka Client Id"
+          label="Kafka Client Id (optional)"
           variant="outlined"
-          error={errors.kafka_client_id}
-          helperText={errors.kafka_client_id && "Kafka client id is required"}
           onChange={(event) => setKafkaClientId(event.target.value)}
         />
 
@@ -170,7 +154,7 @@ export const ConsumerForm = ({
           label="Kafka Group Id"
           variant="outlined"
           error={errors.kafka_group_id}
-          helperText={errors.kafka_group_id && "Kafka group id is required"}
+          helperText={errors.kafka_group_id && "Kafka group id is required and needs to be unique"}
           onChange={(event) => setKafkaGroupId(event.target.value)}
         />
 

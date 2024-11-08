@@ -75,13 +75,12 @@ export const SourceForm = ({
       setDBUsername('');
       setDBPassword('');
       setConnectorName('');
-    } catch (error) {
+    } catch (error: any) {
       setError(true);
-      if (error instanceof Error) {
-        setErrorMsg(error.message);
-      } else {
-        setErrorMsg("An unknown error occurred");
-      }
+      const errorMessage = error.response.data.message;
+      const errorStatus = error.response.status;
+
+      setErrorMsg(`Error (${errorStatus}): ${errorMessage} `);
 
       if (!connectorName) newErrors.connectorName = true;
       if (!dbhostname) newErrors.dbhostname = true;

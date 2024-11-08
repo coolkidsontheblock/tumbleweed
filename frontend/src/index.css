@@ -37,6 +37,8 @@ koulen-regular {
 
 h1 {
   margin: 30px;
+  margin-bottom: 10px;
+  margin-left: 50px;
   font-family: "Koulen", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -44,9 +46,7 @@ h1 {
 }
 
 h2 {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  margin-left: 95px;
+  margin-bottom: 10px;
   font-family: "Koulen", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -112,12 +112,12 @@ td #topic-fieldset,
   background-color: #db7b3bc6;
 }
 
-.connectiondetails,
+/* .connectiondetails,
 .connection-ul {
   list-style: none;
   margin-bottom: 10px;
   margin-top: 10px;
-}
+} */
 
 .topic-ul {
   list-style: none;
@@ -169,3 +169,7 @@ a {
   display: block;
   justify-content: center;
 } */
+
+#sourcelist, #consumerlist {
+  margin-right: 100px;
+}

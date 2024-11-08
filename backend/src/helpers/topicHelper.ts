@@ -103,6 +103,21 @@ export const getSubscribedConsumersAndDate = async (topic: string) => {
   }
 }
 
+export const sortArrayByLowerCase = (array: string[]) => {
+  return array.sort((a, b) => {
+    const lowerA = a.toLowerCase();
+    const lowerB = b.toLowerCase();
+
+    if (lowerA < lowerB) {
+      return -1;
+    } if (lowerA > lowerB) {
+      return 1;
+    } else {
+      return 0;
+    };
+  });
+}
+
 export const deleteSubscriberlessTopics = async () => {
   try {
     const subscriberlessTopics = await findSubscriberlessTopicsInDB();

@@ -1,10 +1,10 @@
-import axios from 'axios';
+import { validateConsumerData } from '../helpers/validation';
 import express from 'express';
 import { getAllConsumers, postConsumerToDB, getConsumerByName, deleteConsumerByName, getConsumerConnectionURI } from '../helpers/consumerHelper';
 import { ConsumerDetails } from '../types/consumerTypes';
+import { getKafkaBrokerEndpoints } from '../kafka/kafkaAdmin'
 import { addtoTopicsDB, deleteConsumerFromSubscribedTopics, deleteSubscriberlessTopics } from '../helpers/topicHelper';
-import dotenv from 'dotenv';
-dotenv.config();
+import { HttpError } from '../utils/errors';
 
 const router = express.Router();
 
@@ -17,7 +17,6 @@ router.get('/', async (req, res, next) => {
       data: consumers,
     });
   } catch (error) {
-    res.status(404).send(`${error}`)
     console.error(error);
     next(error);
   }
@@ -29,7 +28,7 @@ router.get('/:consumer_name', async (req, res, next) => {
   try {
     const consumerName = req.params.consumer_name;
     const consumer = await getConsumerByName(consumerName);
-
+    console.log(consumer)
     if (!consumer) {
       throw new Error("No Consumer by that name exists");
     } else {
@@ -37,7 +36,7 @@ router.get('/:consumer_name', async (req, res, next) => {
       const consumerInfo: ConsumerDetails = {
         name: consumer.name,
         description: consumer.description,
-        endpoint_url: consumer.endpoint_url,
+        tumbleweed_endpoint: consumer.tumbleweed_endpoint,
         kafka_client_id: consumer.kafka_client_id,
         kafka_broker_endpoints: consumer.kafka_broker_endpoints,
         kafka_group_id: consumer.kafka_group_id,
@@ -51,7 +50,7 @@ router.get('/:consumer_name', async (req, res, next) => {
       });
     }
   } catch (error) {
-    res.status(404).send(`${error}`)
+    // res.status(404).send(`${error}`)
     console.error(`There was an error finding the consumer: ${error}`);
     next(error);
   }
@@ -62,7 +61,9 @@ router.get('/:consumer_name', async (req, res, next) => {
 router.post('/new_consumer', async (req, res, next) => {
   try {
     const consumerData = req.body;
-    const KafkaBrokerEndpoints = JSON.parse(process.env.KAFKA_BROKER_ENDPOINTS as string); // using type assertion here.  double check if there is a better way
+    validateConsumerData(consumerData);
+
+    const KafkaBrokerEndpoints = await getKafkaBrokerEndpoints();
     const tumbleweedEndpoint = getConsumerConnectionURI(consumerData.kafka_group_id);
     const newConsumer = await postConsumerToDB(consumerData, KafkaBrokerEndpoints, tumbleweedEndpoint);
     await addtoTopicsDB(newConsumer);
@@ -72,15 +73,7 @@ router.post('/new_consumer', async (req, res, next) => {
       data: newConsumer,
     });
   } catch (error) {
-    res.status(400).send(`${error}`)
     console.error(`There was an error adding a new consumer: ${error}`);
-
-    // Optionally: handle a rollback here if needed, e.g., delete any created connector in Debezium
-    // Example:
-    // if (axiosResponse && axiosResponse.data.name) {
-    //   await axios.delete(`${destination}/${axiosResponse.data.name}`);
-    // }
-
     next(error);
   }
 });
@@ -91,7 +84,7 @@ router.delete('/:consumer_name', async (req, res, next) => {
     const consumer = await getConsumerByName(consumerName);
 
     if (!consumer) {
-      throw new Error("No Consumer by that name exists");
+      throw new HttpError("No Consumer by that name exists", 404);
     } else {
       
       await deleteConsumerByName(consumerName);
@@ -100,7 +93,6 @@ router.delete('/:consumer_name', async (req, res, next) => {
       res.status(201).send(`Consumer '${consumer.name}' deleted!`);
     }
   } catch (error) {
-    res.status(404).send(`${error}`)
     console.error(`There was an error deleting the consumer: ${error}`);
     next(error);
   }

@@ -7,6 +7,8 @@ export class InputError extends Error {
 export const validateInput = (input: string): string => {
   if (!input) {
     throw new InputError('Missing input. All fields are required. Please fill out all fields.');
+  } else if (/\s/.test(input)) {
+    throw new InputError('Input cannot contain whitespace. Please provide a valid input.');
   } else {
     return input;
   }
