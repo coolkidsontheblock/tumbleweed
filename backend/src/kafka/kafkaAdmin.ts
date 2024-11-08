@@ -12,7 +12,7 @@ if (!KafkaBrokerEndpointsString) {
 const KafkaBrokerEndpoints: string[] = JSON.parse(KafkaBrokerEndpointsString);
 
 const kafka = new Kafka({
-  clientId: 'tumbleweed-topic-fetch',
+  clientId: 'tumbleweed-admin-fetch',
   brokers: KafkaBrokerEndpoints,
 });
 
