@@ -20,13 +20,18 @@ const getConsumer = async (consumer: string) => {
 }
 
 const createConsumer = async (consumerDetails: ConsumerInputDetails) => {
-  console.log(consumerDetails)
   const res = await axios.post(baseUrl + '/new_consumer', consumerDetails);
+  return res.data;
+}
+
+const deleteConsumer = async (consumer: string) => {
+  const res = await axios.delete(`${baseUrl}/${consumer}`);
   return res.data;
 }
 
 export {
   getConsumers,
   getConsumer,
-  createConsumer
+  createConsumer,
+  deleteConsumer
 }

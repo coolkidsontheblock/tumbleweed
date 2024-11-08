@@ -119,11 +119,11 @@ export const Sources = () => {
           <h2>Source List</h2>
           <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
-              <TableHead>
+              {/* <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold' }}>Source Name</TableCell>
                 </TableRow>
-              </TableHead>
+              </TableHead> */}
               <TableBody>
                 {currentSources.map(sourceName => (
                   <TableRow key={sourceName}>
@@ -193,9 +193,9 @@ export const Sources = () => {
             <Source
               setOpenSource={setOpenSource}
               openSource={openSource}
+              handleDeleteSource={handleDeleteSource}
               sourceData={selectedSource}
             />
-            <button className="connectionButton" onClick={handleDeleteSource}>Delete Source</button>
           </>}
         {openSourceForm &&
           <SourceForm
