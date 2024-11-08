@@ -15,6 +15,7 @@ import { Box,
   TableRow,
   Paper,
   TablePagination,
+  TableHead,
   Button
 } from '@mui/material';
 
@@ -128,11 +129,14 @@ export const Sources = () => {
           <h1>Source List</h1>
           <TableContainer component={Paper} sx={{maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
             <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="source list table">
-              {/* <TableHead>
+            <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Source Name</TableCell>
+                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
+                    Name
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
                 </TableRow>
-              </TableHead> */}
+              </TableHead>
               <TableBody sx={{marginRight: '100px'}}>
                 {currentSources.map(sourceName => (
                   <TableRow key={sourceName}>
@@ -156,6 +160,7 @@ export const Sources = () => {
                         {sourceName}
                       </Link>
                     </TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, padding: '8px', fontSize: '0.875rem' }}>Some Data</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
