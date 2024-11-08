@@ -5,6 +5,9 @@ export const theme = createTheme({
     fontFamily: "'Koulen', sans-serif",
     fontSize: 24,
     body1: {
+      letterSpacing: '.1em',
+      fontStyle: 'normal',
+      fontWeight: 400,
       color: 'black'
     },
   }
