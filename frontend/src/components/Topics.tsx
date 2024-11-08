@@ -97,11 +97,11 @@ export const Topics = () => {
           <h2>Topic List</h2>
           <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
-              <TableHead>
+              {/* <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold' }}>Topic Name</TableCell>
                 </TableRow>
-              </TableHead>
+              </TableHead> */}
               <TableBody>
                 {currentTopics.map(topicName => (
                   <TableRow key={topicName}>

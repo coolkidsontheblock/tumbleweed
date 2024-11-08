@@ -7,6 +7,7 @@ import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 interface SourceProps {
   setOpenSource: Dispatch<SetStateAction<boolean>>;
   openSource: boolean;
+  handleDeleteSource: () => void;
   sourceData: SourceData | null
 }
 
@@ -25,7 +26,7 @@ const style = {
 };
 
 
-export const Source = ({ setOpenSource, openSource, sourceData }: SourceProps) => {
+export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceData }: SourceProps) => {
   const handleCloseModal = () => {
     setOpenSource(false);
   };
@@ -35,15 +36,15 @@ export const Source = ({ setOpenSource, openSource, sourceData }: SourceProps) =
       <Modal open={openSource} onClose={handleCloseModal}>
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
           <div>
-            <h2>Source Information</h2>
-            <TableContainer component={Paper}>
+            <h3>Source Information</h3>
+            <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '4px 8px', fontSize: '0.875rem' } }}>
               <Table sx={{ minWidth: 650 }} aria-label="source information table">
-                <TableHead>
+                {/* <TableHead>
                   <TableRow>
-                    <TableCell><strong>Property</strong></TableCell>
-                    <TableCell align="left"><strong>Value</strong></TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Property</TableCell>
+                    <TableCell align="left" sx={{ fontWeight: 'bold' }}>Value</TableCell>
                   </TableRow>
-                </TableHead>
+                </TableHead> */}
                 <TableBody>
                   <TableRow>
                     <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Connector Name</TableCell>
@@ -73,6 +74,7 @@ export const Source = ({ setOpenSource, openSource, sourceData }: SourceProps) =
               </Table>
             </TableContainer>
           </div>
+          <button className="connectionButton" onClick={handleDeleteSource}>Delete Source</button>
         </Box>
       </Modal>
       // <Modal open={openSource} onClose={handleCloseModal}>

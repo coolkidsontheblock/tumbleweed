@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getConsumer, getConsumers } from "../services/consumerService";
+import { getConsumer, getConsumers, deleteConsumer } from "../services/consumerService";
 import { ConsumerDetails } from "../types/types";
 import { Consumer } from "./Consumer";
 import { ConsumerForm } from "./ConsumerForm";
 import { ErrorSnack } from "./ErrorSnack";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Box } from '@mui/material';
-import { a } from "vitest/dist/suite-IbNSsUWN.js";
+// import { a } from "vitest/dist/suite-IbNSsUWN.js";
 import { SuccessSnack } from "./SuccessSnack";
 
 export const Consumers = () => {
@@ -44,6 +44,25 @@ export const Consumers = () => {
     try {
       const request = await getConsumer(Consumer);
       setSelectedConsumer(request.data);
+    } catch (error) {
+      console.error(error);
+      setError(true);
+      if (error instanceof Error) {
+        setErrorMsg(error.message);
+      } else {
+        setErrorMsg("An unknown error occurred");
+      }
+    }
+  }
+
+  const handleDeleteConsumer = async () => {
+    try {
+      if (selectedConsumer) {
+        const source = selectedConsumer.name;
+        await deleteConsumer(source);
+        setConsumers(prevSources => prevSources.filter(sourceString => sourceString !== source));
+        setSelectedConsumer(null);
+      }
     } catch (error) {
       console.error(error);
       setError(true);
@@ -93,11 +112,11 @@ export const Consumers = () => {
         <h2>Consumer List</h2>
         <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto' }}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
-            <TableHead>
+            {/* <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: 'bold' }}>Consumer Name</TableCell>
               </TableRow>
-            </TableHead>
+            </TableHead> */}
             <TableBody>
               {currentConsumers.map(consumerName => (
                 <TableRow key={consumerName}>
@@ -198,8 +217,8 @@ export const Consumers = () => {
           <Consumer
             setOpenConsumer={setOpenConsumer}
             openConsumer={openConsumer}
+            handleDeleteConsumer={handleDeleteConsumer}
             selectedConsumer={selectedConsumer} />
-          {/* <button className="consumerButton" onClick={handleDeleteConsumer}>Delete Consumer</button> */}
         </>}
       {openForm &&
         <ConsumerForm

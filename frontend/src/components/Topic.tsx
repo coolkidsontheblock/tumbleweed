@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { TopicData } from "../types/types";
-import { Box, Modal } from "@mui/material";
+import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+
 
 interface TopicProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -32,13 +33,29 @@ export const TopicInfo = ({ setOpen, open, topicData }: TopicProps) => {
       <Modal open={open} onClose={handleCloseModal}>
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
           <div>
-            <h2>Topic Information</h2>
-            <ul className="topicDetails">
-              <li>Topic Name: {topicData.name}</li>
-              <li>Message Count: {topicData.topic_message_count}</li>
-              <li>Subscribed Consumers: {topicData.subscribed_consumers}</li>
-              <li>Subscriber Count: {topicData.subscriber_count}</li>
-            </ul>
+            <h3>Topic Information</h3>
+            <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '4px 8px', fontSize: '0.875rem' } }}>
+              <Table sx={{ minWidth: 650 }} aria-label="topic information table">
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Topic Name</TableCell>
+                    <TableCell>{topicData.name}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Message Count</TableCell>
+                    <TableCell>{topicData.topic_message_count}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Subscribed Consumers</TableCell>
+                    <TableCell>{topicData.subscribed_consumers}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Subscriber Count</TableCell>
+                    <TableCell>{topicData.subscriber_count}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
         </Box>
       </Modal>
