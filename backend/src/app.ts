@@ -7,8 +7,10 @@ import kafkaRouter from './routes/kafkaRoutes';
 import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
 app.use(express.json());
-app.use(cors());
 app.use('/sources', sourceRouter);
 app.use('/consumers', consumerRouter);
 app.use('/topics', topicRouter);
