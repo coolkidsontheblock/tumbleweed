@@ -7,7 +7,16 @@ import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
 import { SuccessSnack } from "./SuccessSnack";
 import { Loading } from './Loading';
-import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Button } from '@mui/material';
+import { Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  TablePagination,
+  Button
+} from '@mui/material';
 
 
 
@@ -79,7 +88,7 @@ export const Sources = () => {
     }
   }
 
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 
@@ -117,17 +126,24 @@ export const Sources = () => {
         )}
         <div id="sourcelist">
           <h1>Source List</h1>
-          <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto' }}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
+          <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
+            <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="source list table">
               {/* <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold' }}>Source Name</TableCell>
                 </TableRow>
               </TableHead> */}
-              <TableBody>
+              <TableBody sx={{marginRight: '100px'}}>
                 {currentSources.map(sourceName => (
                   <TableRow key={sourceName}>
-                    <TableCell sx={{ padding: '8px', fontSize: '0.875rem' }}>
+                    <TableCell sx={{ 
+                      padding: '8px',
+                      fontSize: '0.875rem',
+                      position: 'sticky',
+                      left: 0,
+                      backgroundColor: '#fff',
+                      zIndex: 1,  // Keeps the sticky cell on top when scrolling}}>
+                    }}>
                       <Link
                         className="link"
                         onClick={(e) => {
@@ -153,9 +169,25 @@ export const Sources = () => {
               mr: 9.5
             }}
           ></Box>
-          <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mr: 9.5 }}>
+          <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mr: 9.5, marginLeft: "50px"}}>
             <Box sx={{ mt: 2 }}>
-              <button className="connectionButton" onClick={() => setOpenSourceForm(true)}>Create New Source</button>
+              <Button
+                variant="contained"
+                className="connectionButton" 
+                onClick={() => setOpenSourceForm(true)}
+                style={{
+                  fontFamily: "Montserrat", 
+                  fontWeight: 400
+                //   padding: '4px 4px 4px 4px',
+                //   fontSize: '0.7rem',
+                //   width: 'auto',
+                //   maxWidth: '200px', 
+                //   border: '2px solid #331E14', 
+                //   color: '#331E14',
+                //   borderRadius: '10px',
+                //   marginLeft: 95,
+                }}
+                >Create New Source</Button>
             </Box>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
@@ -168,7 +200,7 @@ export const Sources = () => {
               sx={{
                 '& .MuiTablePagination-toolbar': { minHeight: '36px' },
                 '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
-                  fontSize: '0.75rem',
+                  fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
                 },
               }}
             />

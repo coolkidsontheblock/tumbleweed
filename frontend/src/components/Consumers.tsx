@@ -5,9 +5,10 @@ import { ConsumerDetails } from "../types/types";
 import { Consumer } from "./Consumer";
 import { ConsumerForm } from "./ConsumerForm";
 import { ErrorSnack } from "./ErrorSnack";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Box, Button } from '@mui/material';
 // import { a } from "vitest/dist/suite-IbNSsUWN.js";
 import { SuccessSnack } from "./SuccessSnack";
+import { Loading } from "./Loading";
 
 export const Consumers = () => {
   const [consumers, setConsumers] = useState<string[] | []>([]);
@@ -20,6 +21,7 @@ export const Consumers = () => {
   const [openConsumer, setOpenConsumer] = useState<boolean>(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchConsumers = async (): Promise<void> => {
@@ -38,6 +40,7 @@ export const Consumers = () => {
     }
 
     fetchConsumers();
+    setLoading(false);
   }, []);
 
   const handleSelectedConsumer = async (Consumer: string): Promise<void> => {
@@ -74,7 +77,7 @@ export const Consumers = () => {
     }
   }
 
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 
@@ -93,143 +96,136 @@ export const Consumers = () => {
   }
 
   return (
-    <div className="connectionlist">
-      {error && (
-        <ErrorSnack
-          message={errorMsg}
-          handleCloseSnackbar={handleCloseSnackbar}
-          openStatus={error}
-        />
-      )}
-      {success && (
-        <SuccessSnack
-          message={successMsg}
-          handleCloseSnackbar={handleCloseSnackbar}
-          openStatus={success}
-        />
-      )}
-      <div id="consumerlist">
-        <h2>Consumer List</h2>
-        <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto' }}>
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
-            {/* <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 'bold' }}>Consumer Name</TableCell>
-              </TableRow>
-            </TableHead> */}
-            <TableBody>
-              {currentConsumers.map(consumerName => (
-                <TableRow key={consumerName}>
-                  <TableCell sx={{ padding: '8px', fontSize: '0.875rem' }}>
-                    <Link
-                      className="link"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleSelectedConsumer(consumerName);
-                        setOpenConsumer(true);
-                      }}
-                      to={''}
-                    >
-                      {consumerName}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{
-            mr: 9.5
-          }}
-        ></Box>
-        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mr: 9.5 }}>
-          <Box sx={{ mt: 2 }}>
-            <button className="connectionButton" onClick={() => setOpenForm(true)}>Create New Consumer</button>
-          </Box>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={consumers.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{
-              '& .MuiTablePagination-toolbar': { minHeight: '36px' },
-              '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
-                fontSize: '0.75rem',
-              },
-            }}
+    <>
+      {loading && <Loading />}
+      <div className="connectionlist">
+        {error && (
+          <ErrorSnack
+            message={errorMsg}
+            handleCloseSnackbar={handleCloseSnackbar}
+            openStatus={error}
           />
-        </Box>
-        {/* <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 50 }} aria-label="consumer list table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Consumer Name</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {consumers.map(consumerName => (
-              <TableRow key={consumerName}>
-                <TableCell>
-                  <Link
-                    className="link"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleSelectedConsumer(consumerName);
-                      setOpenConsumer(true);
-                    }}
-                    to={''}
-                  >
-                    {consumerName}
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer> */}
+        )}
+        {success && (
+          <SuccessSnack
+            message={successMsg}
+            handleCloseSnackbar={handleCloseSnackbar}
+            openStatus={success}
+          />
+        )}
+        <div id="consumerlist">
+          <h1>Consumer List</h1>
+          {/* Table container with overflow */}
+          <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
+            <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="consumer list table">
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
+                    Name
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
+                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribed Topics</TableCell>
+                  {/* Add other columns as needed */}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentConsumers.map(consumerName => (
+                  <TableRow key={consumerName}>
+                    <TableCell
+                      sx={{
+                        padding: '8px',
+                        fontSize: '0.875rem',
+                        position: 'sticky',
+                        left: 0,
+                        backgroundColor: '#fff',
+                        zIndex: 1,  // Keeps the sticky cell on top when scrolling
+                      }}
+                    >
+                      <Link
+                        className="link"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSelectedConsumer(consumerName);
+                          setOpenConsumer(true);
+                        }}
+                        to={''}
+                      >
+                        {consumerName}
+                      </Link>
+                    </TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, padding: '8px', fontSize: '0.875rem' }}>Some Data</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, padding: '8px', fontSize: '0.875rem' }}>More Data</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-        {/* <div id="consumerlist">
-        <h2>Consumer List</h2>
-        <ul className="connection-ul">
-          {consumers.map(consumerName => (
-            <li className="list" key={consumerName}>
-              <Link className="link" onClick={(e) => {
-                handleSelectedConsumer(consumerName)
-                setOpenConsumer(true)
-              }} to={''}>
-                {consumerName}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div> */}
+          {/* Flex container for the button and pagination */}
+          <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', marginTop: 2, marginLeft: 6 }}>
+            {/* Left-aligned button */}
+            <Box sx={{ flex: 'none' }}>
+              <Button variant="contained"
+                className="connectionButton"
+                onClick={() => setOpenForm(true)}
+                style={{
+                  fontFamily: "Montserrat", 
+                  fontWeight: 400
+                  // padding: '4px 4px 4px 4px',
+                  // fontSize: '0.7rem',
+                  // width: 'auto',
+                  // maxWidth: '350px',  // Adjusted width
+                  // minWidth: '150px',
+                  // border: '2px solid #331E14',
+                  // color: '#331E14',
+                  // borderRadius: '10px',
+                }}
+              >
+                Create New Consumer
+              </Button>
+            </Box>
+
+            {/* Right-aligned pagination */}
+            <Box sx={{ flex: 'none' }}>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={consumers.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                sx={{
+                  '& .MuiTablePagination-toolbar': { minHeight: '36px' },
+                  '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
+                    fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
+                  },
+                }}
+              />
+            </Box>
+          </Box>
+        </div>
+
+
+        {selectedConsumer && openConsumer &&
+          <>
+            <Consumer
+              setOpenConsumer={setOpenConsumer}
+              openConsumer={openConsumer}
+              handleDeleteConsumer={handleDeleteConsumer}
+              selectedConsumer={selectedConsumer} />
+          </>}
+        {openForm &&
+          <ConsumerForm
+            setConsumers={setConsumers}
+            setOpenForm={setOpenForm}
+            openForm={openForm}
+            setError={setError}
+            setErrorMsg={setErrorMsg}
+            setSuccess={setSuccess}
+            setSuccessMsg={setSuccessMsg}
+          />}
       </div>
-
-      {selectedConsumer && openConsumer &&
-        <>
-          <Consumer
-            setOpenConsumer={setOpenConsumer}
-            openConsumer={openConsumer}
-            handleDeleteConsumer={handleDeleteConsumer}
-            selectedConsumer={selectedConsumer} />
-        </>}
-      {openForm &&
-        <ConsumerForm
-          setConsumers={setConsumers}
-          setOpenForm={setOpenForm}
-          openForm={openForm}
-          setError={setError}
-          setErrorMsg={setErrorMsg}
-          setSuccess={setSuccess}
-          setSuccessMsg={setSuccessMsg}
-        />}
-    </div>
+    </>
   )
 }

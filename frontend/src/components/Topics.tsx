@@ -94,8 +94,8 @@ export const Topics = () => {
           />
         )}
         <div id="sourcelist">
-          <h2>Topic List</h2>
-          <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto' }}>
+          <h1>Topic List</h1>
+          <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
               {/* <TableHead>
                 <TableRow>
@@ -132,10 +132,9 @@ export const Topics = () => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             sx={{
-              mr: 9.5,
               '& .MuiTablePagination-toolbar': { minHeight: '36px' },
-              '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
-                fontSize: '0.75rem',
+                '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
+                  fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
               },
             }}
           />

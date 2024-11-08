@@ -19,7 +19,7 @@ export const getConsumerByGroupId = async (groupId: string) => {
     const consumerDetails: { rows: ConsumerDetails[] } = await query(`SELECT 
       name,
       description,
-      endpoint_url,
+      tumbleweed_endpoint,
       kafka_client_id,
       kafka_broker_endpoints,
       kafka_group_id,
@@ -40,7 +40,7 @@ export const getConsumerByName = async (name: string) => {
     const consumerDetails: { rows: ConsumerDetails[] } = await query(`SELECT 
       name,
       description,
-      endpoint_url,
+      tumbleweed_endpoint,
       kafka_client_id,
       kafka_broker_endpoints,
       kafka_group_id,
@@ -61,14 +61,13 @@ export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBroke
     const newConsumer = await query(`INSERT INTO consumers (
       name,
       description,
-      endpoint_url,
+      tumbleweed_endpoint,
       kafka_client_id,
       kafka_broker_endpoints,
       kafka_group_id,
       subscribed_topics)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING name, 
-      endpoint_url,
       subscribed_topics`,
       [
         consumerData.name,
@@ -111,7 +110,7 @@ const getBackendHostAddressAndPort = () => {
     }
   }
   
-  return `localhost:${portFromServer}`;
+  return `localhost:${portFromServer}`; // fallback
 }
 
 export const getConsumerConnectionURI = (groupID: string) => {

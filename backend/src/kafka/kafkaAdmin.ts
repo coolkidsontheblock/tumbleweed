@@ -4,12 +4,11 @@ import dotenv from 'dotenv';
 import { format } from 'path';
 dotenv.config();
 
-const KafkaBrokerEndpointsString = process.env.KAFKA_BROKER_ENDPOINTS;
+const KafkaBrokerEndpoints = process.env.KAFKA_BROKER_ENDPOINTS;
 
-if (!KafkaBrokerEndpointsString) {
-  throw new Error("Kafka broker endpoints are not defined");
+if (!KafkaBrokerEndpoints) {
+  throw new Error("Kafka broker endpoints are not defined!");
 }
-const KafkaBrokerEndpoints: string[] = JSON.parse(KafkaBrokerEndpointsString);
 
 const kafka = new Kafka({
   clientId: 'tumbleweed-admin-fetch',
