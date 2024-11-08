@@ -15,7 +15,7 @@ export type SourceData = Omit<SourceInput, 'database_password'> & {
 export interface ConsumerDetails {
   name: string;
   description: string;
-  endpoint_URL: string;
+  endpoint_url: string;
   kafka_client_id: string;
   kafka_broker_endpoints: string;
   kafka_group_id: string;

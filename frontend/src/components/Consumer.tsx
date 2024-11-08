@@ -53,7 +53,7 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
                   </TableRow>
                   <TableRow>
                     <TableCell>Endpoint URL</TableCell>
-                    <TableCell>{selectedConsumer.endpoint_URL}</TableCell>
+                    <TableCell>{selectedConsumer.endpoint_url}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>Kafka Client Id</TableCell>

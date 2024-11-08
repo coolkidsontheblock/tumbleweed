@@ -116,7 +116,7 @@ export const Sources = () => {
           />
         )}
         <div id="sourcelist">
-          <h2>Source List</h2>
+          <h1>Source List</h1>
           <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
               {/* <TableHead>

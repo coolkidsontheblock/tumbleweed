@@ -9,6 +9,7 @@ process.on('exit', () => {
   });
 });
 
-app.listen(PORT, () => {
+export const server = app.listen(PORT, () => {
   console.log(`[server]: Server is running on PORT ${PORT}`);
-})
+});
+

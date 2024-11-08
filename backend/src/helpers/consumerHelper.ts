@@ -1,6 +1,8 @@
 import { PGSourceDetails, DebeziumConnector, PGDetailsNoPW } from "../types/sourceTypes";
 import { ConsumerDetails, ConsumerName } from "../types/consumerTypes";
 import { query } from '../database/pg';
+import * as os from 'os';
+import { server } from '../index';
 
 export const getAllConsumers = async () => {
   try {
@@ -17,7 +19,7 @@ export const getConsumerByGroupId = async (groupId: string) => {
     const consumerDetails: { rows: ConsumerDetails[] } = await query(`SELECT 
       name,
       description,
-      endpoint_URL,
+      endpoint_url,
       kafka_client_id,
       kafka_broker_endpoints,
       kafka_group_id,
@@ -38,7 +40,7 @@ export const getConsumerByName = async (name: string) => {
     const consumerDetails: { rows: ConsumerDetails[] } = await query(`SELECT 
       name,
       description,
-      endpoint_URL,
+      endpoint_url,
       kafka_client_id,
       kafka_broker_endpoints,
       kafka_group_id,
@@ -54,12 +56,12 @@ export const getConsumerByName = async (name: string) => {
   }
 };
 
-export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBrokerEndpoints: string[]) => {
+export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBrokerEndpoints: string[], tumbleweedEndpoint: string) => {
   try {
     const newConsumer = await query(`INSERT INTO consumers (
       name,
       description,
-      endpoint_URL,
+      endpoint_url,
       kafka_client_id,
       kafka_broker_endpoints,
       kafka_group_id,
@@ -71,7 +73,7 @@ export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBroke
       [
         consumerData.name,
         consumerData.description,
-        consumerData.endpoint_URL,
+        tumbleweedEndpoint,
         consumerData.kafka_client_id,
         kafkaBrokerEndpoints,
         consumerData.kafka_group_id,
@@ -91,4 +93,28 @@ export const deleteConsumerByName = async (name: string) => {
     console.error(`There was an error deleting connector from the database: ${error}`);
     throw error;
   }
+}
+
+const getBackendHostAddressAndPort = () => {
+  const portFromServer = (server.address() as any).port;
+  const interfaces = os.networkInterfaces();
+  
+  for (const interfaceName in interfaces) {
+    const addresses = interfaces[interfaceName];
+    
+    if (addresses) {
+      for (const addressInfo of addresses) {
+        if (addressInfo.family === 'IPv4' && !addressInfo.internal) {
+          return `${addressInfo.address}:${portFromServer}`;
+        }
+      }
+    }
+  }
+  
+  return `localhost:${portFromServer}`;
+}
+
+export const getConsumerConnectionURI = (groupID: string) => {
+  const hostAddress = getBackendHostAddressAndPort();
+  return `${hostAddress}/tumbleweed/${groupID}`
 }

@@ -11,6 +11,6 @@ app.use(cors());
 app.use('/sources', sourceRouter);
 app.use('/consumers', consumerRouter);
 app.use('/topics', topicRouter);
-app.use('/kafka', kafkaRouter);
+app.use('/tumbleweed', kafkaRouter);
 
 export default app;
