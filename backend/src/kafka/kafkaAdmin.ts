@@ -12,7 +12,7 @@ if (!KafkaBrokerEndpoints) {
 
 const kafka = new Kafka({
   clientId: 'tumbleweed-admin-fetch',
-  brokers: KafkaBrokerEndpoints,
+  brokers: JSON.parse(KafkaBrokerEndpoints),
 });
 
 export const getTopicsFromKafka = async () => {
