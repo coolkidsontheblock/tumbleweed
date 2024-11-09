@@ -18,7 +18,7 @@ export const Topics = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
     const fetchSources = async () => {
@@ -56,7 +56,7 @@ export const Topics = () => {
     }
   }
 
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 
@@ -95,17 +95,20 @@ export const Topics = () => {
         )}
         <div id="sourcelist">
           <h1>Topic List</h1>
-          <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
+          <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
-              {/* <TableHead>
+            <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Topic Name</TableCell>
+                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
+                    Name
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribers</TableCell>
                 </TableRow>
-              </TableHead> */}
+              </TableHead>
               <TableBody>
                 {currentTopics.map(topicName => (
                   <TableRow key={topicName}>
-                    <TableCell sx={{ padding: '8px', fontSize: '0.875rem' }}>
+                    <TableCell sx={{fontSize: '0.875rem' }}>
                       <Link
                         className="link"
                         onClick={(e) => {
@@ -118,6 +121,7 @@ export const Topics = () => {
                         {topicName}
                       </Link>
                     </TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>Some Data</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

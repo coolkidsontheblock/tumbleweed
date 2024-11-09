@@ -166,12 +166,13 @@ export const ConsumerForm = ({
             sx={{ 
               marginRight: '10px',
               fontFamily: "Montserrat",
-                  fontWeight: 400,
-                  // border: '3px solid #331E14',
-                  backgroundColor: '#70AF85',
-                  '&:hover': {
-                    backgroundColor: '#F58B33', // Change color on hover
-                  }, 
+              fontWeight: 400,
+              borderRadius: '30px',
+              // border: '3px solid #331E14',
+              backgroundColor: '#70AF85',
+              '&:hover': {
+                backgroundColor: '#F58B33', // Change color on hover
+              }, 
               }}>
             Connect
           </Button>
@@ -179,13 +180,14 @@ export const ConsumerForm = ({
             onClick={handleCloseModal}
             sx={{ 
               fontFamily: "Montserrat",
-                  fontWeight: 400,
-                  border: '1px solid #70AF85',
-                  color: '#70AF85',
-                  '&:hover': {
-                    border: '1px solid #F58B33',
-                    color: '#F58B33'
-                  }, 
+              fontWeight: 400,
+              borderRadius: '30px',
+              border: '1px solid #70AF85',
+              color: '#70AF85',
+              '&:hover': {
+                border: '1px solid #F58B33',
+                color: '#F58B33'
+              }, 
               }}>
             Cancel
           </Button>
