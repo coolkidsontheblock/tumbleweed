@@ -142,7 +142,7 @@ services:
 
   backend:
     build:
-      context: ../backend
+      context: ..
       dockerfile: Dockerfile
     env_file:
       - ../backend/.env
@@ -150,12 +150,14 @@ services:
       NODE_ENV: production
     ports:
       - 3001:3001
-  frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
-    ports:
-      - 5173:5173
+
+  # frontend:
+  #   build:
+  #     context: ../frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 5173:5173
+
   db:
     container_name: db
     image: postgres

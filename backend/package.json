@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r first ../backend",
+    "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development nodemon src/index.ts",
-    "start": "npm run build:ui && NODE_ENV=production ts-node src/index.ts",
+    "start": "NODE_ENV=production ts-node src/index.ts",
     "tsc": "tsc"
   },
   "keywords": [],

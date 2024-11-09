@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { TopicData } from "../types/types";
-import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
 
 
 interface TopicProps {
