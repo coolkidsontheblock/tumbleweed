@@ -180,3 +180,25 @@ a {
 #sourcelist, #consumerlist {
   margin-right: 100px;
 }
+
+#topic-fieldset {
+  padding: 10px; /* Adds padding inside the fieldset for overall spacing */
+  border-radius: 10px;
+  border: 1px solid #70AF85;
+  font-size: 14px;
+}
+
+#topic-fieldset legend {
+  padding: 0 10px; /* Adjusts padding within the legend itself */
+  font-size: 1.2em; /* Optional: Increase font size for visibility */
+}
+
+.topic-label input[type="checkbox"] {
+  accent-color: #70AF85; /* Set the accent color for supported browsers */
+  margin-right: 5px; /* Adds spacing between the checkbox and label */
+}
+
+.topic-label input[type="checkbox"]:checked {
+  background-color: #70AF85; /* Custom color when checked */
+  border-color: #70AF85;
+}

@@ -96,14 +96,38 @@ export const Topics = () => {
         )}
         <div id="sourcelist">
           <h1>Topic List</h1>
-          <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="consumer list table">
+          <TableContainer component={Paper} 
+            sx={{
+              borderRadius: '15px',
+              maxWidth: '100%',
+              overflowX: 'auto',
+              marginLeft: "50px",
+              marginRight: "50px",
+              boxSizing: 'border-box'
+            }}
+          >
+            <Table
+              sx={{ minWidth: 650 }}
+              size="small"
+              aria-label="consumer list table"
+            >
             <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
+                  <TableCell
+                  sx={{
+                    fontFamily: "Montserrat",
+                    fontWeight: 700, position: 'sticky',
+                    left: 0,
+                    backgroundColor: '#fff',
+                    zIndex: 1
+                  }}>
                     Name
                   </TableCell>
-                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribers</TableCell>
+                  <TableCell sx={{
+                    fontFamily: "Montserrat",
+                    fontWeight: 700
+                    }}
+                  >Subscribers</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -122,7 +146,14 @@ export const Topics = () => {
                         {topicName}
                       </Link>
                     </TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>Some Data</TableCell>
+                    <TableCell
+                      sx={{
+                        fontFamily: "Montserrat",
+                        fontWeight: 400,
+                        fontSize: '0.875rem'
+                      }}>
+                      Some Data
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

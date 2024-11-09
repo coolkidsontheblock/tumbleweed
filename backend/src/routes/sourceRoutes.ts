@@ -1,6 +1,7 @@
 import axios from 'axios';
 import express from 'express';
 import { getConfigData, postConfigDataToDB, getConnectorByName, deleteConnectorByName } from '../helpers/sourceHelper';
+import { formatDateForFrontend } from '../helpers/consumerHelper';
 import { PGDetailsNoPW } from '../types/sourceTypes';
 import { validateSourceDetails } from '../helpers/validation';
 import { ConnectorError } from '../utils/errors';
@@ -9,10 +10,12 @@ const router = express.Router();
 
 // Get All Sources Route => String Array of Sources
 router.get('/', async (req, res, next) => {
-  try {
-     
+  try {     
+    // const destination = 'http://localhost:8083/connectors';
 
-    const destination = 'http://connect:8083/connectors';
+    const destination = process.env.NODE_ENV === 'production'
+      ? 'http://connect:8083/connectors' 
+      : 'http://localhost:8083/connectors';
 
     const { data } = await axios.get(destination);
     res.status(200).send(data);
@@ -34,7 +37,7 @@ router.get('/:source_name', async (req, res, next) => {
       console.log("connector: ", connector)
 
       // the destination where we are getting the info is from kafka and not our database with the encrypted pw
-      const destination = `http://connect:8083/connectors/${connector.name}`;
+      const destination = `http://localhost:8083/connectors/${connector.name}`;
       const { data } = await axios.get(destination);
       const basicConnectorInfo: PGDetailsNoPW = {
         name: data.name,
@@ -44,7 +47,7 @@ router.get('/:source_name', async (req, res, next) => {
         database_user: data.config["database.user"],
         database_dbname: data.config["database.dbname"],
         database_server_name: data.config["database.server.name"],
-        date_created: connector.date_created,
+        date_created: formatDateForFrontend(connector.date_created),
       }
       res.status(200).send({
         message: `Connector '${data.name}' Found.`,

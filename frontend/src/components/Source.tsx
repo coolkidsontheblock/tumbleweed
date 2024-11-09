@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { SourceData } from "../types/types"
-// import { Box, Modal } from "@mui/material";
+
 import {
   Modal,
   Box,
@@ -34,7 +34,6 @@ const style = {
   p: 4,
   borderRadius: '15px',
 };
-
 
 export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceData }: SourceProps) => {
   const handleCloseModal = () => {
