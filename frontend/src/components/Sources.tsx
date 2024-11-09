@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
 import { SuccessSnack } from "./SuccessSnack";
 import { Loading } from './Loading';
+import { ZodError } from 'zod';
 import { Box,
   Table,
   TableBody,
@@ -18,9 +19,6 @@ import { Box,
   TableHead,
   Button
 } from '@mui/material';
-
-
-
 
 export const Sources = () => {
   const [sources, setSources] = useState<string[]>([]);
@@ -64,6 +62,8 @@ export const Sources = () => {
       setError(true);
       if (error instanceof Error) {
         setErrorMsg(error.message);
+      } else if (error instanceof ZodError) {
+        setErrorMsg(error.errors[0].message);
       } else {
         setErrorMsg("An unknown error occurred");
       }
