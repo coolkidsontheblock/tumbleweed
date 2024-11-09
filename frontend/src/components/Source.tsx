@@ -47,7 +47,7 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
           <div>
             <h2>Source Information</h2>
-            <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '4px 8px', fontSize: '0.875rem' } }}>
+            <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '8px 8px', fontSize: '0.875rem' } }}>
               <Table sx={{ minWidth: 650 }} aria-label="source information table">
                 {/* <TableHead>
                   <TableRow>
@@ -80,40 +80,28 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
                     <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Username</TableCell>
                     <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_user}</TableCell>
                   </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Created</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.date_created}</TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
           </div>
-          <Button variant="contained" className="connectionButton" 
+          <Button variant="contained" 
             onClick={handleDeleteSource}
-            style={{
-              fontFamily: "Montserrat", 
-              fontWeight: 400
-              // padding: '4px 4px 4px 4px',
-              // fontSize: '0.7rem',
-              // width: '100%',
-              // maxWidth: '685px', 
-              // border: '2px solid #331E14', 
-              // color: '#331E14',
-              // borderRadius: '10px',
+            sx={{
+              fontFamily: "Montserrat",
+              fontWeight: 400,
+              borderRadius: '30px',
+              // border: '3px solid #331E14',
+              backgroundColor: '#70AF85',
+              '&:hover': {
+                backgroundColor: '#F58B33', // Change color on hover
+              },
             }}>Delete Source</Button>
         </Box>
       </Modal>
-      // <Modal open={openSource} onClose={handleCloseModal}>
-      //   <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
-      //     <div>
-      //       <h2>Source Information</h2>
-      //       <ul className="connectiondetails">
-      //         <li>Connector Name: {sourceData.name}</li>
-      //         <li>Database Hostname: {sourceData.database_hostname}</li>
-      //         <li>Database Port: {sourceData.database_port}</li>
-      //         <li>Database Name: {sourceData.database_dbname}</li>
-      //         <li>Database Server Name: {sourceData.database_server_name}</li>
-      //         <li>Database Username: {sourceData.database_user}</li>
-      //       </ul>
-      //     </div>
-      //   </Box>
-      // </Modal>
     )
   }
 }

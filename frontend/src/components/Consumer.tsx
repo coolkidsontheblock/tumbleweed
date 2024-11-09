@@ -43,7 +43,7 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
           <div>
             <h2>Consumer Details</h2>
-            <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '4px 8px', fontSize: '0.875rem' } }}>
+            <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '8px 8px', fontSize: '0.875rem' } }}>
               <Table sx={{ width: '100%' }} aria-label="consumer information table">
                 {/* <TableHead>
                   <TableRow>
@@ -92,18 +92,17 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
               </Table>
             </TableContainer>
           </div>
-            <Button variant="contained" className="connectionButton" 
+            <Button variant="contained"
               onClick={handleDeleteConsumer}
-              style={{
-                fontFamily: "Montserrat", 
-                fontWeight: 400
-                // padding: '4px 4px 4px 4px',
-                // fontSize: '0.7rem',
-                // width: '100%',
-                // maxWidth: '685px', 
-                // border: '2px solid #331E14', 
-                // color: '#331E14',
-                // borderRadius: '10px',
+              sx={{
+                fontFamily: "Montserrat",
+                fontWeight: 400,
+                borderRadius: '30px',
+                // border: '3px solid #331E14',
+                backgroundColor: '#70AF85',
+                '&:hover': {
+                  backgroundColor: '#F58B33', // Change color on hover
+                },
               }}>Delete Consumer</Button>
         </Box >
       </Modal >

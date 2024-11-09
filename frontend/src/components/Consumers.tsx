@@ -20,7 +20,7 @@ export const Consumers = () => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openConsumer, setOpenConsumer] = useState<boolean>(false);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export const Consumers = () => {
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset to the first page when rows per page is changed
+    setPage(0); 
   };
 
   const currentConsumers = consumers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -115,8 +115,7 @@ export const Consumers = () => {
         )}
         <div id="consumerlist">
           <h1>Consumer List</h1>
-          {/* Table container with overflow */}
-          <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
+          <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
             <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="consumer list table">
               <TableHead>
                 <TableRow>
@@ -125,7 +124,6 @@ export const Consumers = () => {
                   </TableCell>
                   <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
                   <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribed Topics</TableCell>
-                  {/* Add other columns as needed */}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -133,12 +131,11 @@ export const Consumers = () => {
                   <TableRow key={consumerName}>
                     <TableCell
                       sx={{
-                        padding: '8px',
                         fontSize: '0.875rem',
                         position: 'sticky',
                         left: 0,
                         backgroundColor: '#fff',
-                        zIndex: 1,  // Keeps the sticky cell on top when scrolling
+                        zIndex: 1, 
                       }}
                     >
                       <Link
@@ -153,39 +150,34 @@ export const Consumers = () => {
                         {consumerName}
                       </Link>
                     </TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, padding: '8px', fontSize: '0.875rem' }}>Some Data</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, padding: '8px', fontSize: '0.875rem' }}>More Data</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>Some Data</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>More Data</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
 
-          {/* Flex container for the button and pagination */}
           <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', marginTop: 2, marginLeft: 6 }}>
-            {/* Left-aligned button */}
             <Box sx={{ flex: 'none' }}>
               <Button variant="contained"
                 className="connectionButton"
                 onClick={() => setOpenForm(true)}
-                style={{
-                  fontFamily: "Montserrat", 
-                  fontWeight: 400
-                  // padding: '4px 4px 4px 4px',
-                  // fontSize: '0.7rem',
-                  // width: 'auto',
-                  // maxWidth: '350px',  // Adjusted width
-                  // minWidth: '150px',
-                  // border: '2px solid #331E14',
-                  // color: '#331E14',
-                  // borderRadius: '10px',
+                sx={{
+                  fontFamily: "Montserrat",
+                  fontWeight: 400,
+                  borderRadius: '30px',
+                  // border: '3px solid #331E14',
+                  backgroundColor: '#70AF85',
+                  '&:hover': {
+                    backgroundColor: '#F58B33', // Change color on hover
+                  },
                 }}
               >
                 Create New Consumer
               </Button>
             </Box>
 
-            {/* Right-aligned pagination */}
             <Box sx={{ flex: 'none' }}>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}

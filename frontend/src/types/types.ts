@@ -1,7 +1,7 @@
 export interface SourceInput {
   name: string;
   database_hostname: string;
-  database_port: number;
+  database_port: number | string;
   database_user: string;
   database_password: string;
   database_dbname: string;
@@ -10,6 +10,7 @@ export interface SourceInput {
 
 export type SourceData = Omit<SourceInput, 'database_password'> & {
   plugin_name: string;
+  date_created: string;
 }
 
 export interface ConsumerDetails {

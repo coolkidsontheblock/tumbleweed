@@ -43,7 +43,8 @@ router.get('/:source_name', async (req, res, next) => {
         database_port: data.config["database.port"],
         database_user: data.config["database.user"],
         database_dbname: data.config["database.dbname"],
-        database_server_name: data.config["database.server.name"]
+        database_server_name: data.config["database.server.name"],
+        date_created: connector.date_created,
       }
       res.status(200).send({
         message: `Connector '${data.name}' Found.`,

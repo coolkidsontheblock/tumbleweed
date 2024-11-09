@@ -31,17 +31,20 @@ export const Sidebar = () => {
           },
         }}
       >
-        <Box
-          component="img"
-          src="/Transparent Logo.svg"
-          alt="Project Logo"
-          sx={{
-            width: '100%',
-            height: 'auto',
-            padding: 2,
-            boxSizing: 'border-box',
-          }}
-        />
+         <Link to="/" style={{ textDecoration: 'none' }}>
+          <Box
+            component="img"
+            src="/Transparent Logo.svg"
+            
+            alt="Project Logo"
+            sx={{
+              width: '100%',
+              height: 'auto',
+              padding: 2,
+              boxSizing: 'border-box',
+            }}
+          />
+        </Link>
         <List
           sx={{
             paddingY: 1,

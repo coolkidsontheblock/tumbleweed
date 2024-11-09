@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
 import { SuccessSnack } from "./SuccessSnack";
 import { Loading } from './Loading';
+import { ZodError } from 'zod';
 import { Box,
   Table,
   TableBody,
@@ -15,11 +16,9 @@ import { Box,
   TableRow,
   Paper,
   TablePagination,
+  TableHead,
   Button
 } from '@mui/material';
-
-
-
 
 export const Sources = () => {
   const [sources, setSources] = useState<string[]>([]);
@@ -32,7 +31,7 @@ export const Sources = () => {
   const [openSource, setOpenSource] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
     const fetchSources = async () => {
@@ -63,6 +62,8 @@ export const Sources = () => {
       setError(true);
       if (error instanceof Error) {
         setErrorMsg(error.message);
+      } else if (error instanceof ZodError) {
+        setErrorMsg(error.errors[0].message);
       } else {
         setErrorMsg("An unknown error occurred");
       }
@@ -126,23 +127,25 @@ export const Sources = () => {
         )}
         <div id="sourcelist">
           <h1>Source List</h1>
-          <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
+          <TableContainer component={Paper} sx={{borderRadius: '15px', maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
             <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="source list table">
-              {/* <TableHead>
+            <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Source Name</TableCell>
+                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
+                    Name
+                  </TableCell>
+                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
                 </TableRow>
-              </TableHead> */}
+              </TableHead>
               <TableBody sx={{marginRight: '100px'}}>
                 {currentSources.map(sourceName => (
                   <TableRow key={sourceName}>
                     <TableCell sx={{ 
-                      padding: '8px',
                       fontSize: '0.875rem',
                       position: 'sticky',
                       left: 0,
                       backgroundColor: '#fff',
-                      zIndex: 1,  // Keeps the sticky cell on top when scrolling}}>
+                      zIndex: 1,
                     }}>
                       <Link
                         className="link"
@@ -156,6 +159,7 @@ export const Sources = () => {
                         {sourceName}
                       </Link>
                     </TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>Some Data</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -175,17 +179,15 @@ export const Sources = () => {
                 variant="contained"
                 className="connectionButton" 
                 onClick={() => setOpenSourceForm(true)}
-                style={{
-                  fontFamily: "Montserrat", 
-                  fontWeight: 400
-                //   padding: '4px 4px 4px 4px',
-                //   fontSize: '0.7rem',
-                //   width: 'auto',
-                //   maxWidth: '200px', 
-                //   border: '2px solid #331E14', 
-                //   color: '#331E14',
-                //   borderRadius: '10px',
-                //   marginLeft: 95,
+                sx={{
+                  fontFamily: "Montserrat",
+                  fontWeight: 400,
+                  borderRadius: '30px',
+                  // border: '3px solid #331E14',
+                  backgroundColor: '#70AF85',
+                  '&:hover': {
+                    backgroundColor: '#F58B33'
+                  },
                 }}
                 >Create New Source</Button>
             </Box>

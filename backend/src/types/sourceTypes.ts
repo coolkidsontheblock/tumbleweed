@@ -6,7 +6,8 @@ export interface PGSourceDetails {
   database_user: string,
   database_password: string,
   database_dbname: string,
-  database_server_name: string
+  database_server_name: string,
+  date_created: string
 }
 
 export type PGDetailsNoPW = Omit<PGSourceDetails, "database_password">;
