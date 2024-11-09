@@ -5,6 +5,8 @@ import { Button, Box, Modal, TextField } from "@mui/material";
 import { validateInput } from "../utils/validation";
 import { getTopics } from "../services/topicService";
 import { TopicSelect } from "./TopicSelect";
+import { textFieldTheme } from '../styles/Theme';
+import { ThemeProvider } from '@mui/material/styles';
 
 interface ConsumerFormProps {
   setConsumers: React.Dispatch<React.SetStateAction<string[]>>;
@@ -116,6 +118,7 @@ export const ConsumerForm = ({
   };
 
   return (
+    <ThemeProvider theme={textFieldTheme}>
     <Modal open={openForm} onClose={handleCloseModal}>
       <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }} component="form">
         <h1 style={{ textAlign: 'center' }}>Connect a new consumer</h1>
@@ -157,9 +160,10 @@ export const ConsumerForm = ({
           helperText={errors.kafka_group_id && "Kafka group id is required and needs to be unique"}
           onChange={(event) => setKafkaGroupId(event.target.value)}
         />
-
-        <TopicSelect topics={topics} setTopics={setTopics} />
-
+        <TopicSelect
+          topics={topics}
+          setTopics={setTopics}
+        />
         <Box>
         <Button variant="contained" 
             onClick={handleNewConsumer} 
@@ -194,5 +198,6 @@ export const ConsumerForm = ({
         </Box>
       </Box>
     </Modal>
+    </ThemeProvider>
   );
 };

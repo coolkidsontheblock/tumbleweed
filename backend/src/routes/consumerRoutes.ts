@@ -1,6 +1,6 @@
 import { validateConsumerData } from '../helpers/validation';
 import express from 'express';
-import { getAllConsumers, postConsumerToDB, getConsumerByName, deleteConsumerByName, getConsumerConnectionURI } from '../helpers/consumerHelper';
+import { getAllConsumers, postConsumerToDB, getConsumerByName, deleteConsumerByName, getConsumerConnectionURI, formatDateForFrontend } from '../helpers/consumerHelper';
 import { ConsumerDetails } from '../types/consumerTypes';
 import { getKafkaBrokerEndpoints } from '../kafka/kafkaAdmin'
 import { addtoTopicsDB, deleteConsumerFromSubscribedTopics, deleteSubscriberlessTopics } from '../helpers/topicHelper';
@@ -42,7 +42,7 @@ router.get('/:consumer_name', async (req, res, next) => {
         kafka_group_id: consumer.kafka_group_id,
         subscribed_topics: consumer.subscribed_topics,
         received_message_count: consumer.received_message_count,
-        date_created: consumer.date_created
+        date_created: formatDateForFrontend(consumer.date_created)
       }
       res.status(200).send({
         message: `Consumer '${consumer.name}' Found.`,

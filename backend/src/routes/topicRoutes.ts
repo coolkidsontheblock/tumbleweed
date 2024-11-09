@@ -1,6 +1,7 @@
 import express from 'express';
-import { getSubscribedConsumersAndDate, sortArrayByLowerCase } from '../helpers/topicHelper';
+import { getSubscribedConsumersAndDate, getSubscribersAndDateForAllTopics, sortArrayByLowerCase } from '../helpers/topicHelper';
 import { getTopicsFromKafka, getTopicMessageCount } from '../kafka/kafkaAdmin';
+import { formatDateForFrontend } from '../helpers/consumerHelper';
 // import dotenv from 'dotenv';
 // dotenv.config();
 
@@ -9,9 +10,11 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     const allTopics = await getTopicsFromKafka();
+    const topicInfo = await getSubscribersAndDateForAllTopics(allTopics);
+    
     res.status(200).send({
       message: `${allTopics.length} topics Found.`,
-      data: allTopics,
+      data: topicInfo,
     });
   } catch (error) {
     // res.status(400).send(`${error}`)
@@ -37,7 +40,7 @@ router.get('/:topic_name', async (req, res, next) => {
           topic_message_count: topicMessageCount,
           subscribed_consumers: sortArrayByLowerCase(topicInfo.subscribed_consumers),
           subscriber_count: topicInfo.subscribed_consumers.length,
-          date_added: topicInfo.date_added,
+          date_added: formatDateForFrontend(topicInfo.date_added),
         }
       });
     } else {

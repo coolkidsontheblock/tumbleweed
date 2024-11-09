@@ -1,5 +1,6 @@
 import { TopicDetails, TopicName } from "../types/topicTypes";
 import { ConsumerTopicDetails } from "../types/consumerTypes";
+import { formatDateForFrontend } from "./consumerHelper";
 import { query } from '../database/pg';
 
 const getAllTopicsFromDB = async () => {
@@ -90,6 +91,18 @@ const getSubscribedTopics = async (consumerName: string) => {
   } catch (error) {
     console.error('There was an error getting filtered topics for subscribed consumers, ', error)
   }
+};
+
+export const getSubscribersAndDateForAllTopics = async (topics: string[]) => {
+  const topicPromises = topics.map(async (topic) => {
+    const topicObj = await getSubscribedConsumersAndDate(topic)
+    return {
+      topic: topic,
+      subscribed_consumers: topicObj.subscribed_consumers,
+      date_added: formatDateForFrontend(topicObj.date_added),
+    }
+  });
+    return await Promise.all(topicPromises);
 };
 
 export const getSubscribedConsumersAndDate = async (topic: string) => {
