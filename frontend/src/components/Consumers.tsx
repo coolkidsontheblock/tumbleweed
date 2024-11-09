@@ -83,7 +83,7 @@ export const Consumers = () => {
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset to the first page when rows per page is changed
+    setPage(0); 
   };
 
   const currentConsumers = consumers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -115,7 +115,6 @@ export const Consumers = () => {
         )}
         <div id="consumerlist">
           <h1>Consumer List</h1>
-          {/* Table container with overflow */}
           <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
             <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="consumer list table">
               <TableHead>
@@ -125,7 +124,6 @@ export const Consumers = () => {
                   </TableCell>
                   <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
                   <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribed Topics</TableCell>
-                  {/* Add other columns as needed */}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -138,7 +136,7 @@ export const Consumers = () => {
                         position: 'sticky',
                         left: 0,
                         backgroundColor: '#fff',
-                        zIndex: 1,  // Keeps the sticky cell on top when scrolling
+                        zIndex: 1, 
                       }}
                     >
                       <Link
@@ -161,9 +159,7 @@ export const Consumers = () => {
             </Table>
           </TableContainer>
 
-          {/* Flex container for the button and pagination */}
           <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', marginTop: 2, marginLeft: 6 }}>
-            {/* Left-aligned button */}
             <Box sx={{ flex: 'none' }}>
               <Button variant="contained"
                 className="connectionButton"
@@ -182,7 +178,6 @@ export const Consumers = () => {
               </Button>
             </Box>
 
-            {/* Right-aligned pagination */}
             <Box sx={{ flex: 'none' }}>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}

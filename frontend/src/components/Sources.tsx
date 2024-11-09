@@ -146,7 +146,7 @@ export const Sources = () => {
                       position: 'sticky',
                       left: 0,
                       backgroundColor: '#fff',
-                      zIndex: 1,  // Keeps the sticky cell on top when scrolling}}>
+                      zIndex: 1,
                     }}>
                       <Link
                         className="link"
