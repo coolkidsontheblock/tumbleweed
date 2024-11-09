@@ -7,7 +7,7 @@ const singleSourceSchema = z.object({
   data: z.object({
     name: z.string(),
     database_hostname: z.string(),
-    database_port: z.number(),
+    database_port: z.string(),
     database_user: z.string(),
     database_dbname: z.string(),
     database_server_name: z.string(),

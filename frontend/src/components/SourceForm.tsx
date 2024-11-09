@@ -28,6 +28,8 @@ const style = {
   borderRadius: '15px',
 };
 
+
+
 export const SourceForm = ({
   setSources,
   setOpenSourceForm,
@@ -113,6 +115,27 @@ export const SourceForm = ({
           error={errors.connectorName}
           helperText={errors.connectorName && "Connector Name is required"}
           onChange={(event) => setConnectorName(event.target.value)}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '10px',
+            },
+            // Change label font and color
+            '& .MuiInputLabel-root': {
+              fontFamily: "Montserrat",
+              fontWeight: 400,
+              color: '#331E14',
+            },
+            // Change input text font and color
+            '& .MuiInputBase-input': {
+              fontFamily: "Montserrat",
+              fontWeight: 400,
+              color: '#331E14',
+            },
+            // Change the border color of the outline when focused
+            '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#F58B33', // Outline color when focused
+            },
+          }}
         />
 
         <TextField
@@ -189,6 +212,7 @@ export const SourceForm = ({
               marginRight: '10px',
               fontFamily: "Montserrat",
               fontWeight: 400,
+              borderRadius: '30px',
               backgroundColor: '#70AF85',
               '&:hover': {
                   backgroundColor: '#F58B33', // Change color on hover
@@ -200,13 +224,14 @@ export const SourceForm = ({
             onClick={handleCloseModal}
             sx={{ 
               fontFamily: "Montserrat",
-                  fontWeight: 400,
-                  border: '1px solid #70AF85',
-                  color: '#70AF85',
-                  '&:hover': {
-                    border: '1px solid #F58B33',
-                    color: '#F58B33'
-                  }, 
+              fontWeight: 400,
+              borderRadius: '30px',
+              border: '1px solid #70AF85',
+              color: '#70AF85',
+              '&:hover': {
+                border: '1px solid #F58B33',
+                color: '#F58B33'
+              }, 
               }}>
             Cancel
           </Button>

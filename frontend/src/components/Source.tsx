@@ -47,7 +47,7 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
           <div>
             <h2>Source Information</h2>
-            <TableContainer component={Paper} sx={{ maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '4px 8px', fontSize: '0.875rem' } }}>
+            <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '8px 8px', fontSize: '0.875rem' } }}>
               <Table sx={{ minWidth: 650 }} aria-label="source information table">
                 {/* <TableHead>
                   <TableRow>
@@ -93,6 +93,7 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
             sx={{
               fontFamily: "Montserrat",
               fontWeight: 400,
+              borderRadius: '30px',
               // border: '3px solid #331E14',
               backgroundColor: '#70AF85',
               '&:hover': {

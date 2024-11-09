@@ -20,7 +20,7 @@ export const Consumers = () => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openConsumer, setOpenConsumer] = useState<boolean>(false);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -115,7 +115,7 @@ export const Consumers = () => {
         )}
         <div id="consumerlist">
           <h1>Consumer List</h1>
-          <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
+          <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
             <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="consumer list table">
               <TableHead>
                 <TableRow>
@@ -131,7 +131,6 @@ export const Consumers = () => {
                   <TableRow key={consumerName}>
                     <TableCell
                       sx={{
-                        padding: '8px',
                         fontSize: '0.875rem',
                         position: 'sticky',
                         left: 0,
@@ -151,8 +150,8 @@ export const Consumers = () => {
                         {consumerName}
                       </Link>
                     </TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, padding: '8px', fontSize: '0.875rem' }}>Some Data</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, padding: '8px', fontSize: '0.875rem' }}>More Data</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>Some Data</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>More Data</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -167,6 +166,7 @@ export const Consumers = () => {
                 sx={{
                   fontFamily: "Montserrat",
                   fontWeight: 400,
+                  borderRadius: '30px',
                   // border: '3px solid #331E14',
                   backgroundColor: '#70AF85',
                   '&:hover': {
