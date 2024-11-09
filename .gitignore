@@ -1,7 +1,6 @@
 node_modules
 .env
 .DS_Store
-Dockerfile
-.dockerignore
+docker/postgres/data
 README.Docker.md
 dist
