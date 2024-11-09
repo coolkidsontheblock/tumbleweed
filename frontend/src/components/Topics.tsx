@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
 import { SuccessSnack } from "./SuccessSnack";
 import { Loading } from './Loading';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material';
 
 export const Topics = () => {
   const [topics, setTopics] = useState<string[]>();
@@ -55,6 +55,7 @@ export const Topics = () => {
       }
     }
   }
+
 
   const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);

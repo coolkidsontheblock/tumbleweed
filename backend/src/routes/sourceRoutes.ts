@@ -10,7 +10,9 @@ const router = express.Router();
 // Get All Sources Route => String Array of Sources
 router.get('/', async (req, res, next) => {
   try {
-    const destination = 'http://localhost:8083/connectors';
+     
+
+    const destination = 'http://connect:8083/connectors';
 
     const { data } = await axios.get(destination);
     res.status(200).send(data);
@@ -32,7 +34,7 @@ router.get('/:source_name', async (req, res, next) => {
       console.log("connector: ", connector)
 
       // the destination where we are getting the info is from kafka and not our database with the encrypted pw
-      const destination = `http://localhost:8083/connectors/${connector.name}`;
+      const destination = `http://connect:8083/connectors/${connector.name}`;
       const { data } = await axios.get(destination);
       const basicConnectorInfo: PGDetailsNoPW = {
         name: data.name,
@@ -60,7 +62,7 @@ router.get('/:source_name', async (req, res, next) => {
 router.post('/new_source', async (req, res, next) => {
   try {
     const sourceDetails = req.body;
-    const destination = 'http://localhost:8083/connectors';
+    const destination = 'http://connect:8083/connectors';
     const configData = getConfigData(sourceDetails);
     const connectors = await axios.get(destination);
 
@@ -107,7 +109,7 @@ router.delete('/:source_name', async (req, res, next) => {
     if (!connector) {
       throw new ConnectorError("No Connector by that name exists");
     } else {
-      const destination = `http://localhost:8083/connectors/${connector.name}`;
+      const destination = `http://connect:8083/connectors/${connector.name}`;
       await axios.delete(destination);
       await deleteConnectorByName(sourceName);
       res.status(201).send(`Connector '${connector.name}' deleted!`);
