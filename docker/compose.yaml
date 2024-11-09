@@ -140,26 +140,24 @@ services:
         CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       depends_on: [controller-1, controller-2, controller-3, kafka-1, kafka-2, kafka-3]
 
-  schema-registry:
-      image: confluentinc/cp-schema-registry:latest
-      environment:
-        SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19092,kafka-3:19092
-        SCHEMA_REGISTRY_HOST_NAME: schema-registry
-        SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081,http://localhost:8081
-      ports:
-        - 8081:8081
-      depends_on: [controller-1, controller-2, controller-3, kafka-1, kafka-2, kafka-3]
-
-  server:
+  backend:
     build:
-      context: ../backend
+      context: ..
       dockerfile: Dockerfile
     env_file:
-      - .env
+      - ../backend/.env
     environment:
       NODE_ENV: production
     ports:
       - 3001:3001
+
+  # frontend:
+  #   build:
+  #     context: ../frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 5173:5173
+
   db:
     container_name: db
     image: postgres
@@ -169,7 +167,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=userconfig
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
