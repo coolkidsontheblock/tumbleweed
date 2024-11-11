@@ -15,7 +15,8 @@ interface ConsumerProps {
   setOpenConsumer: Dispatch<SetStateAction<boolean>>;
   openConsumer: boolean;
   handleDeleteConsumer: () => void;
-  selectedConsumer: ConsumerDetails | null
+  selectedConsumer: ConsumerDetails | null;
+  setSelectedConsumer: Dispatch<ConsumerDetails | null>;
 }
 
 const style = {
@@ -32,8 +33,9 @@ const style = {
   borderRadius: '15px',
 };
 
-export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, selectedConsumer }: ConsumerProps) => {
+export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, selectedConsumer, setSelectedConsumer }: ConsumerProps) => {
   const handleCloseModal = () => {
+    setSelectedConsumer(null);
     setOpenConsumer(false);
   };
   if (selectedConsumer) {

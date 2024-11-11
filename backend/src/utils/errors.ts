@@ -6,6 +6,14 @@ export class ValidationError extends Error {
   }
 }
 
+export class InvalidCredentialsError extends Error {
+  public status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
 export class DatabaseError extends Error {
   public status: number;
   constructor(message: string) {

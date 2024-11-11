@@ -10,6 +10,6 @@ process.on('exit', () => {
 });
 
 export const server = app.listen(PORT, () => {
-  console.log(`[server]: Server is running on PORT ${PORT}`);
+  console.log(`[server]: Server is running on PORT ${PORT} in ${process.env.NODE_ENV === 'production' ? 'production mode' : 'development mode'}`);
 });
 

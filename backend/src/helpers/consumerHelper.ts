@@ -3,12 +3,25 @@ import { ConsumerDetails, ConsumerName } from "../types/consumerTypes";
 import { query } from '../database/pg';
 import * as os from 'os';
 import { server } from '../index';
+import axios from "axios";
 
-export const getAllConsumers = async () => {
+export const getAllConsumerInfo = async () => {
   try {
-    const consumers = await query(`SELECT name FROM consumers`);
-    const consumerNames = consumers.rows.map((consumer: ConsumerName) => consumer.name);
-    return consumerNames;
+    const consumers = await query(`SELECT
+      name,
+      description,
+      tumbleweed_endpoint,
+      kafka_client_id,
+      kafka_broker_endpoints,
+      kafka_group_id,
+      subscribed_topics,
+      received_message_count,
+      date_created 
+      FROM consumers`);
+    // const consumerNames = consumers.rows.map((consumer: ConsumerName) => consumer.name);
+    return consumers.rows.map((consumer: ConsumerDetails)  => ({
+      ...consumer, 
+      date_created: formatDateForFrontend(consumer.date_created)}))
   } catch (error) {
     console.error(`There was an error getting the consumers to the database: ${error}`);
   }
@@ -35,7 +48,7 @@ export const getConsumerByGroupId = async (groupId: string) => {
   }
 };
 
-export const getConsumerByName = async (name: string) => {
+export const getAllConsumersByName = async (name: string) => {
   try {
     const consumerDetails: { rows: ConsumerDetails[] } = await query(`SELECT 
       name,
@@ -56,7 +69,7 @@ export const getConsumerByName = async (name: string) => {
   }
 };
 
-export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBrokerEndpoints: string[], tumbleweedEndpoint: string) => {
+export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBrokerEndpoints: string[], tumbleweedEndpoint: string, kafkaClientId: string) => {
   try {
     const newConsumer = await query(`INSERT INTO consumers (
       name,
@@ -73,7 +86,7 @@ export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBroke
         consumerData.name,
         consumerData.description,
         tumbleweedEndpoint,
-        consumerData.kafka_client_id,
+        kafkaClientId,
         kafkaBrokerEndpoints,
         consumerData.kafka_group_id,
         consumerData.subscribed_topics,
@@ -94,28 +107,48 @@ export const deleteConsumerByName = async (name: string) => {
   }
 }
 
-const getBackendHostAddressAndPort = () => {
-  const portFromServer = (server.address() as any).port;
+const getBackendHostAddressAndPort = async () => {
+  const serverPort = (server.address() as any).port;
+  if (process.env.NODE_ENV === 'production') {
+    return await getPublicAddress(serverPort);
+  } else {
+    return getLocalAddress(serverPort);
+  }
+}
+
+const getLocalAddress = (serverPort: string) => {
   const interfaces = os.networkInterfaces();
-  
+
   for (const interfaceName in interfaces) {
     const addresses = interfaces[interfaceName];
     
     if (addresses) {
       for (const addressInfo of addresses) {
         if (addressInfo.family === 'IPv4' && !addressInfo.internal) {
-          return `${addressInfo.address}:${portFromServer}`;
+          return `${addressInfo.address}:${serverPort}`;
         }
       }
     }
   }
-  
-  return `localhost:${portFromServer}`; // fallback
+  return `localhost:${serverPort}`; // fallback
 }
 
-export const getConsumerConnectionURI = (groupID: string) => {
-  const hostAddress = getBackendHostAddressAndPort();
-  return `${hostAddress}/tumbleweed/${groupID}`
+const getPublicAddress = async (serverPort: string) => {
+  const getPublicIP = async () => {
+    try {
+      const response = await axios.get('https://api.ipify.org?format=json');
+      return response.data.ip;
+    } catch (error) {
+      console.error('Error fetching IP address:', error);
+    }
+  };
+  const publicIP = await getPublicIP();
+  return `${publicIP}:${serverPort}`;
+}
+
+export const getConsumerConnectionURI = async (groupID: string) => {
+  const hostAddress = await getBackendHostAddressAndPort();
+  return `http://${hostAddress}/tumbleweed/${groupID}`
 }
 
 export const formatDateForFrontend = (dateString: string) => {

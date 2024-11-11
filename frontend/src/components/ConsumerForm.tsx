@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createConsumer } from "../services/consumerService";
-import { BooleanObject, ConsumerInputDetails } from "../types/types";
+import { BooleanObject, ConsumerDetails, ConsumerInputDetails } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
 import { validateInput } from "../utils/validation";
 import { getTopics } from "../services/topicService";
@@ -9,7 +9,7 @@ import { textFieldTheme } from '../styles/Theme';
 import { ThemeProvider } from '@mui/material/styles';
 
 interface ConsumerFormProps {
-  setConsumers: React.Dispatch<React.SetStateAction<string[]>>;
+  setConsumers: React.Dispatch<React.SetStateAction<ConsumerDetails[]>>;
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   openForm: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,7 +43,6 @@ export const ConsumerForm = ({
 }: ConsumerFormProps) => {
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  // const [tumbleweedEndpoint, setTumbleweedEndpoint] = useState<string>('');
   const [kafkaClientId, setKafkaClientId] = useState<string>('');
   const [kafkaGroupId, setKafkaGroupId] = useState<string>('');
   const [errors, setErrors] = useState<BooleanObject>({});
@@ -54,7 +53,8 @@ export const ConsumerForm = ({
       try {
         const request = await getTopics()
         const topicObject: BooleanObject = {}
-        request.forEach(topic => topicObject[topic] = false)
+        const listOfTopics = request.data.map(topicObj => topicObj.topic);
+        listOfTopics.forEach(topic => topicObject[topic] = false)
         setTopics(topicObject);
       } catch (error) {
         console.error(error);
@@ -79,7 +79,6 @@ export const ConsumerForm = ({
       const consumerData: ConsumerInputDetails = {
         name: validateInput(name),
         description: description,
-        kafka_client_id: kafkaClientId,
         kafka_group_id: validateInput(kafkaGroupId),
         subscribed_topics: subscribedTopics
       };
@@ -140,14 +139,6 @@ export const ConsumerForm = ({
           label="Description (optional)"
           variant="outlined"
           onChange={(event) => setDescription(event.target.value)}
-        />
-
-        <TextField
-          fullWidth
-          id="kafkaClientId"
-          label="Kafka Client Id (optional)"
-          variant="outlined"
-          onChange={(event) => setKafkaClientId(event.target.value)}
         />
 
         <TextField

@@ -20,7 +20,6 @@ export const getTopicsFromKafka = async () => {
   try {
     await admin.connect();
     const topics = await admin.listTopics();
-    console.log(topics);
     if (!topics) {
       return [];
     } else {

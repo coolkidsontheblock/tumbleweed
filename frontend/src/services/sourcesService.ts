@@ -18,7 +18,7 @@ const singleSourceSchema = z.object({
 
 const sourceSchemaArray = z.array(z.string());
 
-const baseUrl = "http://localhost:3001/sources"
+const baseUrl = "http://localhost:3001/api/sources"
 
 const getSources = async () => {
   const res = await axios.get(baseUrl);

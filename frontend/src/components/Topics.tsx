@@ -1,4 +1,4 @@
-import { TopicResponse } from '../types/types';
+import { TopicResponse, TopicsData, TopicsResponse } from '../types/types';
 import { getTopics, getTopic } from "../services/topicService";
 import { TopicInfo } from './Topic';
 import { useEffect, useState } from "react";
@@ -6,11 +6,13 @@ import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
 import { SuccessSnack } from "./SuccessSnack";
 import { Loading } from './Loading';
+import { ZodError } from 'zod';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 
 export const Topics = () => {
-  const [topics, setTopics] = useState<string[]>();
-  const [selectedTopic, setSelectedTopic] = useState<TopicResponse | null>(null)
+  const [topics, setTopics] = useState<TopicsResponse | null>(null)
+  const [topicNames, setTopicNames] = useState<string[]>([]);
+  const [selectedTopic, setSelectedTopic] = useState<TopicsData | null>(null)
   const [error, setError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
@@ -24,50 +26,36 @@ export const Topics = () => {
     const fetchSources = async () => {
       try {
         const request = await getTopics();
+        console.log('requests', request)
+        const listOfTopics = request.data.map(topicObj => topicObj.topic);
+        setTopicNames(listOfTopics);
         setTopics(request);
-        setLoading(false);
+
       } catch (error) {
         console.error(error);
         setError(true);
-        if (error instanceof Error) {
-          setErrorMsg(error.message);
+        if (error instanceof ZodError) {
+          setErrorMsg('There was an error fetching the data. Please try again later.');
         } else {
           setErrorMsg("An unknown error occurred");
         }
       }
     }
-
+    
+    setLoading(false);
     fetchSources();
   }, [])
 
-  const handleSelectedTopic = async (source: string) => {
-    try {
-      const response = await getTopic(source);
-      console.log(response)
-      setSelectedTopic(response);
-    } catch (error) {
-      console.error(error);
-      setError(true);
-      if (error instanceof Error) {
-        setErrorMsg(error.message);
-      } else {
-        setErrorMsg("An unknown error occurred");
-      }
-    }
-  }
+  const currentTopics = topics?.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || [];
 
-
-  const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset to the first page when rows per page is changed
+    setPage(0);
   };
-
-  const currentTopics = topics?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || [];
-
 
   const handleCloseSnackbar = () => {
     setError(false);
@@ -96,84 +84,86 @@ export const Topics = () => {
         )}
         <div id="sourcelist">
           <h1>Topic List</h1>
-          <TableContainer component={Paper} 
-            sx={{
-              borderRadius: '15px',
-              maxWidth: '100%',
-              overflowX: 'auto',
-              marginLeft: "50px",
-              marginRight: "50px",
-              boxSizing: 'border-box'
-            }}
-          >
-            <Table
-              sx={{ minWidth: 650 }}
-              size="small"
-              aria-label="consumer list table"
+           {topicNames.length > 0 ?
+              <><TableContainer component={Paper}
+              sx={{
+                borderRadius: '15px',
+                maxWidth: '100%',
+                overflowX: 'auto',
+                marginLeft: "50px",
+                marginRight: "50px",
+                boxSizing: 'border-box'
+              }}
             >
-            <TableHead>
-                <TableRow>
-                  <TableCell
-                  sx={{
-                    fontFamily: "Montserrat",
-                    fontWeight: 700, position: 'sticky',
-                    left: 0,
-                    backgroundColor: '#fff',
-                    zIndex: 1
-                  }}>
-                    Name
-                  </TableCell>
-                  <TableCell sx={{
-                    fontFamily: "Montserrat",
-                    fontWeight: 700
-                    }}
-                  >Subscribers</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {currentTopics.map(topicName => (
-                  <TableRow key={topicName}>
-                    <TableCell sx={{fontSize: '0.875rem' }}>
-                      <Link
-                        className="link"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleSelectedTopic(topicName);
-                          setOpen(true);
-                        }}
-                        to={''}
-                      >
-                        {topicName}
-                      </Link>
-                    </TableCell>
+              <Table
+                sx={{ minWidth: 650 }}
+                size="small"
+                aria-label="consumer list table"
+              >
+                <TableHead>
+                  <TableRow>
                     <TableCell
                       sx={{
                         fontFamily: "Montserrat",
-                        fontWeight: 400,
-                        fontSize: '0.875rem'
+                        fontWeight: 700, position: 'sticky',
+                        left: 0,
+                        backgroundColor: '#fff',
+                        zIndex: 1
                       }}>
-                      Some Data
+                      Name
                     </TableCell>
+                    <TableCell sx={{
+                      fontFamily: "Montserrat",
+                      fontWeight: 700
+                    }}
+                    >Subscriber Count</TableCell>
+                    <TableCell sx={{
+                      fontFamily: "Montserrat",
+                      fontWeight: 700
+                    }}
+                    >Date Added</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={topics?.length || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{
-              '& .MuiTablePagination-toolbar': { minHeight: '36px' },
-                '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
-                  fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
-              },
-            }}
-          />
+                </TableHead>
+                <TableBody>
+                  {currentTopics.map((topic) => (
+                    <TableRow key={topic.topic}>
+                      <TableCell sx={{ fontSize: '0.875rem' }}>
+                        <Link
+                          className="link"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedTopic(topic);
+                            setOpen(true);
+                          }}
+                          to={''}
+                        >
+                          {topic.topic}
+                        </Link>
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: 'Montserrat', fontWeight: 400, fontSize: '0.875rem' }}>
+                        {topic.subscribed_consumers.length}
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: 'Montserrat', fontWeight: 400, fontSize: '0.875rem' }}>
+                        {topic.date_added}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer><TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={topicNames?.length || 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                sx={{
+                  '& .MuiTablePagination-toolbar': { minHeight: '36px' },
+                  '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
+                    fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
+                  },
+                }} /></> : <h2> There are no topics </h2> }
           {/* <div id="topiclist">
           <h2>Topic List</h2>
           <ul className="connection-ul">
@@ -196,7 +186,8 @@ export const Topics = () => {
             <TopicInfo
               setOpen={setOpen}
               open={open}
-              topicData={selectedTopic.data}
+              topicInfo={selectedTopic}
+              setSelectedTopic={setSelectedTopic}
             />
           </>}
       </div>

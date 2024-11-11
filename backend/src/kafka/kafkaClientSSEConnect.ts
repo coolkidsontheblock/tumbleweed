@@ -1,21 +1,17 @@
 import { Request, Response } from 'express';
 import { Kafka, Consumer, EachMessagePayload } from 'kafkajs';
 import { getKafkaBrokerEndpoints } from '../kafka/kafkaAdmin';
-import { createUUID } from '../helpers/uuid';
+import { createUUID, createKafkaClientId } from '../helpers/uuid';
 
 let kafka: Kafka;
 
-const initializeKafka = async () => {
+export const initializeKafka = async (clientId: string) => {
   const brokers = await getKafkaBrokerEndpoints();
   kafka = new Kafka({
-    clientId: createUUID(),
+    clientId: clientId,
     brokers,
   });
 };
-
-initializeKafka().catch(error => {
-  console.error(`Failed to initialize Kafka: ${error}`);
-});
 
 export const createConsumer = async (group_id: string, topics: string[]) => {
     const consumer = kafka.consumer({ groupId: group_id })

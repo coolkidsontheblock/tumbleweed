@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getConsumer, getConsumers, deleteConsumer } from "../services/consumerService";
+import { getConsumers, deleteConsumer } from "../services/consumerService";
 import { ConsumerDetails } from "../types/types";
 import { Consumer } from "./Consumer";
 import { ConsumerForm } from "./ConsumerForm";
@@ -11,7 +11,7 @@ import { SuccessSnack } from "./SuccessSnack";
 import { Loading } from "./Loading";
 
 export const Consumers = () => {
-  const [consumers, setConsumers] = useState<string[] | []>([]);
+  const [consumers, setConsumers] = useState<ConsumerDetails[] | []>([]);
   const [selectedConsumer, setSelectedConsumer] = useState<ConsumerDetails | null>(null)
   const [error, setError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -36,34 +36,34 @@ export const Consumers = () => {
         } else {
           setErrorMsg("An unknown error occurred");
         }
-      }
+      } 
     }
 
-    fetchConsumers();
     setLoading(false);
+    fetchConsumers();
   }, []);
 
-  const handleSelectedConsumer = async (Consumer: string): Promise<void> => {
-    try {
-      const request = await getConsumer(Consumer);
-      setSelectedConsumer(request.data);
-    } catch (error) {
-      console.error(error);
-      setError(true);
-      if (error instanceof Error) {
-        setErrorMsg(error.message);
-      } else {
-        setErrorMsg("An unknown error occurred");
-      }
-    }
-  }
+  // const handleSelectedConsumer = async (Consumer: string): Promise<void> => {
+  //   try {
+  //     const request = await getConsumer(Consumer);
+  //     setSelectedConsumer(request.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //     setError(true);
+  //     if (error instanceof Error) {
+  //       setErrorMsg(error.message);
+  //     } else {
+  //       setErrorMsg("An unknown error occurred");
+  //     }
+  //   }
+  // }
 
   const handleDeleteConsumer = async () => {
     try {
       if (selectedConsumer) {
         const source = selectedConsumer.name;
         await deleteConsumer(source);
-        setConsumers(prevSources => prevSources.filter(sourceString => sourceString !== source));
+        setConsumers(prevSources => prevSources.filter(sourceString => sourceString.name !== source));
         setSelectedConsumer(null);
       }
     } catch (error) {
@@ -86,7 +86,7 @@ export const Consumers = () => {
     setPage(0); 
   };
 
-  const currentConsumers = consumers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const currentConsumers = consumers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const handleCloseSnackbar = () => {
     setError(false);
@@ -115,51 +115,86 @@ export const Consumers = () => {
         )}
         <div id="consumerlist">
           <h1>Consumer List</h1>
-          <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
-            <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="consumer list table">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
-                    Name
-                  </TableCell>
-                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
-                  <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribed Topics</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {currentConsumers.map(consumerName => (
-                  <TableRow key={consumerName}>
-                    <TableCell
-                      sx={{
-                        fontSize: '0.875rem',
-                        position: 'sticky',
-                        left: 0,
-                        backgroundColor: '#fff',
-                        zIndex: 1, 
-                      }}
-                    >
-                      <Link
-                        className="link"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleSelectedConsumer(consumerName);
-                          setOpenConsumer(true);
-                        }}
-                        to={''}
-                      >
-                        {consumerName}
-                      </Link>
+          {consumers ? 
+            <><TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
+              <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="consumer list table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
+                      Name
                     </TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>Some Data</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>More Data</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribed Topics</TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Created</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {currentConsumers.map(consumer => (
+                    <TableRow key={consumer.name}>
+                      <TableCell
+                        sx={{
+                          fontSize: '0.875rem',
+                          position: 'sticky',
+                          left: 0,
+                          backgroundColor: '#fff',
+                          zIndex: 1,
+                        }}
+                      >
+                        <Link
+                          className="link"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedConsumer(consumer);
+                            setOpenConsumer(true);
+                          } }
+                          to={''}
+                        >
+                          {consumer.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>{consumer.subscribed_topics.join(', ')}</TableCell>
+                      <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>{consumer.date_created}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer><Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', marginTop: 2, marginLeft: 6 }}>
+                <Box sx={{ flex: 'none' }}>
+                  <Button variant="contained"
+                    className="connectionButton"
+                    onClick={() => setOpenForm(true)}
+                    sx={{
+                      fontFamily: "Montserrat",
+                      fontWeight: 400,
+                      borderRadius: '30px',
+                      // border: '3px solid #331E14',
+                      backgroundColor: '#70AF85',
+                      '&:hover': {
+                        backgroundColor: '#F58B33', // Change color on hover
+                      },
+                    }}
+                  >
+                    Create New Consumer
+                  </Button>
+                </Box>
 
-          <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', marginTop: 2, marginLeft: 6 }}>
-            <Box sx={{ flex: 'none' }}>
+                <Box sx={{ flex: 'none' }}>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={consumers.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    sx={{
+                      '& .MuiTablePagination-toolbar': { minHeight: '36px' },
+                      '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
+                        fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
+                      },
+                    }} />
+                </Box>
+              </Box></> : 
+            <><h2> There are no consumers </h2><Box sx={{ flex: 'none' }}>
               <Button variant="contained"
                 className="connectionButton"
                 onClick={() => setOpenForm(true)}
@@ -176,26 +211,7 @@ export const Consumers = () => {
               >
                 Create New Consumer
               </Button>
-            </Box>
-
-            <Box sx={{ flex: 'none' }}>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={consumers.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                sx={{
-                  '& .MuiTablePagination-toolbar': { minHeight: '36px' },
-                  '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
-                    fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
-                  },
-                }}
-              />
-            </Box>
-          </Box>
+            </Box></> }
         </div>
 
 
@@ -205,7 +221,9 @@ export const Consumers = () => {
               setOpenConsumer={setOpenConsumer}
               openConsumer={openConsumer}
               handleDeleteConsumer={handleDeleteConsumer}
-              selectedConsumer={selectedConsumer} />
+              selectedConsumer={selectedConsumer}
+              setSelectedConsumer={setSelectedConsumer}
+            />
           </>}
         {openForm &&
           <ConsumerForm
