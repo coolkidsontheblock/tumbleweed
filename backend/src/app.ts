@@ -13,9 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '..', 'dist')));
-app.use('/sources', sourceRouter);
-app.use('/consumers', consumerRouter);
-app.use('/topics', topicRouter);
+app.use('/api/sources', sourceRouter);
+app.use('/api/consumers', consumerRouter);
+app.use('/api/topics', topicRouter);
 app.use('/tumbleweed', kafkaRouter);
 app.use(errorHandler);
 

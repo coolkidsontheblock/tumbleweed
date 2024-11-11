@@ -9,25 +9,33 @@ const TopicDataSchema = z.object({
   date_added: z.string(),
 });
 
-const topicSchemaArray = z.object({
+const TopicSchemaArray = z.object({
   'message': z.string(),
   'data': TopicDataSchema
 });
 
-const topicsSchemaArray = z.object({
-  'data': z.array(z.string())
+const AllTopicsDataSchema = z.object({
+  topic: z.string(),
+  subscribed_consumers: z.array(z.string()),
+  date_added: z.string(),
+  message_count: z.number()
 });
 
-const baseUrl = "http://localhost:3001/topics"
+const AllTopicsSchemaArray = z.object({
+  'message': z.string(),
+  'data': z.array(AllTopicsDataSchema)
+});
+
+const baseUrl = "http://localhost:3001/api/topics"
 
 const getTopics = async () => {
   const res = await axios.get(baseUrl);
-  return topicsSchemaArray.parse(res.data).data;
+  return AllTopicsSchemaArray.parse(res.data);
 };
 
 const getTopic = async (topicName: string) => {
   const res = await axios.get(`${baseUrl}/${topicName}`);
-  return topicSchemaArray.parse(res.data);
+  return TopicSchemaArray.parse(res.data);
 }
 
 export {

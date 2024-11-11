@@ -10,6 +10,8 @@ export interface PGSourceDetails {
   date_created: string
 }
 
+export type PGCredentials = Omit<PGSourceDetails, 'name' | 'plugin_name' | 'date_created' | 'database_server_name'>;
+
 export type PGDetailsNoPW = Omit<PGSourceDetails, "database_password">;
 
 export interface DebeziumConnector {

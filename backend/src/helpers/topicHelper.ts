@@ -1,6 +1,7 @@
 import { TopicDetails, TopicName } from "../types/topicTypes";
 import { ConsumerTopicDetails } from "../types/consumerTypes";
 import { formatDateForFrontend } from "./consumerHelper";
+import { getTopicMessageCount } from "../kafka/kafkaAdmin";
 import { query } from '../database/pg';
 
 const getAllTopicsFromDB = async () => {
@@ -93,13 +94,16 @@ const getSubscribedTopics = async (consumerName: string) => {
   }
 };
 
-export const getSubscribersAndDateForAllTopics = async (topics: string[]) => {
+export const getInfoForAllTopics = async (topics: string[]) => {
+  const topicPrefix = 'outbox.event.';
   const topicPromises = topics.map(async (topic) => {
-    const topicObj = await getSubscribedConsumersAndDate(topic)
+    const topicObj = await getSubscribedConsumersAndDate(topic);
+    const messageCount = await getTopicMessageCount(`${topicPrefix}${topic}`);
     return {
       topic: topic,
-      subscribed_consumers: topicObj.subscribed_consumers,
+      subscribed_consumers: sortArrayByLowerCase(topicObj.subscribed_consumers),
       date_added: formatDateForFrontend(topicObj.date_added),
+      message_count: messageCount
     }
   });
     return await Promise.all(topicPromises);

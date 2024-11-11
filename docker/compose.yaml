@@ -148,15 +148,12 @@ services:
       - ../backend/.env
     environment:
       NODE_ENV: production
+      POSTGRES_USER: postgres
+      POSTGRES_HOST: db
+      POSTGRES_DATABASE: userconfig
+      POSTGRES_PASSWORD: postgres
     ports:
       - 3001:3001
-
-  # frontend:
-  #   build:
-  #     context: ../frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 5173:5173
 
   db:
     container_name: db

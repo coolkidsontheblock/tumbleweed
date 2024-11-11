@@ -25,7 +25,7 @@ export interface ConsumerDetails {
   date_created: string;
 }
 
-export type ConsumerInputDetails = Omit<ConsumerDetails, 'received_message_count' | 'date_created' | 'kafka_broker_endpoints' | 'tumbleweed_endpoint'>;
+export type ConsumerInputDetails = Omit<ConsumerDetails, 'received_message_count' | 'date_created' | 'kafka_broker_endpoints' | 'tumbleweed_endpoint' | 'kafka_client_id'>;
 
 export interface BooleanObject {
   [key: string]: boolean;
@@ -43,15 +43,19 @@ export interface SuccessSnackProps {
   openStatus: boolean;
 }
 
-export interface TopicData {
-  name: string,
-  topic_message_count: number,
-  subscribed_consumers: string[],
-  subscriber_count: number,
-  date_added: string
-}
-
 export interface TopicResponse {
   message: string,
-  data: TopicData
+  data: TopicsData
+}
+
+export interface TopicsData {
+  topic: string,
+  subscribed_consumers: string[],
+  date_added: string
+  message_count: number
+}
+
+export interface TopicsResponse {
+  message: string,
+  data: TopicsData[]
 }

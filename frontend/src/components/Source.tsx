@@ -18,7 +18,8 @@ interface SourceProps {
   setOpenSource: Dispatch<SetStateAction<boolean>>;
   openSource: boolean;
   handleDeleteSource: () => void;
-  sourceData: SourceData | null
+  sourceData: SourceData | null;
+  setSelectedSource: Dispath<SourceData | null>;
 }
 
 const style = {
@@ -35,8 +36,9 @@ const style = {
   borderRadius: '15px',
 };
 
-export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceData }: SourceProps) => {
+export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceData, setSelectedSource }: SourceProps) => {
   const handleCloseModal = () => {
+    setSelectedSource(null);
     setOpenSource(false);
   };
 
