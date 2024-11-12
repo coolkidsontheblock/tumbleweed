@@ -39,6 +39,7 @@ export const Consumers = ({ setLoading }: ConsumerProps) => {
       setLoading(true);
       try {
         const request = await getConsumers();
+        console.log(request.data);
         setConsumers(request.data);
       } catch (error) {
         console.error(error);
@@ -112,105 +113,81 @@ export const Consumers = ({ setLoading }: ConsumerProps) => {
         )}
         <div id="consumerlist">
           <h1>Consumer List</h1>
-          {consumers ? 
-            <><TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
-              <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="consumer list table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
-                      Name
-                    </TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribed Topics</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Created</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {currentConsumers.map(consumer => (
-                    <TableRow key={consumer.name}>
-                      <TableCell
-                        sx={{
-                          fontSize: '0.875rem',
-                          position: 'sticky',
-                          left: 0,
-                          backgroundColor: '#fff',
-                          zIndex: 1,
-                        }}
-                      >
-                        <Link
-                          className="link"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setSelectedConsumer(consumer);
-                            setOpenConsumer(true);
-                          } }
-                          to={''}
-                        >
-                          {consumer.name}
-                        </Link>
+          {consumers.length > 0 && (
+            <>
+              <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: '100%', overflowX: 'auto', marginLeft: "50px", marginRight: "50px", boxSizing: 'border-box' }}>
+                <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="consumer list table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={{fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
+                        Name
                       </TableCell>
-                      <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>{consumer.subscribed_topics.join(', ')}</TableCell>
-                      <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400, fontSize: '0.875rem' }}>{consumer.date_created}</TableCell>
+                      <TableCell sx={{fontWeight: 700 }}>Subscribed Topics</TableCell>
+                      <TableCell sx={{fontWeight: 700 }}>Date Created</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer><Box display="flex" alignItems="center" justifyContent="space-between" sx={{ width: '100%', marginTop: 2, marginLeft: 6 }}>
-                <Box sx={{ flex: 'none' }}>
-                  <Button variant="contained"
-                    className="connectionButton"
-                    onClick={() => setOpenForm(true)}
-                    sx={{
-                      fontFamily: "Montserrat",
-                      fontWeight: 400,
-                      borderRadius: '30px',
-                      // border: '3px solid #331E14',
-                      backgroundColor: '#70AF85',
-                      '&:hover': {
-                        backgroundColor: '#F58B33', // Change color on hover
-                      },
-                    }}
-                  >
-                    Create New Consumer
-                  </Button>
-                </Box>
-
-                <Box sx={{ flex: 'none' }}>
-                  <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={consumers.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    sx={{
-                      '& .MuiTablePagination-toolbar': { minHeight: '36px' },
-                      '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
-                        fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
-                      },
-                    }} />
-                </Box>
-              </Box></> : 
-            <><h2> There are no consumers </h2><Box sx={{ flex: 'none' }}>
-              <Button variant="contained"
-                className="connectionButton"
-                onClick={() => setOpenForm(true)}
-                sx={{
-                  fontFamily: "Montserrat",
-                  fontWeight: 400,
-                  borderRadius: '30px',
-                  // border: '3px solid #331E14',
-                  backgroundColor: '#70AF85',
-                  '&:hover': {
-                    backgroundColor: '#F58B33', // Change color on hover
-                  },
-                }}
-              >
-                Create New Consumer
-              </Button>
-            </Box></> }
+                  </TableHead>
+                  <TableBody>
+                    {currentConsumers.map(consumer => (
+                      <TableRow key={consumer.name}>
+                        <TableCell>
+                          <Link
+                            className="link"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setSelectedConsumer(consumer);
+                              setOpenConsumer(true);
+                            } }
+                            to={''}
+                          >
+                            {consumer.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell>{consumer.subscribed_topics.join(', ')}</TableCell>
+                        <TableCell>{consumer.date_created}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer><Box display="flex" alignItems="center" justifyContent="right" sx={{ width: '100%', marginTop: 2, marginLeft: 6 }}>
+              <Box sx={{ flex: 'none' }}>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25]}
+                  component="div"
+                  count={consumers.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  sx={{
+                    '& .MuiTablePagination-toolbar': { minHeight: '36px' },
+                    '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
+                      fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
+                    },
+                  }} 
+                />
+              </Box>
+              </Box>
+            </>
+          )}
+          <Box sx={{ mt: 2 }}>
+            <Button variant="contained"
+              className="connectionButton"
+              onClick={() => setOpenForm(true)}
+              sx={{
+                fontFamily: "Montserrat",
+                marginLeft: '50px',
+                fontWeight: 400,
+                borderRadius: '30px',
+                backgroundColor: '#70AF85',
+                '&:hover': {
+                  backgroundColor: '#F58B33',
+                },
+              }}
+            >
+              Create New Consumer
+            </Button>
+          </Box>
         </div>
-
         {selectedConsumer && openConsumer &&
           <>
             <Consumer

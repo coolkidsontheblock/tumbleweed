@@ -127,24 +127,16 @@ export const Sources = ({ setLoading }: SourcesProps) => {
               <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="source list table">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
+                    <TableCell sx={{ fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
                       Name
                     </TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Date Added</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody sx={{ marginRight: '100px' }}>
                   {currentSources.map(source => (
                     <TableRow key={source.name}>
-                      <TableCell
-                        sx={{
-                          fontSize: '0.875rem',
-                          position: 'sticky',
-                          left: 0,
-                          backgroundColor: '#fff',
-                          zIndex: 1,
-                        }}
-                      >
+                      <TableCell>
                         <Link
                           className="link"
                           onClick={(e) => {
@@ -157,12 +149,7 @@ export const Sources = ({ setLoading }: SourcesProps) => {
                           {source.name}
                         </Link>
                       </TableCell>
-                      <TableCell sx={{
-                        fontFamily: "Montserrat",
-                        fontWeight: 400,
-                        fontSize: '0.875rem'
-                      }}
-                      >
+                      <TableCell>
                         {source.date_created}
                       </TableCell>
                     </TableRow>

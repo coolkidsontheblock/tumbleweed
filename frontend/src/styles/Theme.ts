@@ -64,5 +64,17 @@ export const textFieldTheme = createTheme({
         },
       },
     },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Montserrat', // Apply the same font to table cells
+          fontWeight: 400,
+          color: '#331E14', // Set text color for table cells
+          padding: '16px', // Optional padding for cells
+        },
+      },
+    },
   },
 });
+
+

@@ -84,7 +84,7 @@ export const ConsumerForm = ({
 
       setErrors({});
       const res = await createConsumer(consumerData);
-      setConsumers((prevConsumers) => prevConsumers.concat(res.data.name));
+      setConsumers((prevConsumers) => prevConsumers.concat(res.data));
 
       setSuccess(true);
       setSuccessMsg("Consumer created successfully!");

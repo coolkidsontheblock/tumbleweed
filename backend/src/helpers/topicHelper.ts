@@ -3,6 +3,7 @@ import { ConsumerTopicDetails } from "../types/consumerTypes";
 import { formatDateForFrontend } from "./consumerHelper";
 import { getTopicMessageCount } from "../kafka/kafkaAdmin";
 import { query } from '../database/pg';
+import { getConnectorWithSlotNameandPW } from "./sourceHelper";
 
 export const getAllTopicsFromDB = async () => {
   try {
@@ -99,6 +100,7 @@ export const getInfoForAllTopics = async (topics: string[]) => {
   const topicPromises = topics.map(async (topic) => {
     const topicObj = await getSubscribedConsumersAndDate(topic);
     const messageCount = await getTopicMessageCount(`${topicPrefix}${topic}`);
+    console.log(topicObj);
     return {
       topic: topic,
       subscribed_consumers: sortArrayByLowerCase(topicObj.subscribed_consumers),

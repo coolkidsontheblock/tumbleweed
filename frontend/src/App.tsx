@@ -8,6 +8,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Loading } from './components/Loading';
 import { Error } from './components/Error';
 import { useState } from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import { textFieldTheme } from './styles/Theme';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -17,14 +19,16 @@ function App() {
       <ErrorBoundary fallback={<Error />}>
         <Sidebar />
         <div className="main">
-          { loading && <Loading /> }
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/sources" element={<Sources setLoading={setLoading} />} />
-            <Route path="/consumers" element={<Consumers setLoading={setLoading} />} />
-            <Route path="/topics" element={<Topics setLoading={setLoading} />} />
-            <Route path='*' element={<Error />} />
-          </Routes>
+          <ThemeProvider theme={textFieldTheme}>
+            { loading && <Loading /> }
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/sources" element={<Sources setLoading={setLoading} />} />
+              <Route path="/consumers" element={<Consumers setLoading={setLoading} />} />
+              <Route path="/topics" element={<Topics setLoading={setLoading} />} />
+              <Route path='*' element={<Error />} />
+            </Routes>
+          </ ThemeProvider>
         </div>
       </ErrorBoundary>
     </>
