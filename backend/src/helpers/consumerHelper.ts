@@ -18,7 +18,6 @@ export const getAllConsumerInfo = async () => {
       received_message_count,
       date_created 
       FROM consumers`);
-    // const consumerNames = consumers.rows.map((consumer: ConsumerName) => consumer.name);
     return consumers.rows.map((consumer: ConsumerDetails)  => ({
       ...consumer, 
       date_created: formatDateForFrontend(consumer.date_created)}))

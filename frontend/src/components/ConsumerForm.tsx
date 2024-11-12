@@ -43,7 +43,6 @@ export const ConsumerForm = ({
 }: ConsumerFormProps) => {
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [kafkaClientId, setKafkaClientId] = useState<string>('');
   const [kafkaGroupId, setKafkaGroupId] = useState<string>('');
   const [errors, setErrors] = useState<BooleanObject>({});
   const [topics, setTopics] = useState<BooleanObject>({});
@@ -92,7 +91,6 @@ export const ConsumerForm = ({
       setOpenForm(false);
       setName('');
       setDescription('');
-      setKafkaClientId('');
       setKafkaGroupId('');
     } catch (error) {
       setError(true);
@@ -103,8 +101,6 @@ export const ConsumerForm = ({
       }
 
       if (!name) newErrors.name = true;
-      // if (!tumbleweedEndpoint) newErrors.tumbleweed_endpoint = true;
-      // if (!kafkaClientId) newErrors.kafka_client_id = true;
       if (!kafkaGroupId) newErrors.kafka_group_id = true;
 
       setErrors(newErrors);
@@ -122,7 +118,6 @@ export const ConsumerForm = ({
       <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }} component="form">
         <h1 style={{ textAlign: 'center' }}>Connect a new consumer</h1>
         <p style={{ textAlign: 'center' }}>Please enter consumer details:</p>
-
         <TextField
           required
           id="name"
@@ -132,7 +127,6 @@ export const ConsumerForm = ({
           helperText={errors.name && "Consumer name is required"}
           onChange={(event) => setName(event.target.value)}
         />
-
         <TextField
           fullWidth
           id="description"
@@ -140,7 +134,6 @@ export const ConsumerForm = ({
           variant="outlined"
           onChange={(event) => setDescription(event.target.value)}
         />
-
         <TextField
           fullWidth
           required
@@ -163,10 +156,9 @@ export const ConsumerForm = ({
               fontFamily: "Montserrat",
               fontWeight: 400,
               borderRadius: '30px',
-              // border: '3px solid #331E14',
               backgroundColor: '#70AF85',
               '&:hover': {
-                backgroundColor: '#F58B33', // Change color on hover
+                backgroundColor: '#F58B33',
               }, 
               }}>
             Connect

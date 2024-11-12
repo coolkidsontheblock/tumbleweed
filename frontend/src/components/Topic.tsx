@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { TopicsData, TopicResponse } from "../types/types";
+import { TopicsData } from "../types/types";
 import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
 
 interface TopicProps {

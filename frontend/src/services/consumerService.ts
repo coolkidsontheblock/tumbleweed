@@ -19,32 +19,26 @@ const consumerSchemaArray = z.object({
   'data': z.array(consumerDataSchema)
 });
 
-const baseUrl = "http://localhost:3001/api/consumers"
+const path = import.meta.env.VITE_API_URL + "/api/consumers";
 
 const getConsumers = async () => {
-  const res = await axios.get(baseUrl);
+  const res = await axios.get(path);
   console.log(res.data)
   return consumerSchemaArray.parse(res.data);
 };
 
-// const getConsumer = async (consumer: string) => {
-//   const res = await axios.get(`${baseUrl}/${consumer}`);
-//   return res.data;
-// }
-
 const createConsumer = async (consumerDetails: ConsumerInputDetails) => {
-  const res = await axios.post(baseUrl + '/new_consumer', consumerDetails);
+  const res = await axios.post(path + '/new_consumer', consumerDetails);
   return res.data;
 }
 
 const deleteConsumer = async (consumer: string) => {
-  const res = await axios.delete(`${baseUrl}/${consumer}`);
+  const res = await axios.delete(`${path}/${consumer}`);
   return res.data;
 }
 
 export {
   getConsumers,
-  // getConsumer,
   createConsumer,
   deleteConsumer
 }

@@ -5,12 +5,24 @@ import { ConsumerDetails } from "../types/types";
 import { Consumer } from "./Consumer";
 import { ConsumerForm } from "./ConsumerForm";
 import { ErrorSnack } from "./ErrorSnack";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Box, Button } from '@mui/material';
-// import { a } from "vitest/dist/suite-IbNSsUWN.js";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TablePagination,
+  Box, Button
+} from '@mui/material';
 import { SuccessSnack } from "./SuccessSnack";
-import { Loading } from "./Loading";
 
-export const Consumers = () => {
+interface ConsumerProps {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const Consumers = ({ setLoading }: ConsumerProps) => {
   const [consumers, setConsumers] = useState<ConsumerDetails[] | []>([]);
   const [selectedConsumer, setSelectedConsumer] = useState<ConsumerDetails | null>(null)
   const [error, setError] = useState<boolean>(false);
@@ -21,10 +33,10 @@ export const Consumers = () => {
   const [openConsumer, setOpenConsumer] = useState<boolean>(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchConsumers = async (): Promise<void> => {
+      setLoading(true);
       try {
         const request = await getConsumers();
         setConsumers(request.data);
@@ -36,27 +48,13 @@ export const Consumers = () => {
         } else {
           setErrorMsg("An unknown error occurred");
         }
-      } 
+      } finally {
+        setLoading(false);
+      }
     }
 
-    setLoading(false);
     fetchConsumers();
   }, []);
-
-  // const handleSelectedConsumer = async (Consumer: string): Promise<void> => {
-  //   try {
-  //     const request = await getConsumer(Consumer);
-  //     setSelectedConsumer(request.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //     setError(true);
-  //     if (error instanceof Error) {
-  //       setErrorMsg(error.message);
-  //     } else {
-  //       setErrorMsg("An unknown error occurred");
-  //     }
-  //   }
-  // }
 
   const handleDeleteConsumer = async () => {
     try {
@@ -97,7 +95,6 @@ export const Consumers = () => {
 
   return (
     <>
-      {loading && <Loading />}
       <div className="connectionlist">
         {error && (
           <ErrorSnack
@@ -213,7 +210,6 @@ export const Consumers = () => {
               </Button>
             </Box></> }
         </div>
-
 
         {selectedConsumer && openConsumer &&
           <>

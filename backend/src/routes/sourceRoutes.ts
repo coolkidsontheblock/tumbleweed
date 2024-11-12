@@ -1,8 +1,8 @@
 import axios from 'axios';
 import express from 'express';
-import { getConfigData, postConfigDataToDB, getConnectorByName, deleteConnectorByName } from '../helpers/sourceHelper';
+import { getConfigData, postConfigDataToDB, getAllConnectors, deleteConnectorByName, getConnectorByName, createOutboxTableInSource, deleteReplicationSlot, getConnectorWithSlotNameandPW } from '../helpers/sourceHelper';
 import { formatDateForFrontend } from '../helpers/consumerHelper';
-import { PGDetailsNoPW, PGCredentials } from '../types/sourceTypes';
+import { PGDetailsNoPW, PGCredentials, PGSourceDetailsWithSlotName } from '../types/sourceTypes';
 import { validateSourceDetails, validateDBCredentials } from '../helpers/validation';
 import { ConnectorError, InvalidCredentialsError } from '../utils/errors';
 
@@ -16,7 +16,11 @@ const destination = process.env.NODE_ENV === 'production'
 router.get('/', async (req, res, next) => {
   try {     
     const { data } = await axios.get(destination);
-    res.status(200).send(data);
+    const sourceInfo = await getAllConnectors() || [];
+    res.status(200).send({
+      message: `${sourceInfo.length} sources found.`,
+      data: sourceInfo
+    });
   } catch (error) {
     console.error(error);
     next(error);
@@ -24,37 +28,37 @@ router.get('/', async (req, res, next) => {
 });
 
 // Get Info for Single Sources Route => PGDetailsNoPW Object
-router.get('/:source_name', async (req, res, next) => {
-  try {
-    const sourceName = req.params.source_name;
-    const connector = await getConnectorByName(sourceName);
+// router.get('/:source_name', async (req, res, next) => {
+//   try {
+//     const sourceName = req.params.source_name;
+//     const connector = await getConnectorByName(sourceName);
 
-    if (!connector) {
-      throw new Error("No Connector by that name exists");
-    } else {
-      // the destination where we are getting the info is from kafka and not our database with the encrypted pw
-      const URL = `${destination}/${connector.name}`;
-      const { data } = await axios.get(URL);
-      const basicConnectorInfo: PGDetailsNoPW = {
-        name: data.name,
-        plugin_name: data.config["plugin.name"],
-        database_hostname: data.config["database.hostname"],
-        database_port: data.config["database.port"],
-        database_user: data.config["database.user"],
-        database_dbname: data.config["database.dbname"],
-        database_server_name: data.config["database.server.name"],
-        date_created: formatDateForFrontend(connector.date_created),
-      }
-      res.status(200).send({
-        message: `Connector '${data.name}' Found.`,
-        data: basicConnectorInfo,
-      });
-    }
-  } catch (error) {
-    console.error(`There was an error finding the connector: ${error}`);
-    next(error);
-  }
-});
+//     if (!connector) {
+//       throw new Error("No Connector by that name exists");
+//     } else {
+//       // the destination where we are getting the info is from kafka and not our database with the encrypted pw
+//       const URL = `${destination}/${connector.name}`;
+//       const { data } = await axios.get(URL);
+//       const basicConnectorInfo: PGDetailsNoPW = {
+//         name: data.name,
+//         plugin_name: data.config["plugin.name"],
+//         database_hostname: data.config["database.hostname"],
+//         database_port: data.config["database.port"],
+//         database_user: data.config["database.user"],
+//         database_dbname: data.config["database.dbname"],
+//         database_server_name: data.config["database.server.name"],
+//         date_created: formatDateForFrontend(connector.date_created),
+//       }
+//       res.status(200).send({
+//         message: `Connector '${data.name}' Found.`,
+//         data: basicConnectorInfo,
+//       });
+//     }
+//   } catch (error) {
+//     console.error(`There was an error finding the connector: ${error}`);
+//     next(error);
+//   }
+// });
 
 // POST a new source route => PGDetailsNoPW Object
 // Add Validation!!! -> no empty strings allowed, strip whitespace, etc
@@ -73,6 +77,12 @@ router.post('/new_source', async (req, res, next) => {
 
     if (!validCredentials.success) {
       throw new InvalidCredentialsError(validCredentials.message, validCredentials.status);
+    }
+
+    const createOutbox = await createOutboxTableInSource(credentials);
+
+    if (!createOutbox.success) {
+      throw new InvalidCredentialsError(createOutbox.message, createOutbox.status);
     }
 
     const configData = getConfigData(sourceDetails);
@@ -102,20 +112,20 @@ router.post('/new_source', async (req, res, next) => {
   }
 });
 
-// Think about how we can delete replication slot in db, give user a choice?
-
 // DELETE a source route => VOID
 router.delete('/:source_name', async (req, res, next) => {
   try {
     const sourceName = req.params.source_name;
-    const connector = await getConnectorByName(sourceName);
-
+    const connector = await getConnectorWithSlotNameandPW(sourceName);
+    
     if (!connector) {
       throw new ConnectorError("No Connector by that name exists");
     } else {
       const URL = `${destination}/${connector.name}`;
       await axios.delete(URL);
       await deleteConnectorByName(sourceName);
+      const {slot_name, ...credentials} = connector
+      await deleteReplicationSlot(slot_name, credentials);
       res.status(201).send(`Connector '${connector.name}' deleted!`);
     }
   } catch (error) {
@@ -124,4 +134,3 @@ router.delete('/:source_name', async (req, res, next) => {
 });
 
 export default router;
-

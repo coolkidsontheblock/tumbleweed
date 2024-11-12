@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { createSource } from "../services/sourcesService";
-import { SourceInput } from "../types/types";
+import { SourceData, SourceInput } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
 import { validateInput, validatePort } from "../utils/validation";
 import { textFieldTheme } from '../styles/Theme';
 import { ThemeProvider } from '@mui/material/styles';
 
 interface SourceFormProps {
-  setSources: React.Dispatch<React.SetStateAction<string[]>>;
+  setSources: React.Dispatch<React.SetStateAction<SourceData[]>>;
   setOpenSourceForm: React.Dispatch<React.SetStateAction<boolean>>;
   openSourceForm: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setSuccessMsg: React.Dispatch<React.SetStateAction<string>>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const style = {
@@ -37,7 +38,8 @@ export const SourceForm = ({
   setError,
   setErrorMsg,
   setSuccess,
-  setSuccessMsg
+  setSuccessMsg,
+  setPage
 }: SourceFormProps) => {
   const [dbhostname, setDBHostname] = useState<string>('');
   const [dbport, setDBPort] = useState<number>(0);
@@ -66,7 +68,6 @@ export const SourceForm = ({
       setErrors({});
       const res = await createSource(sourceData);
       setSources((prevSources) => prevSources.concat(res.data.name));
-
       setSuccess(true);
       setSuccessMsg("Source created successfully!");
       setOpenSourceForm(false);
@@ -77,6 +78,7 @@ export const SourceForm = ({
       setDBUsername('');
       setDBPassword('');
       setConnectorName('');
+      setPage(0);
     } catch (error: any) {
       setError(true);
       const errorMessage = error.response.data.message;
