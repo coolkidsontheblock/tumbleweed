@@ -57,31 +57,31 @@ export const validateDBCredentials = async (credentials: PGCredentials) => {
         message: 'Connection refused. Check the hostname and port.',
         status: 502
       };
-  } else if (error.code === 'EHOSTUNREACH' || error.code === 'ENOTFOUND') {
-      return {
-        success: false,
-        message: 'Host unreachable. Verify the hostname is correct.',
-        status: 503
-      };
-  } else if (error.code === '28P01') {
-      return {
-        success: false,
-        message: 'Invalid username or password.',
-        status: 401
-      };
-  } else if (error.message.includes('timeout')) {
-      return {
-        success: false,
-        message: 'Connection timed out. Check the network settings and port.',
-        status: 408
-      };
-  } else {
-      return {
-        success: false,
-        message: 'An unknown error occurred. Please verify all inputs.',
-        status: 500
-      };
-  }
+    } else if (error.code === 'EHOSTUNREACH' || error.code === 'ENOTFOUND') {
+        return {
+          success: false,
+          message: 'Host unreachable. Verify the hostname is correct.',
+          status: 503
+        };
+    } else if (error.code === '28P01') {
+        return {
+          success: false,
+          message: 'Invalid username or password.',
+          status: 401
+        };
+    } else if (error.message.includes('timeout')) {
+        return {
+          success: false,
+          message: 'Connection timed out. Check the network settings and port.',
+          status: 408
+        };
+    } else {
+        return {
+          success: false,
+          message: 'An unknown error occurred. Please verify all inputs.',
+          status: 500
+        };
+    }
   } finally {
     await client.end();
   }

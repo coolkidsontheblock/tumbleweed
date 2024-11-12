@@ -100,10 +100,9 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
                 fontFamily: "Montserrat",
                 fontWeight: 400,
                 borderRadius: '30px',
-                // border: '3px solid #331E14',
                 backgroundColor: '#70AF85',
                 '&:hover': {
-                  backgroundColor: '#F58B33', // Change color on hover
+                  backgroundColor: '#F58B33',
                 },
               }}>Delete Consumer</Button>
         </Box >

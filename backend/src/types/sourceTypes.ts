@@ -14,6 +14,11 @@ export type PGCredentials = Omit<PGSourceDetails, 'name' | 'plugin_name' | 'date
 
 export type PGDetailsNoPW = Omit<PGSourceDetails, "database_password">;
 
+export interface PGSourceDetailsWithSlotName extends PGSourceDetails {
+  slot_name: string
+}
+
+
 export interface DebeziumConnector {
   name: string;
   config: {

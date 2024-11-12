@@ -7,8 +7,16 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     const allTopics = await getTopicsFromKafka();
-    const topicInfo = await getInfoForAllTopics(allTopics);
+
+    if (allTopics.length === 0) {
+      return res.status(200).send({
+        message: "No topics found.",
+        data: []
+      });
+    }
     
+    const topicInfo = await getInfoForAllTopics(allTopics);
+      
     res.status(200).send({
       message: `${allTopics.length} topics Found.`,
       data: topicInfo,

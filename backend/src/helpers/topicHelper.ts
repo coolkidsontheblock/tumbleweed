@@ -1,10 +1,10 @@
-import { TopicDetails, TopicName } from "../types/topicTypes";
+import { TopicName } from "../types/topicTypes";
 import { ConsumerTopicDetails } from "../types/consumerTypes";
 import { formatDateForFrontend } from "./consumerHelper";
 import { getTopicMessageCount } from "../kafka/kafkaAdmin";
 import { query } from '../database/pg';
 
-const getAllTopicsFromDB = async () => {
+export const getAllTopicsFromDB = async () => {
   try {
     const allTopics = await query(`SELECT name FROM topics`);
     const topicNames = allTopics.rows.map((topic: TopicName) => topic.name);

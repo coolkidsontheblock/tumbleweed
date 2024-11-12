@@ -1,6 +1,7 @@
 import { Kafka } from 'kafkajs';
 import { TopicName, TopicOffsetByPartition } from '../types/topicTypes';
 import dotenv from 'dotenv';
+import { getAllTopicsFromDB } from '../helpers/topicHelper';
 import { format } from 'path';
 dotenv.config();
 
@@ -23,7 +24,7 @@ export const getTopicsFromKafka = async () => {
     if (!topics) {
       return [];
     } else {
-      return formatTopics(topics);
+      return await formatTopics(topics);
     }
   } catch (error) {
     console.error('Error fetching topics:', error);
@@ -61,10 +62,40 @@ export const getKafkaBrokerEndpoints = async () => {
   }
 };
 
-const formatTopics = (topics: string[]) => {
+export const deleteTopicFromKafka = async (topics: string[]) => {
+  const admin = kafka.admin();
+  try {
+    await admin.connect();
+    await admin.deleteTopics({
+      topics: topics,
+      timeout: 5000,
+    })
+  } catch (error) {
+    console.error('Error deleteing kafka topics:', error);
+    throw error;
+  } finally {
+    await admin.disconnect();
+  }
+};
+
+const formatTopics = async (topics: string[]) => {
   const topicPrefix = 'outbox.event.';
   const outboxTopics = topics.filter((topic: string) => topic.startsWith(topicPrefix));
-  return outboxTopics.map((topic: string) => topic.replace(topicPrefix, ''));
+  const formattedOutboxTopics = outboxTopics.map((topic: string) => topic.replace(topicPrefix, ''));
+  const deletedTopics = await findTopicsToDelete(formattedOutboxTopics);
+  return formattedOutboxTopics.filter((topic: string) => !deletedTopics.includes(topic));
+};
+
+const findTopicsToDelete = async (outboxTopicsFromKafka: string[]) => {
+  const topicsInDB = await getAllTopicsFromDB();
+  const topicsToDelete = [];
+
+  for (const topic of outboxTopicsFromKafka) {
+    if (!topicsInDB.includes(topic)) topicsToDelete.push(topic);
+  }
+
+  if (topicsToDelete.length > 0) await deleteTopicFromKafka(topicsToDelete);
+  return topicsToDelete;
 };
 
 const formatTopicOffsetToMessageCount = (offsets: TopicOffsetByPartition[]) => {
