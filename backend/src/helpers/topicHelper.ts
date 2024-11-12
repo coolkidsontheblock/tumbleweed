@@ -44,11 +44,32 @@ const addTopicsAndConsumersToDB = async (consumerName: string, topic: string) =>
         VALUES ($1, $2)`,
       [topic, [consumerName]]);
   } catch (error) {
-    console.error(`There was an error adding topics to the database: ${error}`);
+    console.error(`There was an error adding topics and subscribers to the database: ${error}`);
   }
 };
 
-export const addtoTopicsDB = async ({ name: consumerName, subscribed_topics }: ConsumerTopicDetails) => {
+export const addNewTopicsFromKafkaToDB = async (topics: string[]) => {
+  const topicPrefix = 'outbox.event.';
+  const outboxTopics = topics.filter((topic: string) => topic.startsWith(topicPrefix));
+  const formattedTopics = outboxTopics.map((topic: string) => topic.slice(topicPrefix.length));
+  
+  const existingTopics = await getAllTopicsFromDB();
+
+  try {
+    for (const topic of formattedTopics) {
+      if (!existingTopics.includes(topic)) {
+        await query(`INSERT INTO topics (
+          name)
+          VALUES ($1)`,
+        [topic]);
+      }
+    }
+  } catch (error) {
+      console.error(`There was an error adding new topics from kafka to the database: ${error}`);
+  }
+};
+
+export const addtoTopicsToDBWithConsumer = async ({ name: consumerName, subscribed_topics }: ConsumerTopicDetails) => {
   const existingTopics = await getAllTopicsFromDB();
 
   for (const topic of subscribed_topics) {

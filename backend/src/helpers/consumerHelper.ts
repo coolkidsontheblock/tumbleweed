@@ -79,7 +79,8 @@ export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBroke
       subscribed_topics)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING name, 
-      subscribed_topics`,
+      subscribed_topics,
+      date_created`,
       [
         consumerData.name,
         consumerData.description,
