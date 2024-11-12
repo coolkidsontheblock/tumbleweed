@@ -1,6 +1,15 @@
 import axios from 'axios';
 import express from 'express';
-import { getConfigData, postConfigDataToDB, getAllConnectors, deleteConnectorByName, getConnectorByName, createOutboxTableInSource, deleteReplicationSlot, getConnectorWithSlotNameandPW } from '../helpers/sourceHelper';
+import {
+  getConfigData,
+  postConfigDataToDB,
+  getAllConnectors,
+  deleteConnectorByName,
+  getConnectorByName,
+  createOutboxTableInSource,
+  deleteReplicationSlot,
+  getConnectorWithSlotNameandPW
+} from '../helpers/sourceHelper';
 import { formatDateForFrontend } from '../helpers/consumerHelper';
 import { PGDetailsNoPW, PGCredentials, PGSourceDetailsWithSlotName } from '../types/sourceTypes';
 import { validateSourceDetails, validateDBCredentials } from '../helpers/validation';
@@ -104,7 +113,7 @@ router.post('/new_source', async (req, res, next) => {
 
     res.status(201).send({
       message: 'Connector created',
-      data: newConnector,
+      data: {...newConnector, date_created: formatDateForFrontend(new Date().toString())}
     });
   } catch (error) {
     console.error(`There was an error adding a new connector: ${error}`);

@@ -113,26 +113,8 @@ export const Sources = ({ setLoading }: SourcesProps) => {
         )}
         <div id="sourcelist">
           <h1>Source List</h1>
-          {sources.length === 0 ? (<>
-            <Box sx={{ mt: 2 }}>
-                <Button
-                  variant="contained"
-                  className="connectionButton"
-                  onClick={() => setOpenSourceForm(true)}
-                  sx={{
-                    fontFamily: "Montserrat",
-                    fontWeight: 400,
-                    borderRadius: '30px',
-                    backgroundColor: '#70AF85',
-                    '&:hover': {
-                      backgroundColor: '#F58B33'
-                    },
-                  }}
-                >
-                  Create New Source
-                </Button>
-              </Box>
-          </>) : (<>
+          {sources.length > 0 && (
+          <>
             <TableContainer
                 component={Paper}
                 sx={{
@@ -142,88 +124,90 @@ export const Sources = ({ setLoading }: SourcesProps) => {
                   boxSizing: 'border-box'
                 }}
               >
-                <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="source list table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
-                        Name
-                      </TableCell>
-                      <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody sx={{ marginRight: '100px' }}>
-                    {currentSources.map(source => (
-                      <TableRow key={source.name}>
-                        <TableCell sx={{
+              <Table sx={{ minWidth: 650, tableLayout: 'fixed' }} size="small" aria-label="source list table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700, position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 1 }}>
+                      Name
+                    </TableCell>
+                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody sx={{ marginRight: '100px' }}>
+                  {currentSources.map(source => (
+                    <TableRow key={source.name}>
+                      <TableCell
+                        sx={{
                           fontSize: '0.875rem',
                           position: 'sticky',
                           left: 0,
                           backgroundColor: '#fff',
                           zIndex: 1,
-                        }}>
-                          <Link
-                            className="link"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setSelectedSource(source);
-                              setOpenSource(true);
-                            } }
-                            to={''}
-                          >
-                            {source.name}
-                          </Link>
-                        </TableCell>
-                        <TableCell sx={{
-                          fontFamily: "Montserrat",
-                          fontWeight: 400,
-                          fontSize: '0.875rem'
                         }}
+                      >
+                        <Link
+                          className="link"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedSource(source);
+                            setOpenSource(true);
+                          } }
+                          to={''}
                         >
-                          {source.date_created}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-          
-              <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mr: 9.5, marginLeft: "50px" }}>
-                <Box sx={{ mt: 2 }}>
-                  <Button
-                    variant="contained"
-                    className="connectionButton"
-                    onClick={() => setOpenSourceForm(true)}
-                    sx={{
-                    fontFamily: "Montserrat",
-                    fontWeight: 400,
-                    borderRadius: '30px',
-                    backgroundColor: '#70AF85',
-                    '&:hover': {
-                      backgroundColor: '#F58B33'
-                    },
-                  }}
-                >
-                  Create New Source
-                </Button>
-              </Box>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
-                  component="div"
-                  count={sources.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  sx={{
-                    '& .MuiTablePagination-toolbar': { minHeight: '36px' },
-                    '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
-                      fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
-                    },
-                  }}
-                />
-              </Box>
-            </>
-          )}
+                          {source.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell sx={{
+                        fontFamily: "Montserrat",
+                        fontWeight: 400,
+                        fontSize: '0.875rem'
+                      }}
+                      >
+                        {source.date_created}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Box display="flex" alignItems="center" justifyContent="right" sx={{ mr: 9.5, marginLeft: "50px" }}>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={sources.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                sx={{
+                  '& .MuiTablePagination-toolbar': { minHeight: '36px' },
+                  '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
+                    fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
+                  },
+                }}
+              />
+            </Box>
+          </>
+        )}
+          <Box sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                className="connectionButton"
+                onClick={() => setOpenSourceForm(true)}
+                sx={{
+                  marginLeft: '50px',
+                  fontFamily: "Montserrat",
+                  fontWeight: 400,
+                  borderRadius: '30px',
+                  backgroundColor: '#70AF85',
+                  '&:hover': {
+                    backgroundColor: '#F58B33'
+                  },
+              }}
+              >
+                Create New Source
+              </Button>
+            </Box>
         </div>
         {selectedSource && openSource &&
           <>
