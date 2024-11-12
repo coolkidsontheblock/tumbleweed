@@ -89,7 +89,7 @@ router.delete('/:consumer_name', async (req, res, next) => {
       
       await deleteConsumerByName(consumerName);
       await deleteConsumerFromSubscribedTopics(consumerName);
-      await deleteSubscriberlessTopics();
+      // await deleteSubscriberlessTopics();  
       res.status(201).send(`Consumer '${consumer.name}' deleted!`);
     }
   } catch (error) {

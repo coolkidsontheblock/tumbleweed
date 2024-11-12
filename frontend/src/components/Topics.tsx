@@ -117,7 +117,6 @@ export const Topics = ({ setLoading }: TopicsProps) => {
                       <TableRow>
                         <TableCell
                           sx={{
-                            fontFamily: "Montserrat",
                             fontWeight: 700, position: 'sticky',
                             left: 0,
                             backgroundColor: '#fff',
@@ -126,14 +125,12 @@ export const Topics = ({ setLoading }: TopicsProps) => {
                           Name
                         </TableCell>
                         <TableCell sx={{
-                          fontFamily: "Montserrat",
                           fontWeight: 700
                         }}
                         >
                           Subscriber Count
                         </TableCell>
                         <TableCell sx={{
-                          fontFamily: "Montserrat",
                           fontWeight: 700
                         }}
                         >
@@ -157,10 +154,10 @@ export const Topics = ({ setLoading }: TopicsProps) => {
                               {topic.topic}
                             </Link>
                           </TableCell>
-                          <TableCell sx={{ fontFamily: 'Montserrat', fontWeight: 400, fontSize: '0.875rem' }}>
+                          <TableCell>
                             {topic.subscribed_consumers.length}
                           </TableCell>
-                          <TableCell sx={{ fontFamily: 'Montserrat', fontWeight: 400, fontSize: '0.875rem' }}>
+                          <TableCell>
                             {topic.date_added}
                           </TableCell>
                         </TableRow>

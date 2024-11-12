@@ -9,7 +9,7 @@ import { formatDateForFrontend } from "./consumerHelper";
 const createSourceDBClient = (credentials: PGCredentials) => {
   const client = new Client ({
     user: credentials.database_user,
-    password: credentials.database_password,
+    password: 'capstoneTeam1',// credentials.database_password,
     host: credentials.database_hostname,
     port: credentials.database_port,
     database: credentials.database_dbname,
