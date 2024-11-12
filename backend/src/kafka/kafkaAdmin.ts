@@ -100,7 +100,7 @@ const findTopicsToDelete = async (outboxTopicsFromKafka: string[]) => {
 
 const formatTopicOffsetToMessageCount = (offsets: TopicOffsetByPartition[]) => {
   return offsets.reduce((sum: number, { offset }) => {
-    return sum + (Number(offset) - 1);
+    return sum + (Number(offset));
   }, 0);
 };
 
