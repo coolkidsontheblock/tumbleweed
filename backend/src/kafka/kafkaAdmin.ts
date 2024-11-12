@@ -15,6 +15,31 @@ const kafka = new Kafka({
   brokers: JSON.parse(KafkaBrokerEndpoints),
 });
 
+export const createTopicsForKafka = async (topicNames: string[]) => {
+
+  const topics = topicNames.map(topic => ({
+    topic: `outbox.event.${topic}`,
+    numPartitions: 1,
+    replicationFactor: 1
+  }));
+
+  const admin = kafka.admin();
+ 
+  try {
+    await admin.connect();
+    const result = await admin.createTopics({
+      validateOnly: false,
+      waitForLeaders: false,
+      timeout: 10000,
+      topics: topics})
+    console.log('Topics created successfully:', result);
+  } catch (error) {
+    console.error('Error creating topics:', error);
+  } finally {
+    await admin.disconnect();
+  }
+};
+
 export const getTopicsFromKafka = async () => {
   const admin = kafka.admin();
   try {

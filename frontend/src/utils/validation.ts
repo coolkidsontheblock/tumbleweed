@@ -17,6 +17,14 @@ export const validateInput = (input: string): string => {
   }
 }
 
+export const validateListOfTopics = (input: string[]): string[] => {
+  if (input.length === 0) {
+    throw new InputError('Missing input. All fields are required. Please fill out all fields.');
+  } else {
+    return input;
+  }
+}
+
 export const validatePort = (port: number): number => {
   if (port < MIN_PORT || port > MAX_PORT) {
     throw new InputError("Port number must be between 0 and 65535");
