@@ -76,7 +76,7 @@ router.post('/new_source', async (req, res, next) => {
 
     res.status(201).send({
       message: 'Connector created',
-      data: {...newConnector, date_created: formatDateForFrontend(new Date().toString())}
+      data: {...newConnector, date_created: formatDateForFrontend(newConnector.date_created)}
     });
   } catch (error) {
     console.error(`There was an error adding a new connector: ${error}`);

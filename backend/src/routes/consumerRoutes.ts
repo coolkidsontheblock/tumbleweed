@@ -4,10 +4,11 @@ import { getAllConsumerInfo,
   postConsumerToDB,
   getAllConsumersByName,
   deleteConsumerByName,
-  getConsumerConnectionURI
+  getConsumerConnectionURI,
+  formatDateForFrontend
 } from '../helpers/consumerHelper';
 import { getKafkaBrokerEndpoints } from '../kafka/kafkaAdmin'
-import { addtoTopicsDB, deleteConsumerFromSubscribedTopics } from '../helpers/topicHelper';
+import { addtoTopicsToDBWithConsumer, deleteConsumerFromSubscribedTopics } from '../helpers/topicHelper';
 import { HttpError } from '../utils/errors';
 import { createKafkaClientId } from '../helpers/uuid';
 
@@ -36,11 +37,12 @@ router.post('/new_consumer', async (req, res, next) => {
     const tumbleweedEndpoint = await getConsumerConnectionURI(consumerData.kafka_group_id);
     const kafkaClientId = createKafkaClientId(consumerData.kafka_group_id);
     const newConsumer = await postConsumerToDB(consumerData, kafkaBrokerEndpoints, tumbleweedEndpoint, kafkaClientId);
-    await addtoTopicsDB(newConsumer);
+    await addtoTopicsToDBWithConsumer(newConsumer);
 
     res.status(201).send({
       message: 'Consumer created',
-      data: newConsumer,
+      data: {...newConsumer, date_created: formatDateForFrontend(newConsumer.date_created)}
+
     });
   } catch (error) {
     console.error(`There was an error adding a new consumer: ${error}`);

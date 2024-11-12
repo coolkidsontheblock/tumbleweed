@@ -1,5 +1,5 @@
 import express from 'express';
-import { getInfoForAllTopics } from '../helpers/topicHelper';
+import { getInfoForAllTopics, addNewTopicsFromKafkaToDB } from '../helpers/topicHelper';
 import { getTopicsFromKafka } from '../kafka/kafkaAdmin';
 
 const router = express.Router();
@@ -15,6 +15,7 @@ router.get('/', async (req, res, next) => {
       });
     }
     
+    await addNewTopicsFromKafkaToDB(allTopics);
     const topicInfo = await getInfoForAllTopics(allTopics);
       
     res.status(200).send({
