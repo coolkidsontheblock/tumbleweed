@@ -49,14 +49,10 @@ const addTopicsAndConsumersToDB = async (consumerName: string, topic: string) =>
 };
 
 export const addNewTopicsFromKafkaToDB = async (topics: string[]) => {
-  const topicPrefix = 'outbox.event.';
-  const outboxTopics = topics.filter((topic: string) => topic.startsWith(topicPrefix));
-  const formattedTopics = outboxTopics.map((topic: string) => topic.slice(topicPrefix.length));
-  
   const existingTopics = await getAllTopicsFromDB();
 
   try {
-    for (const topic of formattedTopics) {
+    for (const topic of topics) {
       if (!existingTopics.includes(topic)) {
         await query(`INSERT INTO topics (
           name)

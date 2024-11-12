@@ -80,22 +80,20 @@ export const deleteTopicFromKafka = async (topics: string[]) => {
 const formatTopics = async (topics: string[]) => {
   const topicPrefix = 'outbox.event.';
   const outboxTopics = topics.filter((topic: string) => topic.startsWith(topicPrefix));
-  const formattedOutboxTopics = outboxTopics.map((topic: string) => topic.replace(topicPrefix, ''));
-  const deletedTopics = await findTopicsToDelete(formattedOutboxTopics);
-  return formattedOutboxTopics.filter((topic: string) => !deletedTopics.includes(topic));
+  return outboxTopics.map((topic: string) => topic.replace(topicPrefix, ''));
 };
 
-const findTopicsToDelete = async (outboxTopicsFromKafka: string[]) => {
-  const topicsInDB = await getAllTopicsFromDB();
-  const topicsToDelete = [];
+// const findTopicsToDelete = async (outboxTopicsFromKafka: string[]) => {
+//   const topicsInDB = await getAllTopicsFromDB();
+//   const topicsToDelete = [];
 
-  for (const topic of outboxTopicsFromKafka) {
-    if (!topicsInDB.includes(topic)) topicsToDelete.push(topic);
-  }
+//   for (const topic of outboxTopicsFromKafka) {
+//     if (!topicsInDB.includes(topic)) topicsToDelete.push(topic);
+//   }
 
-  if (topicsToDelete.length > 0) await deleteTopicFromKafka(topicsToDelete);
-  return topicsToDelete;
-};
+//   if (topicsToDelete.length > 0) await deleteTopicFromKafka(topicsToDelete);
+//   return topicsToDelete;
+// };
 
 const formatTopicOffsetToMessageCount = (offsets: TopicOffsetByPartition[]) => {
   return offsets.reduce((sum: number, { offset }) => {
