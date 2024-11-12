@@ -13,6 +13,7 @@ import { formatDateForFrontend } from '../helpers/consumerHelper';
 import { PGCredentials } from '../types/sourceTypes';
 import { validateSourceDetails, validateDBCredentials } from '../helpers/validation';
 import { ConnectorError, InvalidCredentialsError } from '../utils/errors';
+import { createTopicsForKafka } from '../kafka/kafkaAdmin';
 
 const router = express.Router();
 
@@ -73,6 +74,7 @@ router.post('/new_source', async (req, res, next) => {
     }
 
     const newConnector = await postConfigDataToDB(configData);
+    await createTopicsForKafka(sourceDetails.topics);
 
     res.status(201).send({
       message: 'Connector created',

@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS public.connectors
     heartbeat_action_query TEXT NOT NULL,
     heartbeat_interval_ms INT NOT NULL,
     publication_name TEXT NOT NULL,
-    date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    date_created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS public.consumers
@@ -36,15 +36,15 @@ CREATE TABLE IF NOT EXISTS public.consumers
     kafka_group_id TEXT NOT NULL,
     subscribed_topics TEXT[] NOT NULL,
     received_message_count INT NOT NULL DEFAULT 0,
-    date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    date_created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS public.topics
 (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
-    subscribed_consumers TEXT[],
-    date_added TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    subscribed_consumers TEXT[] DEFAULT '{}',
+    date_added TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 TABLESPACE pg_default;

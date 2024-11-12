@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { createSource } from "../services/sourcesService";
 import { SourceData, SourceInput } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
-import { validateInput, validatePort } from "../utils/validation";
+import { validateInput, validatePort, validateListOfTopics } from "../utils/validation";
 import { textFieldTheme } from '../styles/Theme';
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -48,6 +48,7 @@ export const SourceForm = ({
   const [dbusername, setDBUsername] = useState<string>('');
   const [dbpassword, setDBPassword] = useState<string>('');
   const [connectorName, setConnectorName] = useState<string>('');
+  const [topics, setTopics] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
   const handleNewSource = async (e: React.FormEvent) => {
@@ -63,6 +64,7 @@ export const SourceForm = ({
         database_password: validateInput(dbpassword),
         database_dbname: validateInput(dbname),
         database_server_name: validateInput(dbservername),
+        topics: validateListOfTopics(topics.split(', '))
       };
 
       setErrors({});
@@ -78,6 +80,7 @@ export const SourceForm = ({
       setDBUsername('');
       setDBPassword('');
       setConnectorName('');
+      setTopics('');
       setPage(0);
     } catch (error: any) {
       setError(true);
@@ -93,6 +96,7 @@ export const SourceForm = ({
       if (!dbservername) newErrors.dbservername = true;
       if (!dbusername) newErrors.dbusername = true;
       if (!dbpassword) newErrors.dbpassword = true;
+      if (!topics) newErrors.topics = true;
 
       setErrors(newErrors);
     }
@@ -185,6 +189,18 @@ export const SourceForm = ({
             error={errors.dbpassword}
             helperText={errors.dbpassword && "Database Password is required"}
             onChange={(event) => setDBPassword(event.target.value)}
+          />
+
+          <TextField
+            fullWidth
+            required
+            id="topics"
+            label="Topics"
+            variant="outlined"
+            placeholder="Please provide a comma separated list of topics"
+            error={errors.topics}
+            helperText={errors.topics && "Topics are required"}
+            onChange={(event) => setTopics(event.target.value)}
           />
 
           <Box>
