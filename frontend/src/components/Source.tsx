@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { SourceData } from "../types/types"
 
 import {
@@ -19,7 +19,7 @@ interface SourceProps {
   openSource: boolean;
   handleDeleteSource: () => void;
   sourceData: SourceData | null;
-  setSelectedSource: Dispath<SourceData | null>;
+  setSelectedSource: Dispatch<React.SetStateAction<SourceData | null>>;
 }
 
 const style = {

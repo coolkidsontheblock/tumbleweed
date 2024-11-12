@@ -67,7 +67,7 @@ export const SourceForm = ({
 
       setErrors({});
       const res = await createSource(sourceData);
-      setSources((prevSources) => prevSources.concat(res.data.name));
+      setSources((prevSources) => prevSources.concat(res.data));
       setSuccess(true);
       setSuccessMsg("Source created successfully!");
       setOpenSourceForm(false);
