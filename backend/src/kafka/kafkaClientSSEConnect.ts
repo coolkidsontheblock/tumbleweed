@@ -1,7 +1,6 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { Kafka, Consumer, EachMessagePayload } from 'kafkajs';
 import { getKafkaBrokerEndpoints } from '../kafka/kafkaAdmin';
-import { createUUID, createKafkaClientId } from '../helpers/uuid';
 
 let kafka: Kafka;
 
@@ -38,7 +37,7 @@ export const consumeMessages = async (consumer: Consumer, res: Response) => {
               value: JSON.parse(stringPayload),
               topic: topic,
             };
-            res.write(`data: ${JSON.stringify(msg)}\n\n`); // Send message to client
+            res.write(`data: ${JSON.stringify(msg)}\n\n`);
         },
       });
     } catch (error) {

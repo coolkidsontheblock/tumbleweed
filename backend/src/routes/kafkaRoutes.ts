@@ -2,9 +2,7 @@ import express from 'express';
 import { createConsumer, consumeMessages, initializeKafka } from '../kafka/kafkaClientSSEConnect';
 import dotenv from 'dotenv';
 import { Consumer } from 'kafkajs';
-import { getConsumerByGroupId, getAllConsumersByName } from '../helpers/consumerHelper';
-import { nextTick } from 'process';
-import axios from 'axios';
+import { getConsumerByGroupId } from '../helpers/consumerHelper';
 dotenv.config();
 
 const router = express.Router();
@@ -39,24 +37,6 @@ router.get('/:groupId', async (req, res, next) => {
     console.error(`There was an error getting all topics: ${error}`);
     next(error);
   }
-})
-
-// router.get('/fake', async (req, res, next) => {
-//   try {
-//     const getPublicIP = async () => {
-//       try {
-//         const response = await axios.get('https://api.ipify.org?format=json');
-//         console.log(`Your public IP address is: ${response.data.ip}`);
-//       } catch (error) {
-//         console.error('Error fetching IP address:', error);
-//       }
-//     };
-    
-//     getPublicIP();
-//   } catch (error) {
-//     console.error(`There was an error getting all topics: ${error}`);
-//     next(error);
-//   }
-// })
+});
 
 export default router;

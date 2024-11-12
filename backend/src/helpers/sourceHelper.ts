@@ -78,9 +78,9 @@ const parseSizeToMB = (size: string): number => {
   if (match) {
       const value = parseFloat(match[1]);
       const unit = match[2];
-      return value * (sizeMap[unit] || 0); // Return 0 if unit is not recognized
+      return value * (sizeMap[unit] || 0);
   }
-  return 0; // Return 0 if the size string is not valid
+  return 0;
 }
 
 export const createOutboxTableInSource = async (dbCredentials: PGCredentials) => {

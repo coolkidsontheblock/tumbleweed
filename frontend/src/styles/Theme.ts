@@ -14,19 +14,6 @@ export const theme = createTheme({
   }
 });
 
-// const { palette } = createTheme();
-// const { augmentColor } = palette;
-// const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-// const theme = createTheme({
-//   palette: {
-//     anger: createColor('#F40B27'),
-//     apple: createColor('#5DBA40'),
-//     steelBlue: createColor('#5C76B7'),
-//     violet: createColor('#BC00A3'),
-//   },
-// });
-
-
 export const textFieldTheme = createTheme({
   components: {
     MuiOutlinedInput: {
@@ -34,11 +21,11 @@ export const textFieldTheme = createTheme({
         root: {
           borderRadius: '10px',
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#70AF85', // Outline color when focused
+            borderColor: '#70AF85',
           },
         },
         notchedOutline: {
-          borderColor: '#70AF85', // Default outline color
+          borderColor: '#70AF85',
         },
       },
     },
@@ -60,17 +47,17 @@ export const textFieldTheme = createTheme({
         input: {
           fontFamily: 'Montserrat',
           fontWeight: 400,
-          color: '#331E14', // Input text color
+          color: '#331E14',
         },
       },
     },
     MuiTableCell: {
       styleOverrides: {
         root: {
-          fontFamily: 'Montserrat', // Apply the same font to table cells
+          fontFamily: 'Montserrat',
           fontWeight: 400,
-          color: '#331E14', // Set text color for table cells
-          padding: '16px', // Optional padding for cells
+          color: '#331E14',
+          padding: '16px',
         },
       },
     },

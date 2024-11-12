@@ -1,32 +1,18 @@
-// type SidebarItem = {
-//   id: number;
-//   title: string | JSX.Element;
-//   path: string;
-//   className: string;
-// }
-
-
 export const sidebarData = [
-  // {
-  //   id: 1,
-  //   title: "Home",
-  //   path: '/',
-  //   className: 'nav-text'
-  // },
   {
-    id: 2,
+    id: 1,
     title: 'Sources',
     path: '/sources',
     className: 'nav-text'
   },
   {
-    id: 3,
+    id: 2,
     title: 'Consumers',
     path: '/consumers',
     className: 'nav-text'
   },
   {
-    id: 4,
+    id: 3,
     title: 'Topics',
     path: '/topics',
     className: 'nav-text'

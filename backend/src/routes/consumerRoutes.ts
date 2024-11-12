@@ -1,9 +1,13 @@
 import { validateConsumerData } from '../helpers/validation';
 import express from 'express';
-import { getAllConsumerInfo, postConsumerToDB, getAllConsumersByName, deleteConsumerByName, getConsumerConnectionURI, formatDateForFrontend } from '../helpers/consumerHelper';
-import { ConsumerDetails } from '../types/consumerTypes';
+import { getAllConsumerInfo,
+  postConsumerToDB,
+  getAllConsumersByName,
+  deleteConsumerByName,
+  getConsumerConnectionURI
+} from '../helpers/consumerHelper';
 import { getKafkaBrokerEndpoints } from '../kafka/kafkaAdmin'
-import { addtoTopicsDB, deleteConsumerFromSubscribedTopics, deleteSubscriberlessTopics } from '../helpers/topicHelper';
+import { addtoTopicsDB, deleteConsumerFromSubscribedTopics } from '../helpers/topicHelper';
 import { HttpError } from '../utils/errors';
 import { createKafkaClientId } from '../helpers/uuid';
 
@@ -23,40 +27,6 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// Get Info for Single Consumer Route =>
-// URL Encode Spaces with %20 when making request -> ex. consumers/newest%20Great%20Service
-// router.get('/:consumer_name', async (req, res, next) => {
-//   try {
-//     const consumerName = req.params.consumer_name;
-//     const consumer = await getAllConsumersByName(consumerName);
-//     if (!consumer) {
-//       throw new Error("No Consumer by that name exists");
-//     } else {
-
-//       const consumerInfo: ConsumerDetails = {
-//         name: consumer.name,
-//         description: consumer.description,
-//         tumbleweed_endpoint: consumer.tumbleweed_endpoint,
-//         kafka_client_id: consumer.kafka_client_id,
-//         kafka_broker_endpoints: consumer.kafka_broker_endpoints,
-//         kafka_group_id: consumer.kafka_group_id,
-//         subscribed_topics: consumer.subscribed_topics,
-//         received_message_count: consumer.received_message_count,
-//         date_created: formatDateForFrontend(consumer.date_created)
-//       }
-//       res.status(200).send({
-//         message: `Consumer '${consumer.name}' Found.`,
-//         data: consumerInfo,
-//       });
-//     }
-//   } catch (error) {
-//     console.error(`There was an error finding the consumer: ${error}`);
-//     next(error);
-//   }
-// });
-
-// POST a new consumer route => PGDetailsNoPW Object
-// Add Validation!!! -> no empty strings allowed, strip whitespace, etc
 router.post('/new_consumer', async (req, res, next) => {
   try {
     const consumerData = req.body;
@@ -88,8 +58,7 @@ router.delete('/:consumer_name', async (req, res, next) => {
     } else {
       
       await deleteConsumerByName(consumerName);
-      await deleteConsumerFromSubscribedTopics(consumerName);
-      // await deleteSubscriberlessTopics();  
+      await deleteConsumerFromSubscribedTopics(consumerName); 
       res.status(201).send(`Consumer '${consumer.name}' deleted!`);
     }
   } catch (error) {

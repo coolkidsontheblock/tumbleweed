@@ -1,8 +1,7 @@
 import { Kafka } from 'kafkajs';
-import { TopicName, TopicOffsetByPartition } from '../types/topicTypes';
+import { TopicOffsetByPartition } from '../types/topicTypes';
 import dotenv from 'dotenv';
 import { getAllTopicsFromDB } from '../helpers/topicHelper';
-import { format } from 'path';
 dotenv.config();
 
 const KafkaBrokerEndpoints = process.env.KAFKA_BROKER_ENDPOINTS;

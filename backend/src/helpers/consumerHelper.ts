@@ -1,5 +1,4 @@
-import { PGSourceDetails, DebeziumConnector, PGDetailsNoPW } from "../types/sourceTypes";
-import { ConsumerDetails, ConsumerName } from "../types/consumerTypes";
+import { ConsumerDetails } from "../types/consumerTypes";
 import { query } from '../database/pg';
 import * as os from 'os';
 import { server } from '../index';
@@ -129,7 +128,7 @@ const getLocalAddress = (serverPort: string) => {
       }
     }
   }
-  return `localhost:${serverPort}`; // fallback
+  return `localhost:${serverPort}`;
 }
 
 const getPublicAddress = async (serverPort: string) => {

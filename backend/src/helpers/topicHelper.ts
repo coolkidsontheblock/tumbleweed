@@ -3,7 +3,6 @@ import { ConsumerTopicDetails } from "../types/consumerTypes";
 import { formatDateForFrontend } from "./consumerHelper";
 import { getTopicMessageCount } from "../kafka/kafkaAdmin";
 import { query } from '../database/pg';
-import { getConnectorWithSlotNameandPW } from "./sourceHelper";
 
 export const getAllTopicsFromDB = async () => {
   try {
@@ -28,7 +27,6 @@ export const getTopicByName = async (topicName: string) => {
   }
 };
 
-// If topic exists append consumer name to subscribed_consumers column in topics table
 const addConsumerToTopicsTableInDB = async (consumerName: string, topic: string) => {
   try {
     await query(`UPDATE topics SET subscribed_consumers = array_append(subscribed_consumers, $1) WHERE name = $2`,
@@ -38,7 +36,6 @@ const addConsumerToTopicsTableInDB = async (consumerName: string, topic: string)
   }
 };
 
-// If topic does not exist in the database add topic and consumer to topics table 
 const addTopicsAndConsumersToDB = async (consumerName: string, topic: string) => {
   try {
     await query(`INSERT INTO topics (
@@ -63,7 +60,6 @@ export const addtoTopicsDB = async ({ name: consumerName, subscribed_topics }: C
   }
 };
 
-// deletes consumer from subscribed topics
 export const deleteConsumerFromSubscribedTopics = async (consumerName: string) => {
   const existingTopics = await getSubscribedTopics(consumerName);
 
