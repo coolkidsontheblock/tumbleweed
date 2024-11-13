@@ -1,6 +1,7 @@
 services:
   controller-1:
     image: apache/kafka:latest
+    container_name: kraft-controller-1
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: 'controller'
@@ -9,14 +10,15 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LISTENERS: 'CONTROLLER://:9093'
       CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-
+  
   controller-2:
     image: apache/kafka:latest
+    container_name: kraft-controller-2
     environment:
       KAFKA_NODE_ID: 2
       KAFKA_PROCESS_ROLES: 'controller'
@@ -25,14 +27,15 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LISTENERS: 'CONTROLLER://:9093'
       CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-
+    
   controller-3:
     image: apache/kafka:latest
+    container_name: kraft-controller-3
     environment:
       KAFKA_NODE_ID: 3
       KAFKA_PROCESS_ROLES: 'controller'
@@ -41,7 +44,7 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_LISTENERS: 'CONTROLLER://:9093'
       CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -52,7 +55,7 @@ services:
     ports:
       - 29092:9092
     hostname: kafka-1
-    container_name: kafka-1
+    container_name: kafka-broker-1
     environment:
       KAFKA_NODE_ID: 4
       KAFKA_PROCESS_ROLES: 'broker'
@@ -63,7 +66,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka-1:19092,PLAINTEXT_HOST://localhost:29092'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -78,7 +81,7 @@ services:
     ports:
       - 39092:9092
     hostname: kafka-2
-    container_name: kafka-2
+    container_name: kafka-broker-2
     environment:
       KAFKA_NODE_ID: 5
       KAFKA_PROCESS_ROLES: 'broker'
@@ -89,7 +92,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka-2:19092,PLAINTEXT_HOST://localhost:39092'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -104,7 +107,7 @@ services:
     ports:
       - 49092:9092
     hostname: kafka-3
-    container_name: kafka-3
+    container_name: kafka-broker-3
     environment:
       KAFKA_NODE_ID: 6
       KAFKA_PROCESS_ROLES: 'broker'
@@ -115,7 +118,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka-3:19092,PLAINTEXT_HOST://localhost:49092'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       CLUSTER_ID: '4L6g3nShT-eMCtK--X86sw'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -126,29 +129,34 @@ services:
       - controller-3
 
   connect:
-      image: debezium/connect:3.0.0.Final
-      ports:
-        - 8083:8083
-      environment:
-        BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19092,kafka-3:19092
-        GROUP_ID: 1
-        CONFIG_STORAGE_TOPIC: connect_configs
-        OFFSET_STORAGE_TOPIC: connect_offsets
-        KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-        VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-        CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-        CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      depends_on: [controller-1, controller-2, controller-3, kafka-1, kafka-2, kafka-3]
+    image: debezium/connect:3.0.0.Final
+    container_name: connect-debezium
+    ports:
+      - 8083:8083
+    environment:
+      BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19092,kafka-3:19092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: connect_configs
+      OFFSET_STORAGE_TOPIC: connect_offsets
+      ENABLE_APICURIO_CONVERTERS: "true"
+    depends_on: [apicurio, controller-1, controller-2, controller-3, kafka-1, kafka-2, kafka-3]
+
+  apicurio:
+    image: apicurio/apicurio-registry:3.0.3
+    container_name: apicurio-registry
+    ports:
+     - 8080:8080
 
   backend:
     build:
       context: ..
       dockerfile: Dockerfile
+    container_name: tumbleweed-backend
     ports:
       - 3001:3001
 
   db:
-    container_name: db
+    container_name: tumblweed-user-config-db
     image: postgres
     restart: always
     ports:
