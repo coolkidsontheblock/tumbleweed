@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
 import { SuccessSnack } from "./SuccessSnack";
 import { ZodError } from 'zod';
-import { Paper,
+import {
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -21,7 +22,7 @@ interface TopicsProps {
 }
 
 export const Topics = ({ setLoading }: TopicsProps) => {
-  const [topics, setTopics] = useState<TopicsData[]| null>(null)
+  const [topics, setTopics] = useState<TopicsData[] | null>(null)
   const [topicNames, setTopicNames] = useState<string[] | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<TopicsData | null>(null)
   const [error, setError] = useState<boolean>(false);
@@ -52,7 +53,7 @@ export const Topics = ({ setLoading }: TopicsProps) => {
         setLoading(false);
       }
     }
-    
+
     fetchTopics();
   }, [])
 
@@ -79,7 +80,7 @@ export const Topics = ({ setLoading }: TopicsProps) => {
       if (topics && selectedTopic) {
         const topic = selectedTopic.topic;
         await deleteTopic(topic);
-        setTopics(prevTopics => 
+        setTopics(prevTopics =>
           prevTopics ? prevTopics.filter(topicObj => topicObj.topic !== topic) : null
         );
         setOpen(false);
@@ -114,94 +115,94 @@ export const Topics = ({ setLoading }: TopicsProps) => {
         )}
         <div id="sourcelist">
           <h1>Topic List</h1>
-           {topicNames === null ? (
-              <></>
-            ) : topicNames.length > 0 ? (
-              <>
-                <TableContainer component={Paper}
-                  sx={{
-                    borderRadius: '15px',
-                    maxWidth: '100%',
-                    overflowX: 'auto',
-                    marginLeft: "50px",
-                    marginRight: "50px",
-                    boxSizing: 'border-box'
-                  }}
+          {topicNames === null ? (
+            <></>
+          ) : topicNames.length > 0 ? (
+            <>
+              <TableContainer component={Paper}
+                sx={{
+                  borderRadius: '15px',
+                  maxWidth: '100%',
+                  overflowX: 'auto',
+                  marginLeft: "50px",
+                  marginRight: "50px",
+                  boxSizing: 'border-box'
+                }}
+              >
+                <Table
+                  sx={{ minWidth: 650 }}
+                  size="small"
+                  aria-label="consumer list table"
                 >
-                  <Table
-                    sx={{ minWidth: 650 }}
-                    size="small"
-                    aria-label="consumer list table"
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell
-                          sx={{
-                            fontWeight: 700, position: 'sticky',
-                            left: 0,
-                            backgroundColor: '#fff',
-                            zIndex: 1
-                          }}>
-                          Name
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        sx={{
+                          fontWeight: 700, position: 'sticky',
+                          left: 0,
+                          backgroundColor: '#fff',
+                          zIndex: 1
+                        }}>
+                        Name
+                      </TableCell>
+                      <TableCell sx={{
+                        fontWeight: 700
+                      }}
+                      >
+                        Subscriber Count
+                      </TableCell>
+                      <TableCell sx={{
+                        fontWeight: 700
+                      }}
+                      >
+                        Date Added
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {currentTopics.map((topic) => (
+                      <TableRow key={topic.topic}>
+                        <TableCell sx={{ fontSize: '0.875rem' }}>
+                          <Link
+                            className="link"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setSelectedTopic(topic);
+                              setOpen(true);
+                            }}
+                            to={''}
+                          >
+                            {topic.topic}
+                          </Link>
                         </TableCell>
-                        <TableCell sx={{
-                          fontWeight: 700
-                        }}
-                        >
-                          Subscriber Count
+                        <TableCell>
+                          {topic.subscribed_consumers.length}
                         </TableCell>
-                        <TableCell sx={{
-                          fontWeight: 700
-                        }}
-                        >
-                          Date Added
+                        <TableCell>
+                          {topic.date_added}
                         </TableCell>
                       </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {currentTopics.map((topic) => (
-                        <TableRow key={topic.topic}>
-                          <TableCell sx={{ fontSize: '0.875rem' }}>
-                            <Link
-                              className="link"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setSelectedTopic(topic);
-                                setOpen(true);
-                              }}
-                              to={''}
-                            >
-                              {topic.topic}
-                            </Link>
-                          </TableCell>
-                          <TableCell>
-                            {topic.subscribed_consumers.length}
-                          </TableCell>
-                          <TableCell>
-                            {topic.date_added}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={topicNames?.length || 0}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    sx={{
-                      '& .MuiTablePagination-toolbar': { minHeight: '36px' },
-                      '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
-                        fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
-                    },
-                  }}
-                />
-              </>
-            ): (<h2> There are no topics </h2>)}
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={topicNames?.length || 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                sx={{
+                  '& .MuiTablePagination-toolbar': { minHeight: '36px' },
+                  '& .MuiTablePagination-selectLabel, .MuiTablePagination-input, .MuiTablePagination-displayedRows': {
+                    fontSize: '0.75rem', fontFamily: "Montserrat", fontWeight: 400
+                  },
+                }}
+              />
+            </>
+          ) : (<h2 id="no_topics_heading">There are no topics</h2>)}
         </div>
         {selectedTopic && open &&
           <>
