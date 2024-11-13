@@ -1,5 +1,4 @@
 import { PGSourceDetails, DebeziumConnector, PGDetailsNoPW, PGCredentials, PGSourceDetailsWithSlotName } from "../types/sourceTypes"
-import { createUUID } from './uuid';
 import { query } from '../database/pg';
 import { hashPassword } from "./encrypt";
 import { DatabaseError } from "../utils/errors";
@@ -186,13 +185,13 @@ export const postConfigDataToDB = async (source: DebeziumConnector) => {
       publication_name)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)
       RETURNING name, 
-      plugin_name,
       database_hostname,
       database_port,
       database_user,
       database_dbname,
       database_server_name,
-      date_created`,
+      date_created,
+      slot_name`,
       [
         source.name,
         source.config["plugin.name"],
@@ -220,20 +219,19 @@ export const postConfigDataToDB = async (source: DebeziumConnector) => {
   } catch (error) {
     console.error(`There was an error adding a new connector to the database: ${error}`);
     throw new DatabaseError(`There was an error adding a new connector to the database: ${error}`)
-    // Add some rollback validation in debezium fails?
   }
 };
 
 export const getAllConnectors = async () => {
   try {
     const sourceDetails: { rows: PGDetailsNoPW[] } = await query(`SELECT name, 
-      plugin_name, 
       database_hostname, 
       database_port, 
       database_user,
       database_dbname, 
       database_server_name,
-      date_created 
+      date_created,
+      slot_name 
       FROM connectors`);
     return sourceDetails.rows.map((source: PGDetailsNoPW) => ({
       ...source,
@@ -245,14 +243,14 @@ export const getAllConnectors = async () => {
 
 export const getConnectorByName = async (connector: string) => {
   try {
-    const sourceDetails: { rows: PGDetailsNoPW[] } = await query(`SELECT name, 
-      plugin_name, 
+    const sourceDetails: { rows: PGDetailsNoPW[] } = await query(`SELECT name,  
       database_hostname, 
       database_port, 
       database_user,
       database_dbname, 
       database_server_name,
-      date_created 
+      date_created,
+      slot_name 
       FROM connectors WHERE name = $1`,
       [connector]);
     return sourceDetails.rows[0];

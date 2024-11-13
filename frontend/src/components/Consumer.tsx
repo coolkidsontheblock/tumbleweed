@@ -47,48 +47,42 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
             <h2>Consumer Details</h2>
             <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '8px 8px', fontSize: '0.875rem' } }}>
               <Table sx={{ width: '100%' }} aria-label="consumer information table">
-                {/* <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ fontWeight: 'bold' }}>Property</TableCell>
-                    <TableCell align="left" sx={{ fontWeight: 'bold' }}>Value</TableCell>
-                  </TableRow>
-                </TableHead> */}
                 <TableBody>
                   <TableRow>
                     <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Consumer Name</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{selectedConsumer.name}</TableCell>
+                    <TableCell>{selectedConsumer.name}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Description</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{selectedConsumer.description}</TableCell>
+                    <TableCell>{selectedConsumer.description}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Tumbleweed Endpoint</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{selectedConsumer.tumbleweed_endpoint}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Tumbleweed Endpoint</TableCell>
+                    <TableCell>{selectedConsumer.tumbleweed_endpoint}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Kafka Client Id</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{selectedConsumer.kafka_client_id}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Kafka Client Id</TableCell>
+                    <TableCell>{selectedConsumer.kafka_client_id}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Kafka Broker Endpoints</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{selectedConsumer.kafka_broker_endpoints.join(', ')}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Kafka Broker Endpoints</TableCell>
+                    <TableCell>{selectedConsumer.kafka_broker_endpoints.join(', ')}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Kafka Group Id</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{selectedConsumer.kafka_group_id}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Kafka Group Id</TableCell>
+                    <TableCell>{selectedConsumer.kafka_group_id}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribed Topics</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{selectedConsumer.subscribed_topics.join(', ')}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Subscribed Topics</TableCell>
+                    <TableCell>{selectedConsumer.subscribed_topics.join(', ')}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Received Message Count</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{selectedConsumer.received_message_count}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Received Message Count</TableCell>
+                    <TableCell>{selectedConsumer.received_message_count}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Created</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{selectedConsumer.date_created}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Date Created</TableCell>
+                    <TableCell>{selectedConsumer.date_created}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

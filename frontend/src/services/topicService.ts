@@ -9,17 +9,23 @@ const AllTopicsDataSchema = z.object({
 });
 
 const AllTopicsSchemaArray = z.object({
-  'message': z.string(),
-  'data': z.array(AllTopicsDataSchema)
+  message: z.string(),
+  data: z.array(AllTopicsDataSchema)
 });
 
-const path = import.meta.env.VITE_API_URL + "/api/topics";
+const path = import.meta.env.NODE_ENV === 'production' ? "/api/topics" : "http://localhost:3001/api/topics";
 
 const getTopics = async () => {
   const res = await axios.get(path);
   return AllTopicsSchemaArray.parse(res.data);
 };
 
+const deleteTopic = async (topic: string) => {
+  const res = await axios.delete(`${path}/${topic}`);
+  return res.data;
+}
+
 export {
-  getTopics, 
+  getTopics,
+  deleteTopic
 }

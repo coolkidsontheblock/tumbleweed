@@ -37,3 +37,11 @@ export class HttpError extends Error {
     this.status = number;
   }
 }
+
+export class TopicError extends Error {
+  public status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}

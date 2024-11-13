@@ -25,6 +25,14 @@ export const getAllConsumerInfo = async () => {
   }
 };
 
+export const incrementDBMessageCount = async (consumerName: string) => {
+  try {
+    await query(`UPDATE consumers SET received_message_count = received_message_count + 1 WHERE name = $1`, [ consumerName ]);
+  } catch (error) {
+    throw error + ` when incrementing message count for ${consumerName} consumer DB`;
+  }
+};
+
 export const getConsumerByGroupId = async (groupId: string) => {
   try {
     const consumerDetails: { rows: ConsumerDetails[] } = await query(`SELECT 
@@ -67,7 +75,7 @@ export const getAllConsumersByName = async (name: string) => {
   }
 };
 
-export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBrokerEndpoints: string[], tumbleweedEndpoint: string, kafkaClientId: string) => {
+export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBrokerEndpoints: string[], tumbleweedEndpoint: string) => {
   try {
     const newConsumer = await query(`INSERT INTO consumers (
       name,
@@ -79,13 +87,19 @@ export const postConsumerToDB = async (consumerData: ConsumerDetails, kafkaBroke
       subscribed_topics)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING name, 
+      tumbleweed_endpoint,
+      description,
+      kafka_client_id,
+      kafka_group_id,
+      received_message_count,
       subscribed_topics,
-      date_created`,
+      date_created,
+      kafka_broker_endpoints`,
       [
         consumerData.name,
         consumerData.description,
         tumbleweedEndpoint,
-        kafkaClientId,
+        `${consumerData.kafka_group_id}-client`,
         kafkaBrokerEndpoints,
         consumerData.kafka_group_id,
         consumerData.subscribed_topics,

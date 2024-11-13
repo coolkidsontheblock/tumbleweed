@@ -3,23 +3,23 @@ import { z } from 'zod';
 import { ConsumerInputDetails } from '../types/types';
 
 const consumerDataSchema = z.object({
-  'name': z.string(),
-  'description': z.string(),
-  'tumbleweed_endpoint': z.string(),
-  'kafka_client_id': z.string(),
-  'kafka_broker_endpoints': z.array(z.string()),
-  'kafka_group_id': z.string(),
-  'subscribed_topics': z.array(z.string()),
-  'received_message_count': z.number(),
-  'date_created': z.string() 
+  name: z.string(),
+  description: z.string(),
+  tumbleweed_endpoint: z.string(),
+  kafka_client_id: z.string(),
+  kafka_broker_endpoints: z.array(z.string()),
+  kafka_group_id: z.string(),
+  subscribed_topics: z.array(z.string()),
+  received_message_count: z.number(),
+  date_created: z.string() 
 })
 
 const consumerSchemaArray = z.object({
-  'message': z.string(),
-  'data': z.array(consumerDataSchema)
+  message: z.string(),
+  data: z.array(consumerDataSchema)
 });
 
-const path = import.meta.env.VITE_API_URL + "/api/consumers";
+const path = import.meta.env.NODE_ENV === 'production' ? "/api/consumers" : "http://localhost:3001/api/consumers";
 
 const getConsumers = async () => {
   const res = await axios.get(path);

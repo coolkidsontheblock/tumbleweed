@@ -3,22 +3,22 @@ import { z } from 'zod';
 import { SourceInput } from '../types/types';
 
 const singleSourceSchema = z.object({
-    name: z.string(),
-    database_hostname: z.string(),
-    database_port: z.number(),
-    database_user: z.string(),
-    database_dbname: z.string(),
-    database_server_name: z.string(),
-    plugin_name: z.string(),
-    date_created: z.string()
-  });
-
-const sourceSchemaArray = z.object({
-  'message': z.string(),
-  'data': z.array(singleSourceSchema)
+  name: z.string(),
+  database_hostname: z.string(),
+  database_port: z.number(),
+  database_user: z.string(),
+  database_dbname: z.string(),
+  database_server_name: z.string(),
+  slot_name: z.string(),
+  date_created: z.string()
 });
 
-const path = import.meta.env.VITE_API_URL + "/api/sources";
+const sourceSchemaArray = z.object({
+  message: z.string(),
+  data: z.array(singleSourceSchema)
+});
+
+const path = import.meta.env.NODE_ENV === 'production' ? "/api/sources" : "http://localhost:3001/api/sources";
 
 const getSources = async () => {
   const res = await axios.get(path);

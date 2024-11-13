@@ -1,12 +1,22 @@
 import { Dispatch, SetStateAction } from "react";
 import { TopicsData } from "../types/types";
-import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
+import { Modal,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  Button
+} from '@mui/material';
 
 interface TopicProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
   topicInfo: TopicsData | null;
   setSelectedTopic: Dispatch<SetStateAction<TopicsData | null >>;
+  handleDeleteTopic: () => void;
 }
 
 const style = {
@@ -23,7 +33,7 @@ const style = {
   borderRadius: '15px',
 };
 
-export const TopicInfo = ({ setOpen, open, topicInfo, setSelectedTopic }: TopicProps) => {
+export const TopicInfo = ({ setOpen, open, topicInfo, setSelectedTopic, handleDeleteTopic }: TopicProps) => {
   const handleCloseModal = () => {
     setOpen(false);
     setSelectedTopic(null);
@@ -45,29 +55,43 @@ export const TopicInfo = ({ setOpen, open, topicInfo, setSelectedTopic }: TopicP
               <Table sx={{ minWidth: 650 }} aria-label="topic information table">
                 <TableBody>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Topic Name</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{topicInfo.topic}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Topic Name</TableCell>
+                    <TableCell >{topicInfo.topic}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Message Count</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{topicInfo.message_count}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Message Count</TableCell>
+                    <TableCell >{topicInfo.message_count}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscribed Consumers</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{topicInfo.subscribed_consumers.join(', ')}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Subscribed Consumers</TableCell>
+                    <TableCell >{topicInfo.subscribed_consumers.join(', ')}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Subscriber Count</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{topicInfo.subscribed_consumers.length}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Subscriber Count</TableCell>
+                    <TableCell >{topicInfo.subscribed_consumers.length}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Added</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{topicInfo.date_added}</TableCell>
+                    <TableCell sx={{fontWeight: 700 }}>Date Added</TableCell>
+                    <TableCell >{topicInfo.date_added}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
           </div>
+          <Button variant="contained"
+              onClick={handleDeleteTopic}
+              sx={{
+                fontFamily: "Montserrat",
+                fontWeight: 400,
+                borderRadius: '30px',
+                backgroundColor: '#70AF85',
+                '&:hover': {
+                  backgroundColor: '#F58B33',
+                },
+              }}
+          >
+            Delete Topic
+          </Button>
         </Box>
       </Modal>
     )

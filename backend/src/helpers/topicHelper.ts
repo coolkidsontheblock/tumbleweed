@@ -19,8 +19,8 @@ export const getTopicByName = async (topicName: string) => {
     const topicDetails = await query(`SELECT 
     name,
     subscribed_consumers,
-    publishing_sources
-    FROM topics`);
+    date_added
+    FROM topics WHERE name = $1`, [topicName]);
     return topicDetails.rows[0];
   } catch (error) {
     console.error(`There was an error getting that topic from the database: ${error}`);
@@ -159,6 +159,14 @@ export const deleteSubscriberlessTopics = async () => {
     }
   } catch (error) {
     console.error(`There was an error getting that topic from the database: ${error}`);
+  }
+};
+
+export const deleteTopicFromDB = async (topicName: string) => {
+  try {
+    await query(`DELETE FROM topics WHERE name = $1`, [topicName]);
+  } catch (error) {
+    console.error(`There was an error deleting that topic from the database: ${error}`);
   }
 };
 

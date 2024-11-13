@@ -10,7 +10,6 @@ import { getAllConsumerInfo,
 import { getKafkaBrokerEndpoints } from '../kafka/kafkaAdmin'
 import { addtoTopicsToDBWithConsumer, deleteConsumerFromSubscribedTopics } from '../helpers/topicHelper';
 import { HttpError } from '../utils/errors';
-import { createKafkaClientId } from '../helpers/uuid';
 
 const router = express.Router();
 
@@ -35,8 +34,7 @@ router.post('/new_consumer', async (req, res, next) => {
 
     const kafkaBrokerEndpoints = await getKafkaBrokerEndpoints();
     const tumbleweedEndpoint = await getConsumerConnectionURI(consumerData.kafka_group_id);
-    const kafkaClientId = createKafkaClientId(consumerData.kafka_group_id);
-    const newConsumer = await postConsumerToDB(consumerData, kafkaBrokerEndpoints, tumbleweedEndpoint, kafkaClientId);
+    const newConsumer = await postConsumerToDB(consumerData, kafkaBrokerEndpoints, tumbleweedEndpoint);
     await addtoTopicsToDBWithConsumer(newConsumer);
 
     res.status(201).send({

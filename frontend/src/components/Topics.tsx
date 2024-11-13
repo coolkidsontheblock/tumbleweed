@@ -1,5 +1,5 @@
-import { TopicsData, TopicsResponse } from '../types/types';
-import { getTopics } from "../services/topicService";
+import { TopicsData } from '../types/types';
+import { deleteTopic, getTopics } from "../services/topicService";
 import { TopicInfo } from './Topic';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -21,7 +21,7 @@ interface TopicsProps {
 }
 
 export const Topics = ({ setLoading }: TopicsProps) => {
-  const [topics, setTopics] = useState<TopicsResponse | null>(null)
+  const [topics, setTopics] = useState<TopicsData[]| null>(null)
   const [topicNames, setTopicNames] = useState<string[] | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<TopicsData | null>(null)
   const [error, setError] = useState<boolean>(false);
@@ -40,7 +40,7 @@ export const Topics = ({ setLoading }: TopicsProps) => {
         console.log('requests', request)
         const listOfTopics = request.data.map(topicObj => topicObj.topic);
         setTopicNames(listOfTopics);
-        setTopics(request);
+        setTopics(request.data);
       } catch (error) {
         console.error(error);
         setError(true);
@@ -57,7 +57,7 @@ export const Topics = ({ setLoading }: TopicsProps) => {
     fetchTopics();
   }, [])
 
-  const currentTopics = topics?.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || [];
+  const currentTopics = topics?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || [];
 
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
@@ -73,6 +73,28 @@ export const Topics = ({ setLoading }: TopicsProps) => {
     setErrorMsg('');
     setSuccess(false);
     setSuccessMsg('');
+  }
+
+  const handleDeleteTopic = async () => {
+    try {
+      if (topics && selectedTopic) {
+        const topic = selectedTopic.topic;
+        console.log(`The topic is: ${topic}`);
+        await deleteTopic(topic);
+        setTopics(prevTopics => 
+          prevTopics ? prevTopics.filter(topicObj => topicObj.topic !== topic) : null
+        );
+        setOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+      setError(true);
+      if (error instanceof Error) {
+        setErrorMsg(error.message);
+      } else {
+        setErrorMsg("An unknown error occurred");
+      }
+    }
   }
 
   return (
@@ -190,6 +212,7 @@ export const Topics = ({ setLoading }: TopicsProps) => {
               open={open}
               topicInfo={selectedTopic}
               setSelectedTopic={setSelectedTopic}
+              handleDeleteTopic={handleDeleteTopic}
             />
           </>
         }
