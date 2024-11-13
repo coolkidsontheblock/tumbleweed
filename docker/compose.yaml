@@ -1,6 +1,6 @@
 services:
   controller-1:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.0
     container_name: kraft-controller-1
     environment:
       KAFKA_NODE_ID: 1
@@ -17,7 +17,7 @@ services:
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
   
   controller-2:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.0
     container_name: kraft-controller-2
     environment:
       KAFKA_NODE_ID: 2
@@ -34,7 +34,7 @@ services:
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
     
   controller-3:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.0
     container_name: kraft-controller-3
     environment:
       KAFKA_NODE_ID: 3
@@ -51,7 +51,7 @@ services:
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
 
   kafka-1:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.0
     ports:
       - 29092:9092
     hostname: kafka-1
@@ -77,7 +77,7 @@ services:
       - controller-3
 
   kafka-2:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.0
     ports:
       - 39092:9092
     hostname: kafka-2
@@ -103,7 +103,7 @@ services:
       - controller-3
 
   kafka-3:
-    image: apache/kafka:latest
+    image: apache/kafka:3.9.0
     ports:
       - 49092:9092
     hostname: kafka-3
@@ -157,7 +157,7 @@ services:
 
   db:
     container_name: tumblweed-user-config-db
-    image: postgres
+    image: postgres:14.13-alpine
     restart: always
     ports:
       - 5432:5432
