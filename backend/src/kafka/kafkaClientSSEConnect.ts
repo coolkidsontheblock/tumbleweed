@@ -34,12 +34,11 @@ export const consumeMessages = async (consumer: Consumer, res: Response, consume
             throw new Error('Error: payload does not exist!')
           }
 
-          const msg = {
-              value: JSON.parse(stringPayload),
-              topic: topic,
-            };
-            res.write(`data: ${JSON.stringify(msg)}\n\n`);
-            incrementDBMessageCount(consumerName);
+          const payload = JSON.parse(stringPayload).payload.payload;
+          const formattedTopic = topic.replace("outbox.event.", "");
+          const msg = { payload, topic: formattedTopic };
+          res.write(`data: ${JSON.stringify(msg)}\n\n`);
+          incrementDBMessageCount(consumerName);
         },
       });
     } catch (error) {

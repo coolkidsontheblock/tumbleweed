@@ -17,7 +17,6 @@ export interface PGSourceDetailsWithSlotName extends PGSourceDetails {
   slot_name: string
 }
 
-
 export interface DebeziumConnector {
   name: string;
   config: {
@@ -36,8 +35,16 @@ export interface DebeziumConnector {
     'transforms': string;
     'transforms.outbox.type': string;
     'transforms.outbox.table.fields.additional.placement': string;
-    "value.converter.schemas.enable": string;
-    'value.converter': string;
+    "schema.history.internal.kafka.bootstrap.servers": string;
+    "schema.history.internal.kafka.topic": string;
+    "key.converter": string;
+    "key.converter.apicurio.registry.url": string;
+    "key.converter.apicurio.registry.auto-register": string;
+    "key.converter.apicurio.registry.find-latest": string;
+    "value.converter": string;
+    "value.converter.apicurio.registry.url": string;
+    "value.converter.apicurio.registry.auto-register": string;
+    "value.converter.apicurio.registry.find-latest": string;
     'heartbeat.action.query': string;
     'heartbeat.interval.ms': number;
     'publication.name': string;
