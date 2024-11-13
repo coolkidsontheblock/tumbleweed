@@ -1,6 +1,5 @@
 export interface PGSourceDetails {
   name: string,
-  plugin_name: string,
   database_hostname: string,
   database_port: number,
   database_user: string,

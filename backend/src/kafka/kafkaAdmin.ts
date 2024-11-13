@@ -16,11 +16,13 @@ const kafka = new Kafka({
 });
 
 export const createTopicsForKafka = async (topicNames: string[]) => {
+  const topicsInKafka = await getTopicsFromKafka();
+  const newTopics = topicNames.filter((topic: string) => !topicsInKafka.includes(topic));
 
-  const topics = topicNames.map(topic => ({
+  const topics = newTopics.map(topic => ({
     topic: `outbox.event.${topic}`,
     numPartitions: 1,
-    replicationFactor: 1
+    replicationFactor: 3
   }));
 
   const admin = kafka.admin();
@@ -30,7 +32,7 @@ export const createTopicsForKafka = async (topicNames: string[]) => {
     const result = await admin.createTopics({
       validateOnly: false,
       waitForLeaders: false,
-      timeout: 10000,
+      timeout: 5000,
       topics: topics})
     console.log('Topics created successfully:', result);
   } catch (error) {
@@ -88,14 +90,12 @@ export const getKafkaBrokerEndpoints = async () => {
 
 export const deleteTopicFromKafka = async (topics: string[]) => {
   const admin = kafka.admin();
+
   try {
     await admin.connect();
-    await admin.deleteTopics({
-      topics: topics,
-      timeout: 5000,
-    })
+    await admin.deleteTopics({topics: topics, timeout: 5000})
   } catch (error) {
-    console.error('Error deleteing kafka topics:', error);
+    console.error('Error deleting kafka topics:', error);
     throw error;
   } finally {
     await admin.disconnect();

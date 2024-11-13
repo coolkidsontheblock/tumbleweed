@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { Kafka, Consumer, EachMessagePayload } from 'kafkajs';
 import { getKafkaBrokerEndpoints } from '../kafka/kafkaAdmin';
+import { incrementDBMessageCount } from '../helpers/consumerHelper';
 
 let kafka: Kafka;
 
@@ -24,7 +25,7 @@ export const createConsumer = async (group_id: string, topics: string[]) => {
     }
 };
 
-export const consumeMessages = async (consumer: Consumer, res: Response) => {
+export const consumeMessages = async (consumer: Consumer, res: Response, consumerName: string) => {
     try {
       await consumer.run({
         eachMessage: async ({ topic, partition, message }: EachMessagePayload) => {
@@ -38,6 +39,7 @@ export const consumeMessages = async (consumer: Consumer, res: Response) => {
               topic: topic,
             };
             res.write(`data: ${JSON.stringify(msg)}\n\n`);
+            incrementDBMessageCount(consumerName);
         },
       });
     } catch (error) {

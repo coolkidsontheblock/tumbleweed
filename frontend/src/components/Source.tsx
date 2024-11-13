@@ -50,40 +50,38 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
             <h2>Source Information</h2>
             <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '8px 8px', fontSize: '0.875rem' } }}>
               <Table sx={{ minWidth: 650 }} aria-label="source information table">
-                {/* <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ fontWeight: 'bold' }}>Property</TableCell>
-                    <TableCell align="left" sx={{ fontWeight: 'bold' }}>Value</TableCell>
-                  </TableRow>
-                </TableHead> */}
                 <TableBody>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Connector Name</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.name}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Connector Name</TableCell>
+                    <TableCell>{sourceData.name}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Hostname</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_hostname}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Database Hostname</TableCell>
+                    <TableCell>{sourceData.database_hostname}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Port</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_port}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Database Port</TableCell>
+                    <TableCell>{sourceData.database_port}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Name</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_dbname}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Database Name</TableCell>
+                    <TableCell>{sourceData.database_dbname}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Server Name</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_server_name}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Database Server Name</TableCell>
+                    <TableCell>{sourceData.database_server_name}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Database Username</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.database_user}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Database Username</TableCell>
+                    <TableCell>{sourceData.database_user}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 700 }}>Date Created</TableCell>
-                    <TableCell sx={{ fontFamily: "Montserrat", fontWeight: 400 }}>{sourceData.date_created}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Slot Name</TableCell>
+                    <TableCell>{sourceData.slot_name}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 700 }}>Date Created</TableCell>
+                    <TableCell>{sourceData.date_created}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -95,10 +93,9 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
               fontFamily: "Montserrat",
               fontWeight: 400,
               borderRadius: '30px',
-              // border: '3px solid #331E14',
               backgroundColor: '#70AF85',
               '&:hover': {
-                backgroundColor: '#F58B33', // Change color on hover
+                backgroundColor: '#F58B33',
               },
             }}>Delete Source</Button>
         </Box>

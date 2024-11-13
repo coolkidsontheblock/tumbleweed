@@ -28,7 +28,7 @@ router.get('/:groupId', async (req, res, next) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
 
-    consumeMessages(consumer as Consumer, res);
+    consumeMessages(consumer as Consumer, res, consumerData.name);
 
     req.on('close', async () => {
       await consumer?.disconnect();

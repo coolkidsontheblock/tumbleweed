@@ -197,7 +197,7 @@ export const SourceForm = ({
             id="topics"
             label="Topics"
             variant="outlined"
-            placeholder="Please provide a comma separated list of topics"
+            placeholder="Please provide a comma separated list of topics, e.g., topic1, topic2, topic3"
             error={errors.topics}
             helperText={errors.topics && "Topics are required"}
             onChange={(event) => setTopics(event.target.value)}

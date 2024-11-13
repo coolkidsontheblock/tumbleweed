@@ -6,10 +6,11 @@ export interface SourceInput {
   database_password: string;
   database_dbname: string;
   database_server_name: string;
+  topics: string[];
 }
 
-export type SourceData = Omit<SourceInput, 'database_password'> & {
-  plugin_name: string;
+export type SourceData = Omit<SourceInput, 'database_password' | 'topics'> & {
+  slot_name: string;
   date_created: string;
 }
 
