@@ -32,7 +32,7 @@ RUN touch .env && \
     echo "POSTGRES_HOST=db" >> .env && \
     echo "POSTGRES_DATABASE=userconfig" >> .env && \
     echo "POSTGRES_PASSWORD=postgres" >> .env && \
-    echo "KAFKA_BROKER_ENDPOINTS=kafka-1:19092,kafka-2:19092,kafka-3:19092" >> .env
+    echo "KAFKA_BROKER_ENDPOINTS=localhost:29092, localhost:39092, localhost:49092" >> .env
 
 COPY --from=frontend-builder /frontend/dist ./dist
 
