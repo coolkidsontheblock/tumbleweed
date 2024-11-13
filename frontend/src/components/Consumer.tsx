@@ -62,13 +62,12 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Tumbleweed Endpoint </TableCell>
-                    <TableCell>{selectedConsumer.tumbleweed_endpoint}  
+                    <TableCell sx={{ display: "flex", justifyContent: "space-between" }}>{selectedConsumer.tumbleweed_endpoint}  
                     <Button variant="contained"
                       onClick={() => handleCopy(selectedConsumer.tumbleweed_endpoint)}
                       sx={{
                         fontFamily: "Montserrat",
                         padding: '0px',
-                        marginLeft: '5px',
                         fontWeight: 400,
                         borderRadius: '30px',
                         backgroundColor: '#70AF85',
