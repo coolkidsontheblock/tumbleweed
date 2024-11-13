@@ -47,6 +47,10 @@ h1 {
   color: #331E14;
 }
 
+#homePageTitle {
+  margin: 0px;
+}
+
 h2 {
   margin-bottom: 10px;
   font-family: "Koulen", sans-serif;

@@ -22,7 +22,7 @@ export const createTopicsForKafka = async (topicNames: string[]) => {
   const topics = newTopics.map(topic => ({
     topic: `outbox.event.${topic}`,
     numPartitions: 1,
-    replicationFactor: 3
+    replicationFactor: 1
   }));
 
   const admin = kafka.admin();

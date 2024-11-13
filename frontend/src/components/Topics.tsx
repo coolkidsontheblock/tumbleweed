@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
 import { SuccessSnack } from "./SuccessSnack";
+import { sortTopicsByDate } from "../utils/sorting";
 import { ZodError } from 'zod';
 import {
   Paper,
@@ -39,8 +40,10 @@ export const Topics = ({ setLoading }: TopicsProps) => {
       try {
         const request = await getTopics();
         const listOfTopics = request.data.map(topicObj => topicObj.topic);
+        const data = sortTopicsByDate(request.data);
+
         setTopicNames(listOfTopics);
-        setTopics(request.data);
+        setTopics(data);
       } catch (error) {
         console.error(error);
         setError(true);

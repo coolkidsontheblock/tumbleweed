@@ -16,7 +16,7 @@ export const Home = ({ setLoading }: HomeProps) => {
         alt="logo with cactus and a desert scape in stained-glass style"
         style={{ width: '100%', height: 'auto', maxWidth: '800px' }}
       />
-      <h1 id="homePageTitle">Where Dreams Come True!</h1>
+      <h1 id="homePageTitle">A change data capture pipeline for microservices</h1>
     </div>
   );
 }

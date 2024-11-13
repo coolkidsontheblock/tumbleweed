@@ -4,6 +4,7 @@ import { getConsumers, deleteConsumer } from "../services/consumerService";
 import { ConsumerDetails } from "../types/types";
 import { Consumer } from "./Consumer";
 import { ConsumerForm } from "./ConsumerForm";
+import { sortConsumersByDate } from "../utils/sorting";
 import { ErrorSnack } from "./ErrorSnack";
 import {
   Table,
@@ -39,7 +40,8 @@ export const Consumers = ({ setLoading }: ConsumerProps) => {
       setLoading(true);
       try {
         const request = await getConsumers();
-        setConsumers(request.data);
+        const data = sortConsumersByDate(request.data);
+        setConsumers(data);
       } catch (error) {
         console.error(error);
         setError(true);

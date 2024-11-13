@@ -39,6 +39,12 @@ export const consumeMessages = async (consumer: Consumer, res: Response, consume
           const msg = { payload, topic: formattedTopic };
           res.write(`data: ${JSON.stringify(msg)}\n\n`);
           incrementDBMessageCount(consumerName);
+
+          await consumer.commitOffsets([{ 
+            topic, 
+            partition, 
+            offset: (parseInt(message.offset) + 1).toString() // Commit the next offset
+          }]);
         },
       });
     } catch (error) {
