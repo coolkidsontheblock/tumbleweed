@@ -213,7 +213,7 @@ export const SourceForm = ({
                 borderRadius: '30px',
                 backgroundColor: '#70AF85',
                 '&:hover': {
-                    backgroundColor: '#F58B33', // Change color on hover
+                    backgroundColor: '#F58B33',
                 }, 
                 }}>
               Connect

@@ -1,4 +1,14 @@
-export const Home = () => {
+import { useEffect } from "react";
+
+interface HomeProps {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const Home = ({ setLoading }: HomeProps) => {
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
   return (
     <div style={{ textAlign: 'center' }}>
       <img 

@@ -13,7 +13,7 @@ const AllTopicsSchemaArray = z.object({
   data: z.array(AllTopicsDataSchema)
 });
 
-const path = import.meta.env.NODE_ENV === 'production' ? "/api/topics" : "http://localhost:3001/api/topics";
+const path = import.meta.env.VITE_NODE_ENV === 'development' ? "http://localhost:3001/api/topics" : "/api/topics";
 
 const getTopics = async () => {
   const res = await axios.get(path);

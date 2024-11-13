@@ -18,7 +18,7 @@ const sourceSchemaArray = z.object({
   data: z.array(singleSourceSchema)
 });
 
-const path = import.meta.env.NODE_ENV === 'production' ? "/api/sources" : "http://localhost:3001/api/sources";
+const path = import.meta.env.VITE_NODE_ENV === 'development' ? "http://localhost:3001/api/sources" : "/api/sources";
 
 const getSources = async () => {
   const res = await axios.get(path);
