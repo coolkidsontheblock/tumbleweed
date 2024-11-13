@@ -38,6 +38,11 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
     setSelectedConsumer(null);
     setOpenConsumer(false);
   };
+
+  const handleCopy = (endpoint: string) => {
+    navigator.clipboard.writeText(endpoint);
+  }
+
   if (selectedConsumer) {
     return (
       <Modal open={openConsumer} onClose={handleCloseModal}>
@@ -56,8 +61,22 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
                     <TableCell>{selectedConsumer.description}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 700 }}>Tumbleweed Endpoint</TableCell>
-                    <TableCell>{selectedConsumer.tumbleweed_endpoint}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Tumbleweed Endpoint </TableCell>
+                    <TableCell>{selectedConsumer.tumbleweed_endpoint}  
+                    <Button variant="contained"
+                      onClick={() => handleCopy(selectedConsumer.tumbleweed_endpoint)}
+                      sx={{
+                        fontFamily: "Montserrat",
+                        padding: '0px',
+                        marginLeft: '5px',
+                        fontWeight: 400,
+                        borderRadius: '30px',
+                        backgroundColor: '#70AF85',
+                        '&:hover': {
+                          backgroundColor: '#F58B33',
+                        },
+                      }}>Copy
+                      </Button></TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Kafka Client Id</TableCell>
