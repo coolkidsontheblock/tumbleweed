@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { createSource } from "../services/sourcesService";
 import { SourceData, SourceInput } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
-import { validateInput, validatePort, validateListOfTopics } from "../utils/validation";
+import { validateInput, validatePort, validateListOfTopics, validateConnectorName, InputError } from "../utils/validation";
 import { textFieldTheme } from '../styles/Theme';
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -57,7 +57,7 @@ export const SourceForm = ({
 
     try {
       const sourceData: SourceInput = {
-        name: validateInput(connectorName),
+        name: validateConnectorName(connectorName),
         database_hostname: validateInput(dbhostname),
         database_port: validatePort(dbport),
         database_user: validateInput(dbusername),
@@ -83,9 +83,10 @@ export const SourceForm = ({
       setTopics('');
       setPage(0);
     } catch (error: any) {
+      console.log(error);
       setError(true);
-      const errorMessage = error.response.data.message;
-      const errorStatus = error.response.status;
+      const errorMessage = error instanceof InputError ? error.message : error.response?.data.message;
+      const errorStatus = error.response?.status || "Invalid Input"; 
 
       setErrorMsg(`Error (${errorStatus}): ${errorMessage} `);
 
@@ -114,6 +115,7 @@ export const SourceForm = ({
           <h2 style={{ textAlign: 'center' }}>Connect a new source database</h2>
           <TextField
             required
+            placeholder="Can only contain lowercase letters, digits, and underscores."
             id="connector-name"
             label="Connector Name"
             variant="outlined"
@@ -125,6 +127,7 @@ export const SourceForm = ({
           <TextField
             fullWidth
             required
+            placeholder="Please enter your database hostname."
             id="dbhostname"
             label="Database Hostname"
             variant="outlined"
@@ -136,6 +139,7 @@ export const SourceForm = ({
           <TextField
             fullWidth
             required
+            placeholder="Please enter your database port. Must be between 0 and 65535."
             id="dbport"
             label="Database Port"
             variant="outlined"
@@ -147,6 +151,7 @@ export const SourceForm = ({
           <TextField
             fullWidth
             required
+            placeholder="Please enter your database name."
             id="dbname"
             label="Database Name"
             variant="outlined"
@@ -158,6 +163,7 @@ export const SourceForm = ({
           <TextField
             fullWidth
             required
+            placeholder="Please enter your database server name."
             id="dbservername"
             label="Database Server Name"
             variant="outlined"
@@ -169,6 +175,7 @@ export const SourceForm = ({
           <TextField
             fullWidth
             required
+            placeholder="Please enter your database username."
             id="dbusername"
             label="Database Username"
             variant="outlined"
@@ -180,6 +187,7 @@ export const SourceForm = ({
           <TextField
             fullWidth
             required
+            placeholder="Please enter your database password."
             id="dbpassword"
             label="Database Password"
             type="password"
