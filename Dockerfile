@@ -10,6 +10,8 @@ RUN npm install
 
 COPY frontend ./
 
+RUN touch .env
+
 RUN npm run build
 
 # Backend build
@@ -23,6 +25,8 @@ COPY backend/package*.json ./
 RUN npm install
 
 COPY backend ./
+
+RUN touch .env
 
 COPY --from=frontend-builder /frontend/dist ./dist
 
