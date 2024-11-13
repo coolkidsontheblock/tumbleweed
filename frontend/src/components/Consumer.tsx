@@ -69,6 +69,7 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
                         fontFamily: "Montserrat",
                         padding: '0px',
                         fontWeight: 400,
+                        fontSize: '.6rem',
                         borderRadius: '30px',
                         backgroundColor: '#70AF85',
                         '&:hover': {

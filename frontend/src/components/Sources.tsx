@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Source } from "./Source";
 import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
+import { sortSourcesByDate} from "../utils/sorting";
 import { SuccessSnack } from "./SuccessSnack";
 import { Box,
   Table,
@@ -39,7 +40,9 @@ export const Sources = ({ setLoading }: SourcesProps) => {
       setLoading(true);
       try {
         const request = await getSources();
-        setSources(request.data);
+        const data = sortSourcesByDate(request.data);
+
+        setSources(data);
       } catch (error) {
         console.error(error);
         setError(true);
