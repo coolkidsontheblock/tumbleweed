@@ -19,11 +19,10 @@ const consumerSchemaArray = z.object({
   data: z.array(consumerDataSchema)
 });
 
-const path = import.meta.env.NODE_ENV === 'production' ? "/api/consumers" : "http://localhost:3001/api/consumers";
+const path = import.meta.env.VITE_NODE_ENV === 'development' ? "http://localhost:3001/api/consumers" : "/api/consumers";
 
 const getConsumers = async () => {
   const res = await axios.get(path);
-  console.log(res.data)
   return consumerSchemaArray.parse(res.data);
 };
 

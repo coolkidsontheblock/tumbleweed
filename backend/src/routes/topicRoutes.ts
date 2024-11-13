@@ -6,10 +6,9 @@ import { deleteConnectorByName, deleteReplicationSlot } from '../helpers/sourceH
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (_, res, next) => {
   try {
     const allTopics = await getTopicsFromKafka();
-    console.log(allTopics);
     if (allTopics.length === 0) {
       return res.status(200).send({
         message: "No topics found.",

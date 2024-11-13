@@ -39,7 +39,6 @@ export const Consumer = ({ setOpenConsumer, openConsumer, handleDeleteConsumer, 
     setOpenConsumer(false);
   };
   if (selectedConsumer) {
-    console.log(selectedConsumer)
     return (
       <Modal open={openConsumer} onClose={handleCloseModal}>
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>

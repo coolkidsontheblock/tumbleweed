@@ -113,7 +113,6 @@ export const getInfoForAllTopics = async (topics: string[]) => {
   const topicPromises = topics.map(async (topic) => {
     const topicObj = await getSubscribedConsumersAndDate(topic);
     const messageCount = await getTopicMessageCount(`${topicPrefix}${topic}`);
-    console.log(topicObj);
     return {
       topic: topic,
       subscribed_consumers: sortArrayByLowerCase(topicObj.subscribed_consumers),

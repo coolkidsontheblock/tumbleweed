@@ -13,7 +13,7 @@ import { HttpError } from '../utils/errors';
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {  
+router.get('/', async (_, res, next) => {  
   try {
     const consumerInfo = await getAllConsumerInfo();
 

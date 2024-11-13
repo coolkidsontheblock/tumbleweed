@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { SourceData } from "../types/types"
-
 import {
   Modal,
   Box,
@@ -12,7 +11,6 @@ import {
   Paper,
   Button
 } from '@mui/material';
-
 
 interface SourceProps {
   setOpenSource: Dispatch<SetStateAction<boolean>>;

@@ -84,7 +84,6 @@ export const ConsumerForm = ({
 
       setErrors({});
       const res = await createConsumer(consumerData);
-      console.log(res.data);
       setConsumers((prevConsumers) => prevConsumers.concat(res.data));
 
       setSuccess(true);
@@ -118,7 +117,6 @@ export const ConsumerForm = ({
     <Modal open={openForm} onClose={handleCloseModal}>
       <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }} component="form">
         <h1 style={{ textAlign: 'center' }}>Connect a new consumer</h1>
-        <p style={{ textAlign: 'center' }}>Please enter consumer details:</p>
         <TextField
           required
           id="name"

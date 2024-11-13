@@ -21,9 +21,9 @@ const destination = process.env.NODE_ENV === 'production'
       ? 'http://connect:8083/connectors' 
       : 'http://localhost:8083/connectors';
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (_, res, next) => {
   try {     
-    const { data } = await axios.get(destination);
+    await axios.get(destination);
     const sourceInfo = await getAllConnectors() || [];
     res.status(200).send({
       message: `${sourceInfo.length} sources found.`,

@@ -39,7 +39,6 @@ export const Consumers = ({ setLoading }: ConsumerProps) => {
       setLoading(true);
       try {
         const request = await getConsumers();
-        console.log(request.data);
         setConsumers(request.data);
       } catch (error) {
         console.error(error);

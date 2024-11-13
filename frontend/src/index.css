@@ -8,7 +8,6 @@
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  color: '#331E14'
 }
 
 koulen-regular {
@@ -24,6 +23,10 @@ koulen-regular {
   font-style: normal;
 }
 
+form, p {
+  color: #331E14;
+}
+
 .main {
   display: block;
   justify-content: center;
@@ -31,10 +34,6 @@ koulen-regular {
   height: 100%;
   margin-left: 240px;
 }
-
-/* #homePageTitle {
-  margin: 20px;
-} */
 
 h1 {
   margin: 30px;
@@ -44,7 +43,7 @@ h1 {
   font-weight: 400;
   font-style: normal;
   letter-spacing: .1em;
-  color: '#331E14'
+  color: #331E14;
 }
 
 h2 {
@@ -53,7 +52,7 @@ h2 {
   font-weight: 400;
   font-style: normal;
   letter-spacing: .1em;
-  color: '#331E14'
+  color: #331E14;
 }
 
 h3 {
@@ -61,7 +60,7 @@ h3 {
   font-weight: bold;
   font-family: "Koulen", sans-serif;
   letter-spacing: .1em;
-  color: '#331E14'
+  color: #331E14;
 }
 
 td {
@@ -80,27 +79,13 @@ td #topic-fieldset,
   background-color: black;
 }
 
-/* .topic-label {
-  padding: 10px
-} */
-
 .connectionlist {
-  /* display: flex; */
-  /* justify-content: space-between; */
   padding: 20px;
 }
 
-/* .link {
-  padding-left: 5px;
-  padding-right: 5px;
-} */
-
 .link:hover {
-  /* background-color: #F58B33;
-  padding: 5px 5px; */
   font-weight: 700;
   color: #F58B33;
-  /* border-radius: 5px; */
 }
 
 .connectionButton {
@@ -108,20 +93,12 @@ td #topic-fieldset,
   border-radius: 12px;
   padding: 5px;
   cursor: pointer;
-  /* margin-top: 15px; */
   margin-left: 95px;
 }
 
 .connectionButton:hover {
   background-color: #db7b3bc6;
 }
-
-/* .connectiondetails,
-.connection-ul {
-  list-style: none;
-  margin-bottom: 10px;
-  margin-top: 10px;
-} */
 
 .topic-ul {
   list-style: none;
@@ -133,22 +110,7 @@ td #topic-fieldset,
   margin-bottom: 10px;
 }
 
-/* .nav-menu {
-  background-color: #db7b3bc6;
-  width: 20%;
-  height: 100%;
-}
-
-
-.App {
-  display: flex;
-  justify-content: left;
-  height: auto;
-  /* margin-left: 10px; */
-/* } */
-
 .nav-text {
-  color: #ffffff;
   font-size: 150%;
   height: 10%;
   display: flex;
@@ -163,16 +125,6 @@ a {
   text-decoration: none;
   color: inherit;
 }
-
-/* input {
-  display: block;
-} */
-
-/* #sourceform {
-  padding: 20px;
-  display: block;
-  justify-content: center;
-} */
 
 #sourcelist, #consumerlist {
   margin-right: 100px;

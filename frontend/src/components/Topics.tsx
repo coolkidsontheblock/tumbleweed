@@ -37,7 +37,6 @@ export const Topics = ({ setLoading }: TopicsProps) => {
       setLoading(true);
       try {
         const request = await getTopics();
-        console.log('requests', request)
         const listOfTopics = request.data.map(topicObj => topicObj.topic);
         setTopicNames(listOfTopics);
         setTopics(request.data);
@@ -79,7 +78,6 @@ export const Topics = ({ setLoading }: TopicsProps) => {
     try {
       if (topics && selectedTopic) {
         const topic = selectedTopic.topic;
-        console.log(`The topic is: ${topic}`);
         await deleteTopic(topic);
         setTopics(prevTopics => 
           prevTopics ? prevTopics.filter(topicObj => topicObj.topic !== topic) : null

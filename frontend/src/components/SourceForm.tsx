@@ -111,9 +111,7 @@ export const SourceForm = ({
     <ThemeProvider theme={textFieldTheme}>
       <Modal open={openSourceForm} onClose={handleCloseModal}>
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }} component="form">
-          <h2 style={{ textAlign: 'center' }}>Connect a new source DB to Tumbleweed</h2>
-          <p style={{ textAlign: 'center' }}>Please enter your database connection details below:</p>
-
+          <h2 style={{ textAlign: 'center' }}>Connect a new source database</h2>
           <TextField
             required
             id="connector-name"
@@ -213,7 +211,7 @@ export const SourceForm = ({
                 borderRadius: '30px',
                 backgroundColor: '#70AF85',
                 '&:hover': {
-                    backgroundColor: '#F58B33', // Change color on hover
+                    backgroundColor: '#F58B33',
                 }, 
                 }}>
               Connect
