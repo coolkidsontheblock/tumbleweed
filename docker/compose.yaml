@@ -156,7 +156,7 @@ services:
       - 3001:3001
 
   db:
-    container_name: tumblweed-user-config-db
+    container_name: tumbleweed-user-config-db
     image: postgres:14.13-alpine
     restart: always
     ports:
