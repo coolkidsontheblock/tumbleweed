@@ -144,15 +144,6 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    env_file:
-      - ../backend/.env
-    environment:
-      NODE_ENV: production
-      POSTGRES_USER: postgres
-      POSTGRES_HOST: db
-      POSTGRES_DATABASE: userconfig
-      POSTGRES_PASSWORD: postgres
-      KAFKA_BROKER_ENDPOINTS: kafka-1:19092,kafka-2:19092,kafka-3:19092
     ports:
       - 3001:3001
 

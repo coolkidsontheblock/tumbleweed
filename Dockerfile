@@ -26,7 +26,13 @@ RUN npm install
 
 COPY backend ./
 
-RUN touch .env
+RUN touch .env && \
+    echo "NODE_ENV=production" >> .env && \
+    echo "POSTGRES_USER=postgres" >> .env && \
+    echo "POSTGRES_HOST=db" >> .env && \
+    echo "POSTGRES_DATABASE=userconfig" >> .env && \
+    echo "POSTGRES_PASSWORD=postgres" >> .env && \
+    echo "KAFKA_BROKER_ENDPOINTS=kafka-1:19092,kafka-2:19092,kafka-3:19092" >> .env
 
 COPY --from=frontend-builder /frontend/dist ./dist
 
