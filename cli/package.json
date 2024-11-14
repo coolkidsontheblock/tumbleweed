@@ -2,10 +2,11 @@
   "name": "cli",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts",
+    "dev": "npm run build && nodemon dist/index.js",
     "start": "ts-node src/index.ts",
     "tsc": "tsc"
   },

@@ -6,7 +6,7 @@ import { Command } from 'commander';
 
 const program = new Command();
 
-console.log(figlet.textSync("Tumbleweed"));
+console.log(chalk.blue(figlet.textSync("Tumbleweed")));
 
 program
   .version("1.0.0")
@@ -17,3 +17,7 @@ program
   .parse(process.argv);
 
 const options = program.opts();
+
+if (!process.argv.slice(2).length) {
+  program.outputHelp();
+}
