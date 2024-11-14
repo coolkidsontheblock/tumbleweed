@@ -68,7 +68,7 @@ export const DeleteSourceForm = ({
         setSources(prevSources => prevSources.filter(sourceString => sourceString.name !== selectedSource.name));
         setSelectedSource(null);
         setSuccess(true);
-        setSuccessMsg("Deleted source successfully!");
+        setSuccessMsg("Source deleted successfully!");
         setDBPassword('');
         setOpenDeleteForm(false);
       }

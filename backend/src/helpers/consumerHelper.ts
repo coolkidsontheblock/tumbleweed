@@ -121,7 +121,7 @@ export const deleteConsumerByName = async (name: string) => {
 }
 
 const getBackendHostAddressAndPort = async () => {
-  const serverPort = (server.address() as any).port;
+  const serverPort = (server.address() as { port: number }).port;
   if (process.env.NODE_ENV === 'production') {
     return await getPublicAddress(serverPort);
   } else {
@@ -129,7 +129,7 @@ const getBackendHostAddressAndPort = async () => {
   }
 }
 
-const getLocalAddress = (serverPort: string) => {
+const getLocalAddress = (serverPort: number) => {
   const interfaces = os.networkInterfaces();
 
   for (const interfaceName in interfaces) {
@@ -146,7 +146,7 @@ const getLocalAddress = (serverPort: string) => {
   return `localhost:${serverPort}`;
 }
 
-const getPublicAddress = async (serverPort: string) => {
+const getPublicAddress = async (serverPort: number) => {
   const getPublicIP = async () => {
     try {
       const response = await axios.get('https://api.ipify.org?format=json');

@@ -67,7 +67,7 @@ export const Consumers = ({ setLoading }: ConsumerProps) => {
         setConsumers(prevSources => prevSources.filter(sourceString => sourceString.name !== source));
         setSelectedConsumer(null);
         setSuccess(true);
-        setSuccessMsg("Deleted consumer successfully!");
+        setSuccessMsg("Consumer deleted successfully!");
       }
     } catch (error) {
       console.error(error);

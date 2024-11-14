@@ -51,4 +51,4 @@ export const consumeMessages = async (consumer: Consumer, res: Response, consume
         console.error(`There was an error consuming messages: ${error}`);
         return null;
     }
-}; 
+};

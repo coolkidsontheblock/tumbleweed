@@ -26,5 +26,5 @@ export const errorHandler = (
       message = 'Unknown error occurred';
     }
 
-    res.status(status).json({status, message})
+    res.status(status).json({status, message});
 }

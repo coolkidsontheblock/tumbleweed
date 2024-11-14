@@ -88,7 +88,7 @@ export const Topics = ({ setLoading }: TopicsProps) => {
         );
         setOpen(false);
         setSuccess(true);
-        setSuccessMsg("Deleted topic successfully!");
+        setSuccessMsg("Topic deleted successfully!");
       }
     } catch (error) {
       console.error(error);
