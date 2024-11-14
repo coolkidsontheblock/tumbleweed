@@ -2,10 +2,19 @@ import { ConsumerData } from "../types/consumerTypes";
 import { PGSourceDetails, PGCredentials} from "../types/sourceTypes";
 import { ValidationError } from "../utils/errors";
 import { Client } from "pg";
+import { query } from "../database/pg";
 
 const validateUniqueConnector = (connectors: string[], connector: string) => {
   if (connectors.find((c) => c === connector)) {
-    throw new ValidationError(`Connector name "${connector}" already exists, please provide a unique name`);
+    throw new ValidationError(`Connector name "${connector}" already exists, please provide a unique name.`);
+  }
+}
+
+const validateUniqueSourceHostName = async (hostname: string) => {
+  const queryResult = await query('SELECT database_hostname FROM connectors WHERE database_hostname = $1', [hostname]);
+  const hostnameExists = queryResult.rows.length > 0;
+  if (hostnameExists) {
+    throw new ValidationError(`A connector for hostname "${hostname}" already exists. Only one connector per database is necessary.`);
   }
 }
 
@@ -15,7 +24,7 @@ const validateEmptyString = (str: string) => {
   }
 }
 
-export const validateSourceDetails = (sourceDetails: PGSourceDetails, connectors: string[]) => {
+export const validateSourceDetails = async (sourceDetails: PGSourceDetails, connectors: string[]) => {
   const inputValues = Object.values(sourceDetails) as string[];
 
   inputValues.forEach(value => {
@@ -24,6 +33,7 @@ export const validateSourceDetails = (sourceDetails: PGSourceDetails, connectors
 
   const connectorName = sourceDetails.name;
   validateUniqueConnector(connectors, connectorName);
+  await validateUniqueSourceHostName(sourceDetails.database_hostname);
 }
 
 export const validateConsumerData = (data: ConsumerData) => {

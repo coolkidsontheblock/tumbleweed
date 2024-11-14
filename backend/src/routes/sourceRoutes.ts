@@ -61,7 +61,7 @@ router.post('/new_source', async (req, res, next) => {
     const configData = getConfigData(sourceDetails);
     const connectors = await axios.get(destination);
 
-    validateSourceDetails(sourceDetails, connectors.data);
+    await validateSourceDetails(sourceDetails, connectors.data);
 
     const axiosResponse = await axios.post(destination, configData, {
       headers: {
