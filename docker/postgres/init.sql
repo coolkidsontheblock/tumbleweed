@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS public.connectors
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
     plugin_name TEXT NOT NULL,
-    database_hostname TEXT NOT NULL,
+    database_hostname TEXT NOT NULL UNIQUE,
     database_port INT NOT NULL,
     database_user TEXT NOT NULL,
     database_password TEXT NOT NULL,
