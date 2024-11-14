@@ -31,7 +31,7 @@ const createSource = async (sourceInfo: SourceInput) => {
 }
 
 const deleteSource = async (sourceCredentials: SourceCredentials) => {
-  const res = await axios.delete(`${path}/${sourceCredentials.source_name}`, { data: sourceCredentials });
+  const res = await axios.delete(path, { data: sourceCredentials });
   return res.data;
 }
 

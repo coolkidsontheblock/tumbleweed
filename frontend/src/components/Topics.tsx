@@ -87,6 +87,8 @@ export const Topics = ({ setLoading }: TopicsProps) => {
           prevTopics ? prevTopics.filter(topicObj => topicObj.topic !== topic) : null
         );
         setOpen(false);
+        setSuccess(true);
+        setSuccessMsg("Deleted topic successfully!");
       }
     } catch (error) {
       console.error(error);

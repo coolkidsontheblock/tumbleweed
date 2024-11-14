@@ -2,7 +2,6 @@ import express from 'express';
 import { getInfoForAllTopics, addNewTopicsFromKafkaToDB, getTopicByName, deleteTopicFromDB } from '../helpers/topicHelper';
 import { getTopicsFromKafka, deleteTopicFromKafka } from '../kafka/kafkaAdmin';
 import { TopicError } from '../utils/errors';
-import { deleteConnectorByName, deleteReplicationSlot } from '../helpers/sourceHelper';
 
 const router = express.Router();
 

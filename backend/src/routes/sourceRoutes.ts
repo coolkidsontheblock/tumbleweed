@@ -87,7 +87,7 @@ router.post('/new_source', async (req, res, next) => {
   }
 });
 
-router.delete('/:source_name', async (req, res, next) => {
+router.delete('/', async (req, res, next) => {
   try {
     const sourceName = req.body.source_name;
     const inputPassword = req.body.database_password;

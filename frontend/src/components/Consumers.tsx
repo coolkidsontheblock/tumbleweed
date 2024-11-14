@@ -18,6 +18,7 @@ import {
   Box, Button
 } from '@mui/material';
 import { SuccessSnack } from "./SuccessSnack";
+import { ZodError } from "zod";
 
 interface ConsumerProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,8 +46,8 @@ export const Consumers = ({ setLoading }: ConsumerProps) => {
       } catch (error) {
         console.error(error);
         setError(true);
-        if (error instanceof Error) {
-          setErrorMsg(error.message);
+        if (error instanceof ZodError) {
+          setErrorMsg('There was an error fetching the data. Please try again later.');
         } else {
           setErrorMsg("An unknown error occurred");
         }
@@ -65,6 +66,8 @@ export const Consumers = ({ setLoading }: ConsumerProps) => {
         await deleteConsumer(source);
         setConsumers(prevSources => prevSources.filter(sourceString => sourceString.name !== source));
         setSelectedConsumer(null);
+        setSuccess(true);
+        setSuccessMsg("Deleted consumer successfully!");
       }
     } catch (error) {
       console.error(error);

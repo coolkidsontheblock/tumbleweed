@@ -19,6 +19,7 @@ import { Box,
   TableHead,
   Button
 } from '@mui/material';
+import { ZodError } from 'zod';
 
 interface SourcesProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,8 +49,8 @@ export const Sources = ({ setLoading }: SourcesProps) => {
       } catch (error) {
         console.error(error);
         setError(true);
-        if (error instanceof Error) {
-          setErrorMsg(error.message);
+        if (error instanceof ZodError) {
+          setErrorMsg('There was an error fetching the data. Please try again later.');
         } else {
           setErrorMsg("An unknown error occurred");
         }
@@ -63,24 +64,7 @@ export const Sources = ({ setLoading }: SourcesProps) => {
 
   const handleDeleteSource = async () => {
     setOpenSourceForm(false);
-    // setOpenSource(false);
     setOpenDeleteForm(true);
-    // try {
-    //   if (selectedSource) {
-    //     const source = selectedSource.name;
-    //     await deleteSource(source);
-    //     setSources(prevSources => prevSources.filter(sourceString => sourceString.name !== source));
-    //     setSelectedSource(null);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   setError(true);
-    //   if (error instanceof Error) {
-    //     setErrorMsg(error.message);
-    //   } else {
-    //     setErrorMsg("An unknown error occurred");
-    //   }
-    // }
   }
 
   const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {

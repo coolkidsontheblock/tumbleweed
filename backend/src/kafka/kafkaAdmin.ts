@@ -1,7 +1,6 @@
 import { Kafka } from 'kafkajs';
 import { TopicOffsetByPartition } from '../types/topicTypes';
 import dotenv from 'dotenv';
-import { getAllTopicsFromDB } from '../helpers/topicHelper';
 dotenv.config();
 
 const KafkaBrokerEndpoints = process.env.KAFKA_BROKER_ENDPOINTS;
@@ -107,18 +106,6 @@ const formatTopics = async (topics: string[]) => {
   const outboxTopics = topics.filter((topic: string) => topic.startsWith(topicPrefix));
   return outboxTopics.map((topic: string) => topic.replace(topicPrefix, ''));
 };
-
-// const findTopicsToDelete = async (outboxTopicsFromKafka: string[]) => {
-//   const topicsInDB = await getAllTopicsFromDB();
-//   const topicsToDelete = [];
-
-//   for (const topic of outboxTopicsFromKafka) {
-//     if (!topicsInDB.includes(topic)) topicsToDelete.push(topic);
-//   }
-
-//   if (topicsToDelete.length > 0) await deleteTopicFromKafka(topicsToDelete);
-//   return topicsToDelete;
-// };
 
 const formatTopicOffsetToMessageCount = (offsets: TopicOffsetByPartition[]) => {
   return offsets.reduce((sum: number, { offset }) => {

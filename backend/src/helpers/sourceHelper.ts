@@ -19,12 +19,16 @@ const createSourceDBClient = (credentials: PGCredentials) => {
 
 export const deleteReplicationSlot = async (slotName: string, dbCredentials: PGCredentials) => {
   const client = createSourceDBClient(dbCredentials);
-  
+
   try {
     await client.connect();
-    await findAndKillActiveSlot(slotName, client);
-    await client.query('SELECT pg_drop_replication_slot($1)', [slotName]);
-    console.log(`Replication slot "${slotName}" dropped successfully.`);
+    const existingSlotName = await client.query(`SELECT * FROM pg_replication_slots where slot_name = $1`, [slotName]);
+
+    if (existingSlotName.rows[0]) {
+      await findAndKillActiveSlot(slotName, client);
+      await client.query('SELECT pg_drop_replication_slot($1)', [slotName]);
+      console.log(`Replication slot "${slotName}" dropped successfully.`);
+    }
   } catch (err) {
       console.error('Error dropping replication slot:', err);
   } finally {
