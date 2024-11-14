@@ -1,6 +1,7 @@
 import { SourceData } from '../types/types';
 import { SourceForm } from "./SourceForm";
-import { getSources, deleteSource } from "../services/sourcesService";
+import { getSources } from "../services/sourcesService";
+import { DeleteSourceForm } from './DeleteSourceForm';
 import { useEffect, useState } from "react";
 import { Source } from "./Source";
 import { Link } from "react-router-dom";
@@ -32,6 +33,7 @@ export const Sources = ({ setLoading }: SourcesProps) => {
   const [successMsg, setSuccessMsg] = useState<string>('');
   const [openSourceForm, setOpenSourceForm] = useState<boolean>(false);
   const [openSource, setOpenSource] = useState<boolean>(false);
+  const [openDeleteForm, setOpenDeleteForm] = useState<boolean>(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -60,22 +62,25 @@ export const Sources = ({ setLoading }: SourcesProps) => {
   }, [])
 
   const handleDeleteSource = async () => {
-    try {
-      if (selectedSource) {
-        const source = selectedSource.name;
-        await deleteSource(source);
-        setSources(prevSources => prevSources.filter(sourceString => sourceString.name !== source));
-        setSelectedSource(null);
-      }
-    } catch (error) {
-      console.error(error);
-      setError(true);
-      if (error instanceof Error) {
-        setErrorMsg(error.message);
-      } else {
-        setErrorMsg("An unknown error occurred");
-      }
-    }
+    setOpenSourceForm(false);
+    // setOpenSource(false);
+    setOpenDeleteForm(true);
+    // try {
+    //   if (selectedSource) {
+    //     const source = selectedSource.name;
+    //     await deleteSource(source);
+    //     setSources(prevSources => prevSources.filter(sourceString => sourceString.name !== source));
+    //     setSelectedSource(null);
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   setError(true);
+    //   if (error instanceof Error) {
+    //     setErrorMsg(error.message);
+    //   } else {
+    //     setErrorMsg("An unknown error occurred");
+    //   }
+    // }
   }
 
   const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -219,6 +224,20 @@ export const Sources = ({ setLoading }: SourcesProps) => {
             setSuccessMsg={setSuccessMsg}
             setPage={setPage}
           />}
+        {openDeleteForm &&
+          <DeleteSourceForm 
+            openDeleteForm={openDeleteForm}
+            setOpenDeleteForm={setOpenDeleteForm}
+            setOpenSource={setOpenSource}
+            selectedSource={selectedSource}
+            setSelectedSource={setSelectedSource}
+            setSources={setSources}
+            setError={setError}
+            setErrorMsg={setErrorMsg}
+            setSuccess={setSuccess}
+            setSuccessMsg={setSuccessMsg}
+          />
+        }
       </div >
     </>
   )

@@ -9,6 +9,11 @@ export interface SourceInput {
   topics: string[];
 }
 
+export interface SourceCredentials {
+  source_name: string;
+  database_password: string;
+}
+
 export type SourceData = Omit<SourceInput, 'database_password' | 'topics'> & {
   slot_name: string;
   date_created: string;

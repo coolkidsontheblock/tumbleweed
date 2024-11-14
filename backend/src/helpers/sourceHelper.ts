@@ -8,7 +8,7 @@ import { formatDateForFrontend } from "./consumerHelper";
 const createSourceDBClient = (credentials: PGCredentials) => {
   const client = new Client ({
     user: credentials.database_user,
-    password: 'capstoneTeam1',// credentials.database_password,
+    password: credentials.database_password,
     host: credentials.database_hostname,
     port: credentials.database_port,
     database: credentials.database_dbname,
@@ -19,7 +19,7 @@ const createSourceDBClient = (credentials: PGCredentials) => {
 
 export const deleteReplicationSlot = async (slotName: string, dbCredentials: PGCredentials) => {
   const client = createSourceDBClient(dbCredentials);
-
+  
   try {
     await client.connect();
     await findAndKillActiveSlot(slotName, client);
@@ -34,53 +34,12 @@ export const deleteReplicationSlot = async (slotName: string, dbCredentials: PGC
 
 const findAndKillActiveSlot = async (slotName: string, client: Client) => {
   const activeSlot = await client.query(`SELECT * FROM pg_replication_slots where active = 'true' AND slot_name = $1`, [slotName]);
+
   if (activeSlot.rows[0]) {
     const pid = activeSlot.rows[0].active_pid;
     await client.query('SELECT pg_terminate_backend($1)', [pid]);
   }
 };
-
-export const getReplicationSlotSizeInMB = async (slotName: string, dbCredentials: PGCredentials) => {
-  const client = createSourceDBClient(dbCredentials);
-
-  try {
-    await client.connect();
-    const res = await client.query(`
-        SELECT slot_name, restart_lsn, pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)) AS wal_size
-        FROM pg_replication_slots
-        WHERE slot_name = $1`, [slotName]);
-
-    if (res.rows.length > 0) {
-        const walSize = res.rows[0].wal_size;
-        const walSizeInMB = parseSizeToMB(walSize);
-        console.log(`Size of replication slot "${slotName}": ${walSizeInMB} MB`);
-        return walSizeInMB;
-    } else {
-        console.log(`Replication slot "${slotName}" not found.`);
-    }
-  } catch (err) {
-      console.error('Error getting replication slot:', err);
-  } finally {
-      await client.end();
-  }
-};
-
-const parseSizeToMB = (size: string): number => {
-  const sizeMap: { [key: string]: number } = {
-      'kB': 1 / 1024,
-      'MB': 1,
-      'GB': 1024,
-      'TB': 1024 * 1024,
-  };
-
-  const match = size.match(/(\d+\.?\d*)\s*(\w+)/);
-  if (match) {
-      const value = parseFloat(match[1]);
-      const unit = match[2];
-      return value * (sizeMap[unit] || 0);
-  }
-  return 0;
-}
 
 export const createOutboxTableInSource = async (dbCredentials: PGCredentials) => {
   const client = createSourceDBClient(dbCredentials);
