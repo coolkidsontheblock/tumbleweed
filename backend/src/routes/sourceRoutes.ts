@@ -19,7 +19,7 @@ import { verifyPassword } from '../helpers/encrypt';
 const router = express.Router();
 
 const destination = process.env.NODE_ENV === 'production'
-      ? 'http://connect:8083/connectors' 
+      ? 'http://connect.kafka.local:8083/connectors' 
       : 'http://localhost:8083/connectors';
 
 router.get('/', async (_, res, next) => {
