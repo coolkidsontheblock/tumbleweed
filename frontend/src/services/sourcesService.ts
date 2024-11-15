@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { z } from 'zod';
-import { SourceInput } from '../types/types';
+import { SourceCredentials, SourceInput } from '../types/types';
 
 const singleSourceSchema = z.object({
   name: z.string(),
@@ -30,8 +30,8 @@ const createSource = async (sourceInfo: SourceInput) => {
   return res.data;
 }
 
-const deleteSource = async (source: string) => {
-  const res = await axios.delete(`${path}/${source}`);
+const deleteSource = async (sourceCredentials: SourceCredentials) => {
+  const res = await axios.delete(path, { data: sourceCredentials });
   return res.data;
 }
 

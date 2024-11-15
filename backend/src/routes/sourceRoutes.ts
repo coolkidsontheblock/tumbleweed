@@ -14,6 +14,7 @@ import { PGCredentials } from '../types/sourceTypes';
 import { validateSourceDetails, validateDBCredentials } from '../helpers/validation';
 import { ConnectorError, InvalidCredentialsError } from '../utils/errors';
 import { createTopicsForKafka } from '../kafka/kafkaAdmin';
+import { verifyPassword } from '../helpers/encrypt';
 
 const router = express.Router();
 
@@ -86,18 +87,26 @@ router.post('/new_source', async (req, res, next) => {
   }
 });
 
-router.delete('/:source_name', async (req, res, next) => {
+router.delete('/', async (req, res, next) => {
   try {
-    const sourceName = req.params.source_name;
+    const sourceName = req.body.source_name;
+    const inputPassword = req.body.database_password;
     const connector = await getConnectorWithSlotNameandPW(sourceName);
     
     if (!connector) {
       throw new ConnectorError("No Connector by that name exists");
     } else {
+      const validPassword = await verifyPassword(inputPassword, connector.database_password);
+
+      if (!validPassword) {
+        throw new InvalidCredentialsError("Password does not match, please try again", 401);
+      }
+
       const URL = `${destination}/${connector.name}`;
       await axios.delete(URL);
       await deleteConnectorByName(sourceName);
-      const {slot_name, ...credentials} = connector
+      const {slot_name, ...credentials} = connector;
+      credentials.database_password = inputPassword;
       await deleteReplicationSlot(slot_name, credentials);
       res.status(201).send(`Connector '${connector.name}' deleted!`);
     }
