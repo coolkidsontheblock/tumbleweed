@@ -45,7 +45,7 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
       <Modal open={openSource} onClose={handleCloseModal}>
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
           <div>
-            <h2>Source Information</h2>
+            <h2>Source Details</h2>
             <TableContainer component={Paper} sx={{ borderRadius: '15px', maxWidth: 1000, margin: '0 auto', '& .MuiTableCell-root': { padding: '8px 8px', fontSize: '0.875rem' } }}>
               <Table sx={{ minWidth: 650 }} aria-label="source information table">
                 <TableBody>
