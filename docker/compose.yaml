@@ -162,9 +162,9 @@ services:
     ports:
       - 127.0.0.1:5432:5432
     environment:
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=tumblweed_user
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=userconfig
+      - POSTGRES_DB=user_configs
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
