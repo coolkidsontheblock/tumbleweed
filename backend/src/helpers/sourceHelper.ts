@@ -4,6 +4,22 @@ import { hashPassword } from "./encrypt";
 import { DatabaseError } from "../utils/errors";
 import { Client } from "pg";
 import { formatDateForFrontend } from "./consumerHelper";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const KafkaBrokerEndpoints = process.env.NODE_ENV === 'production' ?
+  process.env.KAFKA_BROKER_ENDPOINTS : 'localhost:29092,localhost:39092,localhost:49092';
+
+if (!KafkaBrokerEndpoints) {
+  throw new Error("Kafka broker endpoints are not defined!");
+}
+
+const APICURIO_REGISTRY_URL = process.env.NODE_ENV === 'production' ?
+  process.env.APICURIO_REGISTRY_URL : 'http://localhost:8080/apis/registry/v2';
+
+if (!APICURIO_REGISTRY_URL) {
+  throw new Error("Apicurio registry URL is not defined!");
+}
 
 const createSourceDBClient = (credentials: PGCredentials) => {
   const client = new Client ({
@@ -111,14 +127,14 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
       "transforms": "outbox",
       "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
       "transforms.outbox.table.fields.additional.placement": "type:envelope:type",
-      "schema.history.internal.kafka.bootstrap.servers": "kafka-1:19092,kafka-2:19092,kafka-3:19092",
+      "schema.history.internal.kafka.bootstrap.servers": KafkaBrokerEndpoints,
       "schema.history.internal.kafka.topic": "schema-changes.inventory",
       "key.converter": "io.apicurio.registry.utils.converter.ExtJsonConverter",
-      "key.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
+      "key.converter.apicurio.registry.url": APICURIO_REGISTRY_URL,
       "key.converter.apicurio.registry.auto-register": "true",
       "key.converter.apicurio.registry.find-latest": "true",
       "value.converter": "io.apicurio.registry.utils.converter.ExtJsonConverter",
-      "value.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
+      "value.converter.apicurio.registry.url": APICURIO_REGISTRY_URL,
       "value.converter.apicurio.registry.auto-register": "true",
       "value.converter.apicurio.registry.find-latest": "true",
       "topic.prefix": "app",

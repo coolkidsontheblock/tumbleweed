@@ -58,7 +58,7 @@ export const validateDBCredentials = async (credentials: PGCredentials) => {
 
   try {
     await client.connect();
-    console.log('Connection successful');
+    console.log('Source database connection successful.');
     return { success: true, message: 'Credentials verified successfully', status: 200};
   } catch (error: any) {
     if (error.code === 'ECONNREFUSED') {
