@@ -32,9 +32,9 @@ router.get('/:groupId', async (req, res, next) => {
 
     req.on('close', async () => {
       await consumer?.disconnect();
-    })
+    });
   } catch (error) {
-    console.error(`There was an error getting all topics: ${error}`);
+    console.error('There was an error getting all topics');
     next(error);
   }
 });
