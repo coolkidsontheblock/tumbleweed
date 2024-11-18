@@ -3,7 +3,8 @@ import { TopicOffsetByPartition } from '../types/topicTypes';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const KafkaBrokerEndpoints = process.env.KAFKA_BROKER_ENDPOINTS;
+const KafkaBrokerEndpoints = process.env.NODE_ENV === 'production' ?
+  process.env.KAFKA_BROKER_ENDPOINTS : 'localhost:29092,localhost:39092,localhost:49092';
 
 if (!KafkaBrokerEndpoints) {
   throw new Error("Kafka broker endpoints are not defined!");
