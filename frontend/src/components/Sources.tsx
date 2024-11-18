@@ -44,7 +44,6 @@ export const Sources = ({ setLoading }: SourcesProps) => {
       try {
         const request = await getSources();
         const data = sortSourcesByDate(request.data);
-
         setSources(data);
       } catch (error) {
         console.error(error);
@@ -193,7 +192,7 @@ export const Sources = ({ setLoading }: SourcesProps) => {
               setOpenSource={setOpenSource}
               openSource={openSource}
               handleDeleteSource={handleDeleteSource}
-              sourceData={selectedSource}
+              selectedSource={selectedSource}
               setSelectedSource={setSelectedSource}
             />
           </>}

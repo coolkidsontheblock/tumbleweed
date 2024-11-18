@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { TopicsData } from "../types/types";
+import { TopicData } from "../types/types";
 import { Modal,
   Box,
   Table,
@@ -14,8 +14,8 @@ import { Modal,
 interface TopicProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
-  topicInfo: TopicsData | null;
-  setSelectedTopic: Dispatch<SetStateAction<TopicsData | null >>;
+  selectedTopic: TopicData | null;
+  setSelectedTopic: Dispatch<SetStateAction<TopicData | null >>;
   handleDeleteTopic: () => void;
 }
 
@@ -33,13 +33,13 @@ const style = {
   borderRadius: '15px',
 };
 
-export const TopicInfo = ({ setOpen, open, topicInfo, setSelectedTopic, handleDeleteTopic }: TopicProps) => {
+export const Topic = ({ setOpen, open, selectedTopic, setSelectedTopic, handleDeleteTopic }: TopicProps) => {
   const handleCloseModal = () => {
     setOpen(false);
     setSelectedTopic(null);
   };
 
-  if (topicInfo) {
+  if (selectedTopic) {
     return (
       <Modal open={open} onClose={handleCloseModal}>
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
@@ -56,23 +56,23 @@ export const TopicInfo = ({ setOpen, open, topicInfo, setSelectedTopic, handleDe
                 <TableBody>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Topic Name</TableCell>
-                    <TableCell >{topicInfo.topic}</TableCell>
+                    <TableCell >{selectedTopic.topic}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Message Count</TableCell>
-                    <TableCell >{topicInfo.message_count}</TableCell>
+                    <TableCell >{selectedTopic.message_count}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Subscribed Consumers</TableCell>
-                    <TableCell >{topicInfo.subscribed_consumers.join(', ')}</TableCell>
+                    <TableCell >{selectedTopic.subscribed_consumers.join(', ')}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Subscriber Count</TableCell>
-                    <TableCell >{topicInfo.subscribed_consumers.length}</TableCell>
+                    <TableCell >{selectedTopic.subscribed_consumers.length}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{fontWeight: 700 }}>Date Added</TableCell>
-                    <TableCell >{topicInfo.date_added}</TableCell>
+                    <TableCell >{selectedTopic.date_added}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

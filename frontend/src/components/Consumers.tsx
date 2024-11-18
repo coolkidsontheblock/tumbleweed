@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getConsumers, deleteConsumer } from "../services/consumerService";
-import { ConsumerDetails } from "../types/types";
+import { ConsumerData } from "../types/types";
 import { Consumer } from "./Consumer";
 import { ConsumerForm } from "./ConsumerForm";
 import { sortConsumersByDate } from "../utils/sorting";
@@ -25,8 +25,8 @@ interface ConsumerProps {
 }
 
 export const Consumers = ({ setLoading }: ConsumerProps) => {
-  const [consumers, setConsumers] = useState<ConsumerDetails[] | []>([]);
-  const [selectedConsumer, setSelectedConsumer] = useState<ConsumerDetails | null>(null)
+  const [consumers, setConsumers] = useState<ConsumerData[] | []>([]);
+  const [selectedConsumer, setSelectedConsumer] = useState<ConsumerData | null>(null)
   const [error, setError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);

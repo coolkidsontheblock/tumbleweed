@@ -8,15 +8,15 @@ import { Box,
   TableContainer,
   TableRow
 } from "@mui/material";
-import { ConsumerDetails } from "../types/types"
+import { ConsumerData } from "../types/types"
 import { Dispatch, SetStateAction } from "react";
 
 interface ConsumerProps {
   setOpenConsumer: Dispatch<SetStateAction<boolean>>;
   openConsumer: boolean;
   handleDeleteConsumer: () => void;
-  selectedConsumer: ConsumerDetails | null;
-  setSelectedConsumer: Dispatch<ConsumerDetails | null>;
+  selectedConsumer: ConsumerData | null;
+  setSelectedConsumer: Dispatch<ConsumerData | null>;
 }
 
 const style = {
