@@ -12,22 +12,20 @@ process.on('exit', () => {
   });
 });
 
-let tumbleweedServer: http.Server;
 let kafkaServer: http.Server;
 
 if (require.main === module) {
-  tumbleweedServer = app.listen(tumbleweedPort, () => {
-    console.log(`[TumblweedServer]: Tumbleweed Server is running on PORT ${tumbleweedPort} in ${process.env.NODE_ENV === 'production' ? 'production mode' : 'development mode'}`);
+  app.listen(tumbleweedPort, () => {
+    console.log(`Tumbleweed Server is running on PORT ${tumbleweedPort} in ${process.env.NODE_ENV === 'production' ? 'production mode' : 'development mode'}`);
   });
 
   kafkaServer = kafkaApp.listen(kafkaPort, () => {
-    console.log(`[KafkaServer]: Kafka Server is running on PORT ${kafkaPort} in ${process.env.NODE_ENV === 'production' ? 'production mode' : 'development mode'}`);
+    console.log(`Kafka Server is running on PORT ${kafkaPort} in ${process.env.NODE_ENV === 'production' ? 'production mode' : 'development mode'}`);
   });
 };
 
 export {
   app,
   kafkaApp,
-  tumbleweedServer,
   kafkaServer
 };

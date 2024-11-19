@@ -43,12 +43,12 @@ export const consumeMessages = async (consumer: Consumer, res: Response, consume
           await consumer.commitOffsets([{ 
             topic, 
             partition, 
-            offset: (parseInt(message.offset) + 1).toString() // Commit the next offset
+            offset: (parseInt(message.offset) + 1).toString()
           }]);
         },
       });
     } catch (error) {
-        console.error(`There was an error consuming messages: ${error}`);
-        return null;
+      console.error(`There was an error consuming messages: ${error}`);
+      return null;
     }
 };

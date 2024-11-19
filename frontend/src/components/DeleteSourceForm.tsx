@@ -49,7 +49,6 @@ export const DeleteSourceForm = ({
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
   
   useEffect(() => {
-    setOpenSource(false);
     setOpenDeleteForm(true);
   }, []);
 
