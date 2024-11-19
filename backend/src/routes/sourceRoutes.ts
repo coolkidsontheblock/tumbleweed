@@ -7,7 +7,7 @@ import {
   deleteConnectorByName,
   createOutboxTableInSource,
   deleteReplicationSlot,
-  getConnectorWithSlotNameandPW
+  getConnectorWithSlotNameandPW 
 } from '../helpers/sourceHelper';
 import { formatDateForFrontend } from '../helpers/consumerHelper';
 import { PGCredentials } from '../types/sourceTypes';

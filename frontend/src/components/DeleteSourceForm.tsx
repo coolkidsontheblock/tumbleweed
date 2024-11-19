@@ -9,7 +9,6 @@ import { deleteSource } from "../services/sourcesService";
 interface DeleteSourceFormProps {
   setOpenDeleteForm: React.Dispatch<React.SetStateAction<boolean>>;
   openDeleteForm: boolean;
-  setOpenSource: React.Dispatch<React.SetStateAction<boolean>>;
   selectedSource: SourceData | null;
   setSelectedSource: React.Dispatch<SourceData | null>;
   setSources: React.Dispatch<React.SetStateAction<SourceData[]>>
@@ -40,7 +39,6 @@ export const DeleteSourceForm = ({
   setSuccessMsg,
   setOpenDeleteForm,
   openDeleteForm,
-  setOpenSource,
   selectedSource,
   setSelectedSource,
   setSources
@@ -49,7 +47,6 @@ export const DeleteSourceForm = ({
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
   
   useEffect(() => {
-    setOpenSource(false);
     setOpenDeleteForm(true);
   }, []);
 
