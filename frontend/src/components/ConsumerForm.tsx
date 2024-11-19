@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createConsumer } from "../services/consumerService";
-import { BooleanObject, ConsumerDetails, ConsumerInputDetails } from "../types/types";
+import { BooleanObject, ConsumerData, ConsumerInputDetails } from "../types/types";
 import { Button, Box, Modal, TextField } from "@mui/material";
 import { validateInput } from "../utils/validation";
 import { getTopics } from "../services/topicService";
@@ -9,7 +9,7 @@ import { textFieldTheme } from '../styles/Theme';
 import { ThemeProvider } from '@mui/material/styles';
 
 interface ConsumerFormProps {
-  setConsumers: React.Dispatch<React.SetStateAction<ConsumerDetails[]>>;
+  setConsumers: React.Dispatch<React.SetStateAction<ConsumerData[]>>;
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
   openForm: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
