@@ -83,7 +83,7 @@ export const createOutboxTableInSource = async (dbCredentials: PGCredentials) =>
         IF to_regclass('public.heartbeat') IS NULL THEN
             CREATE TABLE public.heartbeat (
                 id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-                hostname TEXT NOT NULL,
+                source TEXT NOT NULL,
                 timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             );
         END IF;
@@ -140,7 +140,7 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
       "value.converter.apicurio.registry.auto-register": "true",
       "value.converter.apicurio.registry.find-latest": "true",
       "topic.prefix": "app",
-      "heartbeat.action.query": `INSERT INTO heartbeat (timestamp, hostname) VALUES (now(), '${slotName}')`,
+      "heartbeat.action.query": `INSERT INTO heartbeat (timestamp, source) VALUES (now(), '${slotName}')`,
       "heartbeat.interval.ms": 300000,
       "publication.name": "dbz_publication"
     }
