@@ -3,7 +3,6 @@ import cors from 'cors';
 import sourceRouter from './routes/sourceRoutes';
 import consumerRouter from './routes/consumerRoutes';
 import topicRouter from './routes/topicRoutes';
-// import kafkaRouter from './routes/kafkaRoutes';
 import { errorHandler } from './middlewares/errorHandler';
 import path from 'path';
 
@@ -19,7 +18,6 @@ if (process.env.NODE_ENV === 'production') {
 app.use('/api/sources', sourceRouter);
 app.use('/api/consumers', consumerRouter);
 app.use('/api/topics', topicRouter);
-// app.use('/tumbleweed', kafkaRouter);
 app.use(errorHandler);
 
 if (process.env.NODE_ENV === 'production') {
@@ -28,6 +26,4 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-export default app;
-
-import './kafkaServer';
+export { app };

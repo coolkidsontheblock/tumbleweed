@@ -1,10 +1,12 @@
 import request from 'supertest';
-import { app }  from '../../index';
+import { kafkaApp }  from '../../index';
 import { getConsumerByGroupId } from '../../helpers/consumerHelper';
 import { getKafkaBrokerEndpoints } from '../../kafka/kafkaAdmin';
-import { consumeMessages, 
-         createConsumer, 
-         initializeKafka} from '../../kafka/kafkaClientSSEConnect';
+import { 
+  consumeMessages, 
+  createConsumer, 
+  initializeKafka 
+} from '../../kafka/kafkaClientSSEConnect';
 
 jest.mock('../../helpers/consumerHelper');
 jest.mock('../../kafka/kafkaAdmin');
@@ -64,7 +66,7 @@ describe('GET /tumbleweed', () => {
       return;
     });
 
-    const response = await request(app).get(`/tumbleweed/testuser`);
+    const response = await request(kafkaApp).get(`/tumbleweed/testuser`);
 
     expect(response.status).toBe(200);
     expect(response.headers['content-type']).toBe('text/event-stream');
@@ -75,7 +77,7 @@ describe('GET /tumbleweed', () => {
   it('Should handle errors when consumer is not found', async () => {
     mockedServices.getConsumerByGroupId.mockResolvedValue(undefined);
 
-    const response = await request(app).get('/tumbleweed/testuser');
+    const response = await request(kafkaApp).get('/tumbleweed/testuser');
 
     expect(response.status).toBe(404);
     expect(response.text).toBe("Consumer not found");
@@ -87,7 +89,7 @@ describe('GET /tumbleweed', () => {
     mockedServices.createConsumer.mockRejectedValue(new Error());
     console.error = jest.fn();
 
-    const response = await request(app).get('/tumbleweed/testuser');
+    const response = await request(kafkaApp).get('/tumbleweed/testuser');
 
     expect(response.status).toBe(500);
     expect(console.error).toHaveBeenCalled();

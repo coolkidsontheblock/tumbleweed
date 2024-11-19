@@ -1,7 +1,7 @@
-import app from './app';
+import { app } from './app';
 import { pool } from './database/pg';
+import { kafkaApp } from './kafkaApp';
 import http from 'http';
-import { kafkaApp } from './kafkaServer';
 
 const tumbleweedPort = process.env.PORT || 3001;
 const kafkaPort = process.env.KAFKAPORT || 4001;
@@ -12,11 +12,11 @@ process.on('exit', () => {
   });
 });
 
-let server: http.Server;
+let tumbleweedServer: http.Server;
 let kafkaServer: http.Server;
 
 if (require.main === module) {
-  server = app.listen(tumbleweedPort, () => {
+  tumbleweedServer = app.listen(tumbleweedPort, () => {
     console.log(`[TumblweedServer]: Tumbleweed Server is running on PORT ${tumbleweedPort} in ${process.env.NODE_ENV === 'production' ? 'production mode' : 'development mode'}`);
   });
 
@@ -25,4 +25,9 @@ if (require.main === module) {
   });
 };
 
-export { server, app, kafkaServer };
+export {
+  app,
+  kafkaApp,
+  tumbleweedServer,
+  kafkaServer
+};

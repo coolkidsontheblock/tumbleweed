@@ -2,11 +2,13 @@ import request from 'supertest';
 import { app }  from '../../index';
 import { validateConsumerData } from '../../helpers/validation';
 import { getKafkaBrokerEndpoints } from '../../kafka/kafkaAdmin';
-import { deleteConsumerByName, 
-         formatDateForFrontend, 
-         getAllConsumerInfo, 
-         getAllConsumersByName, 
-         postConsumerToDB } from '../../helpers/consumerHelper';
+import { 
+  deleteConsumerByName, 
+  formatDateForFrontend, 
+  getAllConsumerInfo, 
+  getAllConsumersByName, 
+  postConsumerToDB 
+} from '../../helpers/consumerHelper';
 
 jest.mock('../../helpers/consumerHelper');
 jest.mock('../../kafka/kafkaAdmin');

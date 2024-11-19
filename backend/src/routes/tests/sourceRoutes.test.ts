@@ -4,16 +4,22 @@ import { formatDateForFrontend } from '../../helpers/consumerHelper';
 import { createTopicsForKafka } from '../../kafka/kafkaAdmin';
 import { verifyPassword } from '../../helpers/encrypt';
 import axios from 'axios';
-import { createOutboxTableInSource, 
-         getAllConnectors, 
-         getConfigData, 
-         getConnectorWithSlotNameandPW, 
-         postConfigDataToDB } from '../../helpers/sourceHelper';
-import { validateDBCredentials, 
-         validateSourceDetails } from '../../helpers/validation';
-import { ConnectorError, 
-         DatabaseError, 
-         InvalidCredentialsError } from '../../utils/errors';
+import { 
+  createOutboxTableInSource, 
+  getAllConnectors, 
+  getConfigData, 
+  getConnectorWithSlotNameandPW, 
+  postConfigDataToDB 
+} from '../../helpers/sourceHelper';
+import { 
+  validateDBCredentials, 
+  validateSourceDetails 
+} from '../../helpers/validation';
+import { 
+  ConnectorError, 
+  DatabaseError, 
+  InvalidCredentialsError 
+} from '../../utils/errors';
   
 jest.mock('../../helpers/validation');
 jest.mock('../../kafka/kafkaAdmin');

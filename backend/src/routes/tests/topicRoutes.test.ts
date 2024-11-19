@@ -1,8 +1,10 @@
 import request from 'supertest';
 import { app }  from '../../index';
 import { getTopicsFromKafka } from '../../kafka/kafkaAdmin';
-import { getInfoForAllTopics, 
-         getTopicByName } from '../../helpers/topicHelper';
+import { 
+  getInfoForAllTopics, 
+  getTopicByName 
+} from '../../helpers/topicHelper';
 
 jest.mock('../../helpers/consumerHelper');
 jest.mock('../../kafka/kafkaAdmin');
