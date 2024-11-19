@@ -220,7 +220,7 @@ export const postConfigDataToDB = async (source: DebeziumConnector) => {
       ]);
     return newConnector.rows[0];
   } catch (error) {
-    console.error(`There was an error adding a new connector to the database: ${error}`);
+    console.error('There was an error adding a new connector to the database');
     throw new DatabaseError(`There was an error adding a new connector to the database: ${error}`)
   }
 };
@@ -240,7 +240,7 @@ export const getAllConnectors = async () => {
       ...source,
       date_created: formatDateForFrontend(source.date_created)}));
   } catch (error) {
-    console.error(`There was an error retreiving connector from the database: ${error}`);
+    console.error('There was an error retreiving connectors from the database');
   }
 };
 

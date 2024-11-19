@@ -19,7 +19,7 @@ export type SourceData = Omit<SourceInput, 'database_password' | 'topics'> & {
   date_created: string;
 }
 
-export interface ConsumerDetails {
+export interface ConsumerData {
   name: string;
   description: string;
   tumbleweed_endpoint: string;
@@ -31,7 +31,7 @@ export interface ConsumerDetails {
   date_created: string;
 }
 
-export type ConsumerInputDetails = Omit<ConsumerDetails, 'received_message_count' | 'date_created' | 'kafka_broker_endpoints' | 'tumbleweed_endpoint' | 'kafka_client_id'>;
+export type ConsumerInputDetails = Omit<ConsumerData, 'received_message_count' | 'date_created' | 'kafka_broker_endpoints' | 'tumbleweed_endpoint' | 'kafka_client_id'>;
 
 export interface BooleanObject {
   [key: string]: boolean;
@@ -51,10 +51,10 @@ export interface SuccessSnackProps {
 
 export interface TopicResponse {
   message: string,
-  data: TopicsData
+  data: TopicData
 }
 
-export interface TopicsData {
+export interface TopicData {
   topic: string,
   subscribed_consumers: string[],
   date_added: string
@@ -63,5 +63,5 @@ export interface TopicsData {
 
 export interface TopicsResponse {
   message: string,
-  data: TopicsData[]
+  data: TopicData[]
 }

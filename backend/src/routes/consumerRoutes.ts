@@ -21,8 +21,8 @@ router.get('/', async (_, res, next) => {
       message: `${consumerInfo.length} Consumers Found.`,
       data: consumerInfo
     });
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.error('An error occurred retrieving all consumers');
     next(error);
   }
 });
@@ -40,10 +40,9 @@ router.post('/new_consumer', async (req, res, next) => {
     res.status(201).send({
       message: 'Consumer created',
       data: {...newConsumer, date_created: formatDateForFrontend(newConsumer.date_created)}
-
     });
   } catch (error) {
-    console.error(`There was an error adding a new consumer: ${error}`);
+    console.error(`There was an error adding a new consumer to the database`);
     next(error);
   }
 });
@@ -56,13 +55,12 @@ router.delete('/:consumer_name', async (req, res, next) => {
     if (!consumer) {
       throw new HttpError("No Consumer by that name exists", 404);
     } else {
-      
       await deleteConsumerByName(consumerName);
       await deleteConsumerFromSubscribedTopics(consumerName); 
       res.status(201).send(`Consumer '${consumer.name}' deleted!`);
     }
   } catch (error) {
-    console.error(`There was an error deleting the consumer: ${error}`);
+    console.error(`There was an error deleting the consumer`);
     next(error);
   }
 });

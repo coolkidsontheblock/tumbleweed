@@ -7,6 +7,7 @@ let kafka: Kafka;
 
 export const initializeKafka = async (clientId: string) => {
   const brokers = await getKafkaBrokerEndpoints();
+  console.log(brokers)
   kafka = new Kafka({
     clientId: clientId,
     brokers,
@@ -21,7 +22,7 @@ export const createConsumer = async (group_id: string, topics: string[]) => {
         console.log('Consumer successfully created and connected!');
         return consumer;
     } catch (error) {
-        console.error(`There was an error creating the consumer: ${error}`);
+        console.error('There was an error creating the consumer');
     }
 };
 

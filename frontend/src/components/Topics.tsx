@@ -1,6 +1,6 @@
-import { TopicsData } from '../types/types';
+import { TopicData } from '../types/types';
 import { deleteTopic, getTopics } from "../services/topicService";
-import { TopicInfo } from './Topic';
+import { Topic } from './Topic';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ErrorSnack } from "./ErrorSnack";
@@ -23,9 +23,9 @@ interface TopicsProps {
 }
 
 export const Topics = ({ setLoading }: TopicsProps) => {
-  const [topics, setTopics] = useState<TopicsData[] | null>(null)
+  const [topics, setTopics] = useState<TopicData[] | null>(null)
   const [topicNames, setTopicNames] = useState<string[] | null>(null);
-  const [selectedTopic, setSelectedTopic] = useState<TopicsData | null>(null)
+  const [selectedTopic, setSelectedTopic] = useState<TopicData | null>(null)
   const [error, setError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
@@ -211,10 +211,10 @@ export const Topics = ({ setLoading }: TopicsProps) => {
         </div>
         {selectedTopic && open &&
           <>
-            <TopicInfo
+            <Topic
               setOpen={setOpen}
               open={open}
-              topicInfo={selectedTopic}
+              selectedTopic={selectedTopic}
               setSelectedTopic={setSelectedTopic}
               handleDeleteTopic={handleDeleteTopic}
             />

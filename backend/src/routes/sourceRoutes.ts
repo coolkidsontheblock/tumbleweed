@@ -31,7 +31,7 @@ router.get('/', async (_, res, next) => {
       data: sourceInfo
     });
   } catch (error) {
-    console.error(error);
+    console.error('An error occurred retrieving all sources');
     next(error);
   }
 });
@@ -111,6 +111,7 @@ router.delete('/', async (req, res, next) => {
       res.status(201).send(`Connector '${connector.name}' deleted!`);
     }
   } catch (error) {
+    console.error(`An error occurred when deleting connector: ${error}`)
     next(error);
   }
 });

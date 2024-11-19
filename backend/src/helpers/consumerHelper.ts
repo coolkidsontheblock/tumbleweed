@@ -115,7 +115,7 @@ export const deleteConsumerByName = async (name: string) => {
     await query(`DELETE FROM consumers WHERE name = $1`,
       [name]);
   } catch (error) {
-    console.error(`There was an error deleting connector from the database: ${error}`);
+    console.error(`There was an error deleting consumer from the database: ${error}`);
     throw error;
   }
 }

@@ -16,7 +16,7 @@ interface SourceProps {
   setOpenSource: Dispatch<SetStateAction<boolean>>;
   openSource: boolean;
   handleDeleteSource: () => void;
-  sourceData: SourceData | null;
+  selectedSource: SourceData | null;
   setSelectedSource: Dispatch<React.SetStateAction<SourceData | null>>;
 }
 
@@ -34,13 +34,13 @@ const style = {
   borderRadius: '15px',
 };
 
-export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceData, setSelectedSource }: SourceProps) => {
+export const Source = ({ setOpenSource, openSource, handleDeleteSource, selectedSource, setSelectedSource }: SourceProps) => {
   const handleCloseModal = () => {
     setSelectedSource(null);
     setOpenSource(false);
   };
 
-  if (sourceData) {
+  if (selectedSource) {
     return (
       <Modal open={openSource} onClose={handleCloseModal}>
         <Box sx={{ ...style, '& > :not(style)': { m: 1, width: 'auto' } }}>
@@ -51,35 +51,35 @@ export const Source = ({ setOpenSource, openSource, handleDeleteSource, sourceDa
                 <TableBody>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Connector Name</TableCell>
-                    <TableCell>{sourceData.name}</TableCell>
+                    <TableCell>{selectedSource.name}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Database Hostname</TableCell>
-                    <TableCell>{sourceData.database_hostname}</TableCell>
+                    <TableCell>{selectedSource.database_hostname}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Database Port</TableCell>
-                    <TableCell>{sourceData.database_port}</TableCell>
+                    <TableCell>{selectedSource.database_port}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Database Name</TableCell>
-                    <TableCell>{sourceData.database_dbname}</TableCell>
+                    <TableCell>{selectedSource.database_dbname}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Database Server Name</TableCell>
-                    <TableCell>{sourceData.database_server_name}</TableCell>
+                    <TableCell>{selectedSource.database_server_name}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Database Username</TableCell>
-                    <TableCell>{sourceData.database_user}</TableCell>
+                    <TableCell>{selectedSource.database_user}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Slot Name</TableCell>
-                    <TableCell>{sourceData.slot_name}</TableCell>
+                    <TableCell>{selectedSource.slot_name}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>Date Created</TableCell>
-                    <TableCell>{sourceData.date_created}</TableCell>
+                    <TableCell>{selectedSource.date_created}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
