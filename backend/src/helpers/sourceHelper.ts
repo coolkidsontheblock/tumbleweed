@@ -15,7 +15,7 @@ if (!KafkaBrokerEndpoints) {
 }
 
 const APICURIO_REGISTRY_URL = process.env.NODE_ENV === 'production' ?
-  process.env.APICURIO_REGISTRY_URL : 'http://localhost:8080/apis/registry/v2';
+  process.env.APICURIO_REGISTRY_URL : 'http://apicurio:8080/apis/registry/v2';
 
 if (!APICURIO_REGISTRY_URL) {
   throw new Error("Apicurio registry URL is not defined!");
