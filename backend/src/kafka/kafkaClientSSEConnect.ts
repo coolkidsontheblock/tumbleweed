@@ -7,7 +7,6 @@ let kafka: Kafka;
 
 export const initializeKafka = async (clientId: string) => {
   const brokers = await getKafkaBrokerEndpoints();
-  console.log(brokers)
   kafka = new Kafka({
     clientId: clientId,
     brokers,

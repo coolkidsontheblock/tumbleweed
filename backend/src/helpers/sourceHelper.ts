@@ -110,6 +110,8 @@ export const createOutboxTableInSource = async (dbCredentials: PGCredentials) =>
 }
 
 export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector => {
+  const slotName = `tumbleweed_${sourceDetails.name}`;
+  
   return {
     "name": sourceDetails.name,
     "config": {
@@ -123,7 +125,7 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
       "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
       "table.include.list": "public.outbox",
       "tombstone.on.delete": "false",
-      "slot.name": `tumbleweed_${sourceDetails.name}`,
+      "slot.name": slotName,
       "transforms": "outbox",
       "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
       "transforms.outbox.table.fields.additional.placement": "type:envelope:type",
@@ -138,7 +140,7 @@ export const getConfigData = (sourceDetails: PGSourceDetails): DebeziumConnector
       "value.converter.apicurio.registry.auto-register": "true",
       "value.converter.apicurio.registry.find-latest": "true",
       "topic.prefix": "app",
-      "heartbeat.action.query": `INSERT INTO heartbeat (timestamp, hostname) VALUES (now(), dbname: ${sourceDetails.database_dbname}, user: ${sourceDetails.database_user})`,
+      "heartbeat.action.query": `INSERT INTO heartbeat (timestamp, hostname) VALUES (now(), '${slotName}')`,
       "heartbeat.interval.ms": 300000,
       "publication.name": "dbz_publication"
     }

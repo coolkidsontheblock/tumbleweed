@@ -1,7 +1,10 @@
 import app from './app';
 import { pool } from './database/pg';
 import http from 'http';
-const PORT = process.env.PORT || 3001;
+import { kafkaApp } from './kafkaServer';
+
+const tumbleweedPort = process.env.PORT || 3001;
+const kafkaPort = process.env.KAFKAPORT || 4001;
 
 process.on('exit', () => {
   pool.end(() => {
@@ -10,11 +13,16 @@ process.on('exit', () => {
 });
 
 let server: http.Server;
+let kafkaServer: http.Server;
 
 if (require.main === module) {
-  server = app.listen(PORT, () => {
-    console.log(`[server]: Server is running on PORT ${PORT} in ${process.env.NODE_ENV === 'production' ? 'production mode' : 'development mode'}`);
+  server = app.listen(tumbleweedPort, () => {
+    console.log(`[TumblweedServer]: Tumbleweed Server is running on PORT ${tumbleweedPort} in ${process.env.NODE_ENV === 'production' ? 'production mode' : 'development mode'}`);
   });
-}
 
-export { server, app };
+  kafkaServer = kafkaApp.listen(kafkaPort, () => {
+    console.log(`[KafkaServer]: Kafka Server is running on PORT ${kafkaPort} in ${process.env.NODE_ENV === 'production' ? 'production mode' : 'development mode'}`);
+  });
+};
+
+export { server, app, kafkaServer };

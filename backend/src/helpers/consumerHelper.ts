@@ -1,7 +1,7 @@
 import { ConsumerDetails } from "../types/consumerTypes";
 import { query } from '../database/pg';
 import * as os from 'os';
-import { server } from '../index';
+import { kafkaServer } from '../index';
 import axios from "axios";
 
 export const getAllConsumerInfo = async () => {
@@ -121,7 +121,7 @@ export const deleteConsumerByName = async (name: string) => {
 }
 
 const getBackendHostAddressAndPort = async () => {
-  const serverPort = (server.address() as { port: number }).port;
+  const serverPort = (kafkaServer.address() as { port: number }).port;
   if (process.env.NODE_ENV === 'production') {
     return await getPublicAddress(serverPort);
   } else {
