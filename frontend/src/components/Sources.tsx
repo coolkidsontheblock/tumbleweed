@@ -211,7 +211,6 @@ export const Sources = ({ setLoading }: SourcesProps) => {
           <DeleteSourceForm 
             openDeleteForm={openDeleteForm}
             setOpenDeleteForm={setOpenDeleteForm}
-            setOpenSource={setOpenSource}
             selectedSource={selectedSource}
             setSelectedSource={setSelectedSource}
             setSources={setSources}
