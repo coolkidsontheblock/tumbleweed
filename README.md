@@ -96,4 +96,8 @@ sudo docker compose down -v
 ```
 
 ---
-🌵 Developed By: Cruz Hernandez | Nick Perry | Paco Michelson | Esther Kim 🤝
+🌵 Developed By: 
+[Cruz Hernandez](https://github.com/archzedzenrun) | 
+[Nick Perry](https://github.com/nickperry12) |
+[Paco Michelson](https://github.com/jeffbbz) |
+[Esther Kim](https://github.com/ekim1009) 🤝
