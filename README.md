@@ -1,8 +1,34 @@
-![Tumbleweed](https://raw.githubusercontent.com/tumbleweed-cdc/.github/171c43760709c6998007793df34de60e8352c56e/profile/tumbleweed_logo_rectangle.svg)
+![Tumbleweed](/profile/tumbleweed_logo_rectangle.svg)
 
-While Tumbleweed offers automated deployment to Amazon Web Services (AWS), users can also opt to manually deploy it to their own server.
+## 🌵 What is Tumbleweed?
 
-## ➡️ Manual Deployment
+Tumbleweed is an open-source, user-friendly framework designed for fast and consistent data propagation between microservices using Change Data Capture (CDC) and the transactional outbox pattern.
+It automatically deploys a self-hosted log-based CDC pipeline that abstracts away the complexities associated with setting up and using CDC tools. It is designed to monitor changes in one or more PostgreSQL databases and sync that data to consumer microservices in near real-time.
+
+For more information check out our [case study](https://tumbleweed-cdc.github.io/docs/introduction/).
+
+## 👷🏻‍♂️ Architecture and Technologies
+
+Tumbleweed is powered by various open-source tools along with a custom TypeScript backend API and React-based frontend UI, ensuring efficient event-driven communication and seamless deployment.
+
+* **Apache Kafka:** Log based message broker for high throughput, real-time data streaming. Decouples producer and consumer services through topic-based subscriptions.
+* **Kafka Connect:** Facilitates data transmission between Kafka and external systems using source and sink connectors.
+* **Debezium:** Enables real-time monitoring and streaming of database changes.
+* **Apicurio Schema Registry:** Manages and stores schemas for Kafka messages, ensuring efficient data serialization and evolution.
+* **Tumbleweed Backend API:** Tumbleweed leverages TypeScript and Express to provide a high-performance backend that is easy to extend and integrate with various services, ensuring smooth communication and efficient data synchronization among microservices.
+* **Tumbleweed Frontend UI:** Built with React, the frontend offers a user-friendly and responsive interface, allowing users to effortlessly configure and manage their Tumbleweed pipelines.
+* **Automated Cloud Deployment:** Custom CLI tool and Terraform for provisioning and deploying Tumbleweed pipelines on AWS ECS (Elastic Cloud Services) using Fargate.
+
+## 💡 Key Features
+
+* **Log-Based Change Data Capture (CDC):** Efficient data synchronization between microservices using log-based CDC.
+* **Outbox Pattern Implementation:** Outbox pattern integration ensures reliable message delivery.
+* **Abstraction of Complexities:** Simplifies the creation of outbox tables, message broker configuration, and setup of CDC tools.
+* **Drop-In Solution:** Easily integrates into existing or newly created microservice architecture without extensive modifications.
+* **Automated Deployment:** Provides simple CLI application for automatic deployment of self-hosted Tumbleweed pipelines on Amazon Web Services (AWS).
+* **User-Friendly Interface:** Intuitive UI that simplifies setup and management of source and sink connectors.
+
+## ➡️ Getting Started
 
 ### 📝 Configuring PostgreSQL
 
@@ -96,7 +122,7 @@ class OutboxService {
     }
 }
 ```
-And here is an example of how it could be used within the same transaction demonstrated in the previous section:
+And here is an example of how it could be applied to the same transaction demonstrated in the previous section:
 ```js
 // Pass the query function to the service
 const outboxService = new OutboxService(query);
@@ -125,7 +151,37 @@ try {
 }
 ```
 
-### 🚀 Running Tumbleweed
+## 🚀 Deployment
+
+### ⚙️ Automated Deployment
+
+A Command-Line Interface (CLI) tool is provided to automatically deploy self-hosted Tumbleweed pipelines to Amazon Web Services (AWS).
+
+**Prerequisites:**
+
+* An Amazon Web Services (AWS) account
+* IP address(es) that will have access to the Tumbleweed UI
+* Install [AWS CLI](https://aws.amazon.com/cli/)
+* Install [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+
+You are now ready to deploy Tumbleweed!
+
+Run the following command in your command line to get started:
+
+```
+npx tumbleweed_cdc roll
+```
+
+The pipeline can be destroyed with the following command:
+
+```
+npx tumbleweed_cdc burn
+```
+⚠️ Destroying the pipeline will permanently delete all associated resources and data.
+
+### 🛠️ Manual Deployment
+
+Manual deployment is also an option, whether locally or to an existing server of your choice using Docker.
 
 **Prerequisites:**
 
@@ -133,7 +189,7 @@ try {
 
 <br>
 
-1. Clone this git repository to your server by running the following command in your command line:
+1. Clone the tumbleweed repository to your server by running the following command in your command line:
 
 ```
 git clone https://github.com/tumbleweed-cdc/tumbleweed
@@ -154,7 +210,7 @@ Use the following command to stop the Tumbleweed application and all of its dock
 sudo docker compose down -v
 ```
 
-## 🍽️ Consuming Data
+## 📊 Consuming Data
 
 Once a consumer is created in the Tumbleweed UI, it can be clicked on to view the consumer's details, including a provided Tumbleweed endpoint URL. This URL serves as a connection point for the consumer service to receive a stream of data from the topics they are subscribed to. The necessary code to establish a Server-Sent Events (SSE) connection must be implemented in each consumer service. The implementation details may vary depending on the programming language or technology used by the microservice.
 
@@ -177,8 +233,8 @@ eventSource.onerror = (error) => {
 };
 ```
 ---
-🌵 Developed By: 
+🤝 Developed By: 
 [Cruz Hernandez](https://github.com/archzedzenrun) | 
 [Nick Perry](https://github.com/nickperry12) |
 [Paco Michelson](https://github.com/jeffbbz) |
-[Esther Kim](https://github.com/ekim1009) 🤝
+[Esther Kim](https://github.com/ekim1009)
